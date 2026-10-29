@@ -2,16 +2,11 @@ package vn.boxpvp.boxcolor.style;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.EnumMap;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Set;
-import java.util.TreeMap;
 import java.util.function.Consumer;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
@@ -22,9 +17,6 @@ import org.bukkit.configuration.file.YamlConfiguration;
  * Thay bằng bản mới khi reload; đối tượng cũ vẫn dùng được cho tới khi bị bỏ.
  */
 public final class StyleRegistry {
-
-    /** Số hiệu ứng shader tối đa (1..16). */
-    public static final int MAX_SHADER_EFFECTS = 16;
 
     private final Map<Channel, Map<String, ColorStyle>> styles;
 
@@ -91,83 +83,11 @@ public final class StyleRegistry {
             }
         }
         boolean animated = s.getBoolean("animated", false) && kind != StyleKind.SOLID;
-        int shader = s.getInt("shader", 0);
-        if (shader != 0 && (shader < 1 || shader > MAX_SHADER_EFFECTS)) {
-            warn.accept(path + ": shader phải từ 1 đến " + MAX_SHADER_EFFECTS);
-            shader = 0;
-        }
-        if (shader != 0 && !animated) {
-            warn.accept(path + ": shader chỉ dùng cho màu có animated: true, bỏ qua");
-            shader = 0;
-        }
         return new ColorStyle(id, s.getString("display", id), kind, colors, animated,
                 s.getLong("speed", 3000L),
                 (float) s.getDouble("saturation", 0.6),
                 (float) s.getDouble("brightness", 1.0),
-                icon, shader, ColorStyle.NO_COLOR);
-    }
-
-    /**
-     * Bản sao đã gán mã tín hiệu shader cho mọi màu có {@code shader:}. Mã chọn gần màu đầu tiên của hiệu ứng (người
-     * chơi không cài pack thấy gần giống), không trùng mã khác, không trùng màu nào trong colors.yml và {@code reserved}.
-     * Cùng một colors.yml luôn ra cùng mã.
-     */
-    public StyleRegistry withShaderMarkers(Set<Integer> reserved, Consumer<String> warn) {
-        Set<Integer> taken = new HashSet<>(reserved);
-        for (Map<String, ColorStyle> map : styles.values()) {
-            for (ColorStyle style : map.values()) taken.addAll(style.colors());
-        }
-        // Theo số hiệu ứng, rồi kênh, rồi thứ tự trong file: mã ổn định khi thêm màu không dùng shader
-        Map<Integer, String> owners = new TreeMap<>();
-        Map<String, Integer> assigned = new HashMap<>();
-        for (Channel channel : Channel.values()) {
-            for (ColorStyle style : styles.get(channel).values()) {
-                if (style.shader() == 0) continue;
-                String key = channel.key() + "." + style.id();
-                String previous = owners.putIfAbsent(style.shader(), key);
-                if (previous != null) {
-                    warn.accept(key + ": shader " + style.shader() + " đã dùng cho " + previous + ", bỏ qua");
-                }
-            }
-        }
-        for (Map.Entry<Integer, String> e : owners.entrySet()) {
-            String[] parts = e.getValue().split("\\.", 2);
-            ColorStyle style = styles.get(Channel.valueOf(parts[0].toUpperCase(Locale.ROOT))).get(parts[1]);
-            int marker = pickMarker(style.firstColor(), taken);
-            taken.add(marker);
-            assigned.put(e.getValue(), marker);
-        }
-        Map<Channel, Map<String, ColorStyle>> out = new EnumMap<>(Channel.class);
-        for (Channel channel : Channel.values()) {
-            Map<String, ColorStyle> map = new LinkedHashMap<>();
-            for (ColorStyle style : styles.get(channel).values()) {
-                Integer marker = assigned.get(channel.key() + "." + style.id());
-                map.put(style.id(), marker == null ? style : style.withMarker(marker));
-            }
-            out.put(channel, Collections.unmodifiableMap(map));
-        }
-        return new StyleRegistry(out);
-    }
-
-    /** Màu gần {@code base} nhất (đổi vài bit thấp) chưa bị dùng. */
-    static int pickMarker(int base, Set<Integer> taken) {
-        for (int d = 1; d < 0x1000; d++) {
-            int candidate = (base ^ (d & 0xF) ^ ((d >> 4 & 0xF) << 8) ^ ((d >> 8 & 0xF) << 16)) & 0xFFFFFF;
-            if (!taken.contains(candidate)) return candidate;
-        }
-        throw new IllegalStateException("không tìm được mã tín hiệu");
-    }
-
-    /** Các màu đang chạy bằng shader, theo số hiệu ứng. */
-    public List<ColorStyle> shaderStyles() {
-        List<ColorStyle> out = new ArrayList<>();
-        for (Map<String, ColorStyle> map : styles.values()) {
-            for (ColorStyle style : map.values()) {
-                if (style.usesShader()) out.add(style);
-            }
-        }
-        out.sort(Comparator.comparingInt(ColorStyle::shader));
-        return out;
+                icon);
     }
 
     public ColorStyle get(Channel channel, String id) {

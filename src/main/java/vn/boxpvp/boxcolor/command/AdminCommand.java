@@ -1,6 +1,5 @@
 package vn.boxpvp.boxcolor.command;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -21,7 +20,7 @@ import vn.boxpvp.boxcolor.style.Channel;
 import vn.boxpvp.boxcolor.style.ColorStyle;
 
 /**
- * {@code /boxcolor reload}, {@code /boxcolor shader} (xuất shader cho resource pack), {@code /boxcolor reset <người chơi> <chat|name|nick|all>},
+ * {@code /boxcolor reload}, {@code /boxcolor reset <người chơi> <chat|name|nick|all>},
  * {@code /boxcolor nick <người chơi> <tên|reset>}.
  */
 public final class AdminCommand implements TabExecutor {
@@ -50,17 +49,6 @@ public final class AdminCommand implements TabExecutor {
                         "name", String.valueOf(plugin.styles().count(Channel.NAME)),
                         "tiers", String.valueOf(plugin.tiers().all().size()),
                         "warnings", String.valueOf(warnings));
-            }
-            case "shader" -> {
-                try {
-                    int count = plugin.exportShader();
-                    plugin.messages().send(sender, "admin.shader-done", "count", String.valueOf(count),
-                            "enabled", plugin.messages().raw(plugin.settings().shaderEnabled()
-                                    ? "admin.shader-enabled" : "admin.shader-disabled"));
-                } catch (IOException e) {
-                    plugin.report("shader-export", e);
-                    plugin.messages().send(sender, "admin.shader-failed");
-                }
             }
             case "reset" -> reset(sender, args);
             case "nick" -> nick(sender, args);
@@ -157,8 +145,8 @@ public final class AdminCommand implements TabExecutor {
     public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias,
             @NotNull String[] args) {
         if (!sender.hasPermission("boxcolor.admin")) return List.of();
-        if (args.length == 1) return filter(List.of("reload", "shader", "reset", "nick"), args[0]);
-        if (args.length == 2 && (args[0].equalsIgnoreCase("reset") || args[0].equalsIgnoreCase("nick"))) {
+        if (args.length == 1) return filter(List.of("reload", "reset", "nick"), args[0]);
+        if (args.length == 2 && !args[0].equalsIgnoreCase("reload")) {
             List<String> names = new ArrayList<>();
             for (Player p : Bukkit.getOnlinePlayers()) names.add(p.getName());
             return filter(names, args[1]);

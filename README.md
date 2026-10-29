@@ -4,7 +4,7 @@ Màu chat, màu tên và nick cho BoxPvP (Paper 1.21.1). Mở khóa theo tier: m
 
 ## Cài đặt
 
-1. Chép `build/libs/BoxColor-1.5.0.jar` vào `plugins/`. Cần **PlaceholderAPI** để các plugin khác đọc được màu.
+1. Chép `build/libs/BoxColor-1.4.0.jar` vào `plugins/`. Cần **PlaceholderAPI** để các plugin khác đọc được màu.
 2. Khởi động server một lần để tạo `config.yml`, `colors.yml`, `tiers.yml`, `messages.yml`.
 3. Sửa `tiers.yml` cho đúng rank của server, rồi cấp quyền tier trong LuckPerms (xem phần dưới).
 4. Nối placeholder vào EzChat, TAB, UnlimitedNameTag (xem phần dưới).
@@ -21,7 +21,6 @@ Màu chat, màu tên và nick cho BoxPvP (Paper 1.21.1). Mở khóa theo tier: m
 | `/nick &x&6&7&D&A&F&8D&x&6&A&D&9&F&5e...` | Tên kèm màu từng chữ: mỗi mã (`&x&R&R&G&G&B&B`, `&#RRGGBB`, `#RRGGBB`, `&0`-`&f`, `&r`) tô các chữ phía sau nó. Không gõ mã: chỉ đổi chữ, giữ màu đang dùng (kể cả màu động). Gõ lại đúng tên cũ kèm mã: chỉ đổi màu |
 | `/realname <nick>` (`/tenthat`) | Xem nick là của ai |
 | `/boxcolor reload` | Nạp lại mọi file |
-| `/boxcolor shader` | Xuất shader màu động cho resource pack |
 | `/boxcolor reset <người chơi> <chat\|name\|nick\|all>` | Xóa màu/nick (offline: chỉ xóa được nick) |
 | `/boxcolor nick <người chơi> <tên\|reset>` | Admin đặt tên (nhận mã màu), bỏ qua độ dài, từ cấm và thời gian chờ |
 
@@ -47,42 +46,21 @@ lp group overlord permission set boxcolor.tier.9 true
 | `boxcolor.realname` | mọi người | `/realname` |
 | `boxcolor.tier.<n>` | không | Tier của rank |
 | `boxcolor.color.<chat\|name>.<mã>` | không | Tặng lẻ một màu (quà sự kiện), không cần lên rank |
-| `boxcolor.feature.<custom-chat\|nick\|animated-name\|animated-chat>` | không | Tặng lẻ một tính năng |
+| `boxcolor.feature.<custom-chat\|nick\|animated-name>` | không | Tặng lẻ một tính năng |
 | `boxcolor.nick.bypass-cooldown` | op | Đổi nick không cần chờ |
 | `boxcolor.admin` | op | Mọi màu, mọi tính năng, lệnh admin |
 
 Mất rank thì màu và nick **tạm ẩn** (kiểm tra lại mỗi `access-check-seconds`), dữ liệu vẫn giữ. Lên lại rank là hiện lại.
 Nick do admin đặt cũng chỉ hiện khi người đó có tính năng `nick`.
 
-## GUI
+## GUI màu tên
 
-`/chatcolor` và `/namecolor` mở trang chính. Màu chat và Màu tên đều có menu chọn loại:
-- **Tĩnh:** màu có sẵn theo rank. Trang màu chat tĩnh có ô **Tự chỉnh mã màu** (`custom-chat`), trang màu tên tĩnh
-  có ô **Màu tùy chỉnh** (`nick`): bấm vào, gõ tên kèm mã màu vào chat.
-- **Động:** cần `animated-chat` / `animated-name` (mặc định Ultimate). Chỉ chọn màu có sẵn (`animated: true`).
-  Trang màu tên động có ô **Đổi chữ của tên**: màu động chạy theo đúng chữ người chơi đặt.
+`/namecolor` (hoặc ô Màu tên ở trang chính) mở menu chọn loại:
+- **Màu tĩnh:** màu có sẵn theo rank, và ô **Màu tùy chỉnh** (tính năng `nick`): bấm vào, gõ tên kèm mã màu vào chat.
+- **Màu động:** cần tính năng `animated-name` (mặc định Ultimate). Chỉ chọn màu có sẵn trong `colors.yml`
+  (màu có `animated: true`). Ô **Đổi chữ của tên** đặt tên hiển thị, màu động chạy theo đúng chữ đó.
 
 Chọn một màu trong GUI thì giữ chữ của tên, chỉ tô lại bằng màu mới.
-
-## Màu động bằng shader (resource pack)
-
-Màu có `shader: <số>` trong `colors.yml` chạy bằng shader của resource pack: chạy được **cả trong chat**, server không
-gửi gói tin nào cho chuyển động. BoxColor chỉ thêm fragment shader của `rendertype_text` và bộ shader
-`rendertype_text_see_through` (nametag xuyên tường); vertex shader và hiệu ứng chữ của ItemsAdder giữ nguyên.
-
-1. `/boxcolor shader`: tạo `plugins/BoxColor/shader-pack/`.
-2. Chép **mọi thứ bên trong** `shader-pack/` vào `plugins/ItemsAdder/contents/boxcolor/resourcepack/`, rồi `/iazip`.
-3. Vào game kiểm tra (xem dưới), rồi đặt `shader.enabled: true` trong `config.yml` và `/boxcolor reload`.
-4. Khi `shader.enabled: true`, TAB và UNT không cần dòng làm mới `'%boxcolor_name%': 100` / `2` nữa.
-
-Sửa màu shader trong `colors.yml` thì làm lại bước 1 và 2. Mỗi màu shader có một **mã tín hiệu** gần màu đầu tiên của
-nó (người chơi tắt pack thấy màu gần giống), BoxColor tự chọn không trùng màu nào khác.
-
-Phiên bản: file nền cho 1.20.5 - 1.21.1, overlay `ia_overlay_1_21_2_plus` cho 1.21.2 - 1.21.5 (trên 1.21.5 chữ có thể
-đứng yên), `ia_overlay_1_21_6_plus` cho 1.21.6 trở lên. Client dưới 1.20.5 không dùng được pack của ItemsAdder.
-
-Kiểm tra sau `/iazip`: chọn một màu chat động, chat thử, nhìn chữ trong chat, TAB và trên đầu nhân vật. Nếu pack báo
-lỗi khi tải, gỡ thư mục `contents/boxcolor` rồi `/iazip` lại.
 
 ## Placeholder
 

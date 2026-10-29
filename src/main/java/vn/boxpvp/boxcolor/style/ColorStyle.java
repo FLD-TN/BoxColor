@@ -14,12 +14,9 @@ import org.bukkit.Material;
  * @param saturation độ đậm của cầu vồng (0..1)
  * @param brightness độ sáng của cầu vồng (0..1)
  * @param icon icon trong GUI, {@code null} thì dùng icon mặc định của config.yml
- * @param shader số hiệu ứng shader 1-16 trong colors.yml, 0 nếu không dùng shader
- * @param marker mã màu tín hiệu shader đã gán (chỉ khi bật shader), {@link #NO_COLOR} nếu không có. Có mã này thì
- *               mọi chữ mang đúng mã đó và resource pack tự vẽ chuyển động phía người chơi
  */
 public record ColorStyle(String id, String display, StyleKind kind, List<Integer> colors, boolean animated,
-        long cycleMillis, float saturation, float brightness, Material icon, int shader, int marker) {
+        long cycleMillis, float saturation, float brightness, Material icon) {
 
     /** Mã của kiểu tự chỉnh trong dữ liệu người chơi. */
     public static final String CUSTOM_ID = "custom";
@@ -33,23 +30,6 @@ public record ColorStyle(String id, String display, StyleKind kind, List<Integer
         cycleMillis = Math.max(200L, cycleMillis);
         saturation = Math.max(0f, Math.min(1f, saturation));
         brightness = Math.max(0f, Math.min(1f, brightness));
-    }
-
-    /** Không dùng shader. */
-    public ColorStyle(String id, String display, StyleKind kind, List<Integer> colors, boolean animated,
-            long cycleMillis, float saturation, float brightness, Material icon) {
-        this(id, display, kind, colors, animated, cycleMillis, saturation, brightness, icon, 0, NO_COLOR);
-    }
-
-    /** Bản sao đã gán mã tín hiệu shader. */
-    public ColorStyle withMarker(int rgb) {
-        return new ColorStyle(id, display, kind, colors, animated, cycleMillis, saturation, brightness, icon, shader,
-                rgb);
-    }
-
-    /** Màu này đang chạy bằng shader (đã gán mã tín hiệu). */
-    public boolean usesShader() {
-        return marker != NO_COLOR;
     }
 
     /** Kiểu tự chỉnh: 1 mã là màu đơn, từ 2 mã trở lên là gradient tĩnh. */
@@ -70,9 +50,8 @@ public record ColorStyle(String id, String display, StyleKind kind, List<Integer
         return CUSTOM_ID.equals(id);
     }
 
-    /** Màu đầu tiên, dùng cho icon da nhuộm và placeholder {@code chat}. Chạy bằng shader thì là mã tín hiệu. */
+    /** Màu đầu tiên, dùng cho icon da nhuộm và placeholder {@code chat}. */
     public int firstColor() {
-        if (marker != NO_COLOR) return marker;
         if (kind == StyleKind.RAINBOW || colors.isEmpty()) return ColorRenderer.rgbAt(this, 0, 1, 0);
         for (int rgb : colors) {
             if (rgb != NO_COLOR) return rgb;

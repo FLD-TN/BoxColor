@@ -47,19 +47,6 @@ animation:
   # Tăng lên 200 hoặc 250 để giảm một nửa số gói tin, màu chạy giật hơn một chút
   frame-ms: 100
 
-# Màu động chạy bằng shader của resource pack (màu có 'shader: <số>' trong colors.yml)
-# Chạy được cả trong chat, server không tốn gói tin nào cho chuyển động
-# Cách cài:
-#   1. /boxcolor shader -> tạo plugins/BoxColor/shader-pack/
-#   2. Chép mọi thứ trong shader-pack/ vào plugins/ItemsAdder/contents/boxcolor/resourcepack/ rồi /iazip
-#   3. Vào game kiểm tra, rồi mới đặt enabled: true và /boxcolor reload
-# Sửa màu shader trong colors.yml thì làm lại bước 1 và 2
-shader:
-  # false: màu có shader chạy kiểu cũ (TAB/nametag làm mới), true: xuất mã tín hiệu cho resource pack
-  enabled: false
-  # Số điểm ảnh ngang trên màn hình cho một vòng màu (nhỏ = màu đổi nhanh qua từng chữ)
-  spread-pixels: 100
-
 chat:
   # Tô màu nội dung chat theo màu chat đã chọn
   enabled: true

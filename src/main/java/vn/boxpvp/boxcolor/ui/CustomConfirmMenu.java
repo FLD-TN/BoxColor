@@ -72,9 +72,9 @@ public final class CustomConfirmMenu extends MenuView {
                 return;
             }
             plugin.colors().select(player, channel, style);
-            plugin.menus().open(player, new ColorMenu(plugin, player, ColorMenu.Section.CHAT_STATIC, 0));
+            plugin.menus().open(player, new ColorMenu(plugin, player, ColorMenu.Section.CHAT, 0));
         } else if (slot == SLOT_CANCEL) {
-            plugin.menus().open(player, new ColorMenu(plugin, player, ColorMenu.Section.CHAT_STATIC, 0));
+            plugin.menus().open(player, new ColorMenu(plugin, player, ColorMenu.Section.CHAT, 0));
         }
     }
 }

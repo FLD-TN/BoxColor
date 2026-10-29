@@ -10,10 +10,10 @@
 #   chat-colors: mã màu trong colors.yml (mục chat)
 #   name-colors: mã màu trong colors.yml (mục name)
 #   features:    custom-chat (tự chỉnh mã màu chat), nick (Màu tùy chỉnh: tự đặt tên, tô màu từng chữ, /nick),
-#                animated-name (vào trang Màu tên động), animated-chat (vào trang Màu chat động)
+#                animated-name (vào trang Màu tên động)
 #
 # Màu không nằm trong tier nào: chỉ mở bằng permission lẻ boxcolor.color.<chat|name>.<mã>, ví dụ quà sự kiện
-# Tính năng lẻ: boxcolor.feature.<custom-chat|nick|animated-name|animated-chat>
+# Tính năng lẻ: boxcolor.feature.<custom-chat|nick|animated-name>
 # boxcolor.admin: mở mọi thứ
 # Sửa xong chạy /boxcolor reload
 
@@ -51,12 +51,12 @@ tiers:
     features: [custom-chat]
   8:
     name: '&#D64DCDUltimate'
-    chat-colors: [tinh_van, keo_ngot, anh_trang, cau_vong_chay, song_ngoc, hoang_hon_dong]
+    chat-colors: [tinh_van, keo_ngot, anh_trang]
     # Màu tĩnh + 5 màu động (trang Màu động mở từ đây)
     name-colors: [hong_ngoc, mong_mo, lam_ngoc, lua_dong, song_bien, than_sam, cau_vong_dong, cuc_quang]
-    features: [animated-name, animated-chat]
+    features: [animated-name]
   9:
     name: '&#7560F5Overlord'
-    chat-colors: [vu_tru, kim_cuong, phuong_hoang, tinh_van_chay, kim_cuong_dong]
+    chat-colors: [vu_tru, kim_cuong, phuong_hoang]
     # Màu tĩnh + 4 màu động
     name-colors: [de_vuong, huyet_long, tinh_tu, tinh_van_dong, ba_chu, phuong_hoang_lua, cau_vong_ruc]

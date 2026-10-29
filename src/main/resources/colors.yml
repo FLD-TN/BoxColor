@@ -9,8 +9,6 @@
 #   speed:    thời gian chạy hết một vòng màu, tính bằng mili giây (mặc định 3000)
 #   saturation, brightness: độ đậm và độ sáng của cầu vồng, từ 0 đến 1 (mặc định 0.6 và 1)
 #   icon:     item trong GUI (không bắt buộc, mặc định gui.default-color-icon trong config.yml)
-#   shader:   số hiệu ứng 1-16 (chỉ màu animated). Có shader thì màu chạy bằng resource pack, cả trong chat
-#             (xem mục shader trong config.yml). Mỗi số chỉ dùng cho một màu; đổi số hoặc màu thì chạy lại /boxcolor shader
 #
 # Đổi mã (tên khoá như hong_pastel) của màu đang có người dùng thì họ sẽ mất màu đó
 # Màu chat để sáng, dễ đọc trên nền chat tối. Màu chuyển động chỉ dùng cho tên
@@ -136,45 +134,6 @@ chat:
     type: gradient
     colors: ['#FFE066', '#FF922B', '#F783AC']
 
-  # Màu chat động (chạy bằng shader, cần resource pack). Ultimate
-  cau_vong_chay:
-    display: 'Cầu Vồng Chạy'
-    type: rainbow
-    animated: true
-    shader: 10
-    speed: 3000
-    saturation: 0.5
-    brightness: 1.0
-  song_ngoc:
-    display: 'Sóng Ngọc'
-    type: gradient
-    animated: true
-    shader: 11
-    speed: 3500
-    colors: ['#63E6BE', '#74C0FC', '#A5D8FF']
-  hoang_hon_dong:
-    display: 'Hoàng Hôn Động'
-    type: gradient
-    animated: true
-    shader: 12
-    speed: 3500
-    colors: ['#FFD166', '#FF8A8A', '#C77DFF']
-  # Overlord
-  tinh_van_chay:
-    display: 'Tinh Vân Chạy'
-    type: gradient
-    animated: true
-    shader: 13
-    speed: 3000
-    colors: ['#F783AC', '#B197FC', '#74C0FC']
-  kim_cuong_dong:
-    display: 'Kim Cương Động'
-    type: gradient
-    animated: true
-    shader: 14
-    speed: 4000
-    colors: ['#E3FAFC', '#99E9F2', '#D0BFFF']
-
 name:
   # Elite
   ngoc_lam:
@@ -245,7 +204,6 @@ name:
     display: 'Lửa Động'
     type: gradient
     animated: true
-    shader: 1
     speed: 3000
     colors: ['#FFD166', '#FF8A5B', '#FF6B6B']
   # Champion
@@ -266,7 +224,6 @@ name:
     display: 'Sóng Biển'
     type: gradient
     animated: true
-    shader: 2
     speed: 3500
     colors: ['#4DABF7', '#63E6BE', '#A5D8FF']
   # Zeus
@@ -286,14 +243,12 @@ name:
     display: 'Thần Sấm'
     type: gradient
     animated: true
-    shader: 3
     speed: 2500
     colors: ['#FFF3BF', '#FFD43B', '#74C0FC']
   cau_vong_dong:
     display: 'Cầu Vồng Động'
     type: rainbow
     animated: true
-    shader: 4
     speed: 3000
     saturation: 0.6
     brightness: 1.0
@@ -314,14 +269,12 @@ name:
     display: 'Cực Quang'
     type: gradient
     animated: true
-    shader: 5
     speed: 4000
     colors: ['#63E6BE', '#74C0FC', '#B197FC', '#FF9DE2']
   tinh_van_dong:
     display: 'Tinh Vân Động'
     type: gradient
     animated: true
-    shader: 6
     speed: 3500
     colors: ['#F783AC', '#B197FC', '#74C0FC']
   # Overlord
@@ -341,21 +294,18 @@ name:
     display: 'Bá Chủ'
     type: gradient
     animated: true
-    shader: 7
     speed: 3000
     colors: ['#7560F5', '#B197FC', '#FF9DE2']
   phuong_hoang_lua:
     display: 'Phượng Hoàng Lửa'
     type: gradient
     animated: true
-    shader: 8
     speed: 2500
     colors: ['#FFE066', '#FF922B', '#FF6B6B', '#F783AC']
   cau_vong_ruc:
     display: 'Cầu Vồng Rực'
     type: rainbow
     animated: true
-    shader: 9
     speed: 2000
     saturation: 0.85
     brightness: 1.0

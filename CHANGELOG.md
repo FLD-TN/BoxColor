@@ -1,15 +1,5 @@
 # Changelog
 
-## 1.5.0 (2026-10-29)
-
-- Màu động bằng shader của resource pack: màu có `shader: <1-16>` trong colors.yml xuất một mã tín hiệu, resource
-  pack vẽ chuyển động phía người chơi, chạy cả trong chat. `/boxcolor shader` sinh shader vào
-  `plugins/BoxColor/shader-pack/` để chép vào ItemsAdder. Bật bằng `shader.enabled` (mặc định tắt).
-  Chỉ thêm fragment shader `rendertype_text` và bộ `rendertype_text_see_through`, không đè shader của ItemsAdder;
-  có bản cho 1.20.5-1.21.1, 1.21.2-1.21.5 và 1.21.6+ (theo overlay của ItemsAdder).
-- Màu chat tách hai trang **Tĩnh / Động** như màu tên; trang chat động cần `animated-chat`.
-- Bộ màu mẫu: 5 màu chat động (Ultimate 3, Overlord 2); 9 màu tên động gán shader 1-9, màu chat động 10-14.
-
 ## 1.4.0 (2026-10-29)
 
 - Màu tên tách hai trang: **Màu tĩnh** và **Màu động**, chọn từ menu mới sau ô Màu tên. Lore mỗi loại có tên mẫu.
