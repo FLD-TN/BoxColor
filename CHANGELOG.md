@@ -7,9 +7,6 @@
   Upload lên mc-packs.net, dán link vào `shader.pack.url`; BoxColor gửi kèm sau pack IA khi người chơi vào
   (`replace: false`, không bắt buộc), bỏ qua client dưới 1.20.5 qua ViaVersion. Zip cố định thời gian file nên cùng
   màu luôn ra cùng SHA-1.
-- Thời điểm gửi pack không đoán bằng số tick nữa: đọc `resource-pack.uuid` / `auto_apply.before_join` của ItemsAdder.
-  `before_join: true` thì gửi ngay khi vào; còn không thì chờ sự kiện pack IA tải xong (tối đa
-  `shader.pack.max-wait-seconds`, mặc định 30). Bỏ `shader.pack.delay-ticks`.
 
 ## 1.5.1 (2026-10-29)
 

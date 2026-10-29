@@ -63,11 +63,8 @@ shader:
   pack:
     # Link tải trực tiếp của BoxColor-shader.zip
     url: ''
-    # Thời điểm gửi tự đọc từ plugins/ItemsAdder/config.yml (resource-pack.uuid, auto_apply):
-    #   before_join: true -> pack IA tải xong trước khi vào game, gửi pack BoxColor ngay khi vào
-    #   còn lại -> chờ client báo pack IA tải xong rồi mới gửi
-    # Chờ tối đa bao nhiêu giây, quá thì vẫn gửi (phòng khi không nhận được trạng thái pack IA)
-    max-wait-seconds: 30
+    # Chờ bao nhiêu tick sau khi vào server mới gửi (để pack ItemsAdder tải xong trước), 20 tick = 1 giây
+    delay-ticks: 60
 
 chat:
   # Tô màu nội dung chat theo màu chat đã chọn

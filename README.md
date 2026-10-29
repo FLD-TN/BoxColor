@@ -74,10 +74,8 @@ shader và hiệu ứng chữ của ItemsAdder giữ nguyên.
 
 1. `/boxcolor shader`: tạo `plugins/BoxColor/shader-pack/BoxColor-shader.zip` (và bản giải nén `shader-pack/pack/`).
 2. Upload file zip lên **mc-packs.net**, dán link tải vào `shader.pack.url` trong `config.yml`.
-3. Đặt `shader.enabled: true`, `/boxcolor reload`. Người chơi nhận pack khi vào lại server: ngay khi vào nếu IA bật
-   `before_join`, còn không thì đợi client báo pack IA tải xong (tối đa `shader.pack.max-wait-seconds`). BoxColor tự
-   đọc `resource-pack.uuid` trong config của ItemsAdder. Pack gửi sau luôn đè pack gửi trước, nên chờ chỉ để người chơi
-   không gặp hai màn hình tải cùng lúc.
+3. Đặt `shader.enabled: true`, `/boxcolor reload`. Người chơi nhận pack khi vào lại server
+   (`shader.pack.delay-ticks` sau khi vào, để pack IA tải xong trước).
 4. Khi đã bật, TAB và UNT không cần dòng làm mới `'%boxcolor_name%': 100` / `2` nữa.
 
 Sửa màu shader trong `colors.yml` thì làm lại cả 3 bước: zip mới có SHA-1 mới, link cũ sẽ bị client từ chối.
