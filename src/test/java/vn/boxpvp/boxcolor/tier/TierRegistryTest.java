@@ -72,8 +72,12 @@ class TierRegistryTest {
     void animatedNameColorsOnlyFromUltimate() {
         for (var style : styles.list(Channel.NAME)) {
             if (!style.animated()) continue;
-            assertTrue(tiers.unlockTier(Channel.NAME, style.id()).level() >= 8, style.id());
+            // Màu động theo rank chỉ từ Ultimate; màu động crate không thuộc tier nào (vẫn cần animated-name)
+            var tier = tiers.unlockTier(Channel.NAME, style.id());
+            assertTrue(tier == null || tier.level() >= 8, style.id());
         }
+        assertNull(tiers.unlockTier(Channel.NAME, "neon_dong"));
+        assertFalse(tiers.allows(9, Channel.NAME, "neon_dong"));
         assertEquals(8, tiers.unlockTier(Channel.NAME, "cuc_quang").level());
         assertEquals(9, tiers.unlockTier(Channel.NAME, "ba_chu").level());
     }
