@@ -9,7 +9,6 @@
 #   speed:    thời gian chạy hết một vòng màu, tính bằng mili giây (mặc định 3000)
 #   saturation, brightness: độ đậm và độ sáng của cầu vồng, từ 0 đến 1 (mặc định 0.6 và 1)
 #   icon:     item trong GUI (không bắt buộc, mặc định gui.default-color-icon trong config.yml)
-#   unlock-text: dòng "Mở khóa" trong GUI cho màu không nằm trong tier nào, ví dụ '&#FFD166Crate Màu Chat'
 #
 # Đổi mã (tên khoá như hong_pastel) của màu đang có người dùng thì họ sẽ mất màu đó
 # Màu chat để sáng, dễ đọc trên nền chat tối. Màu chuyển động chỉ dùng cho tên

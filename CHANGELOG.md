@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.9.2 (2026-10-29)
+
+- Bỏ mọi chữ giải thích cách nhận: dòng "Mở khóa" trong lore màu, mục "Cách nhận / Rank tặng sẵn" của hiệu ứng động,
+  "(cần ...)" trong tin nhắn và trạng thái khóa. GUI chỉ còn Đã sở hữu / Chưa sở hữu.
+
 ## 1.9.1 (2026-10-29)
 
 - Ai cũng vào được trang Hiệu ứng tên động và dùng hiệu ứng mình sở hữu (phiếu crate). Bỏ yêu cầu `animated-name`

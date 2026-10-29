@@ -1,9 +1,6 @@
 package vn.boxpvp.boxcolor.ui;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
@@ -78,21 +75,8 @@ public final class NameTypeMenu extends MenuView {
                 "unlocked", String.valueOf(unlocked),
                 "total", String.valueOf(styles.size())
         };
-        Map<String, List<String>> lists = new LinkedHashMap<>();
-        lists.put("gift", section == Section.NAME_ANIMATED ? rankGifts(styles) : List.of());
-        lists.put("state", m.rawList(path + ".state-unlocked", ph));
-        return Icons.item(material, m.line(path + ".name", ph), m.lines(path + ".lore", lists, ph), false);
-    }
-
-    /** Hiệu ứng động rank tặng sẵn: một dòng "ảnh rank - tên hiệu ứng" cho mỗi hiệu ứng nằm trong tiers.yml. */
-    private List<String> rankGifts(List<ColorStyle> styles) {
-        List<String> out = new ArrayList<>();
-        for (ColorStyle style : styles) {
-            if (plugin.tiers().unlockTier(Channel.NAME, style.id()) == null) continue;
-            out.add(plugin.messages().raw("menu.name-type.gift-line",
-                    "tier", icons.unlock(Channel.NAME, style), "style", icons.styleName(style, true)));
-        }
-        return out;
+        return Icons.item(material, m.line(path + ".name", ph),
+                m.lines(path + ".lore", "state", m.rawList(path + ".state-unlocked", ph), ph), false);
     }
 
     /** Màu đầu tiên người chơi dùng được, không có thì màu đầu tiên của loại đó. */
