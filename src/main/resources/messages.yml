@@ -27,7 +27,7 @@ color:
   selected: '&#7CFC9A✔ Đã chọn {channel} {style}'
   reset: '&#7CFC9A✔ Đã bỏ {channel}, dùng lại màu mặc định'
   # Hiệu ứng tên động (TAB và nametag). {style}: tên hiệu ứng đã tô màu
-  decor-selected: '&#7CFC9A✔ Đã chọn hiệu ứng {style} &#7CFC9Acho tên ở TAB và trên đầu'
+  decor-selected: '&#7CFC9A✔ Đã chọn hiệu ứng {style} &#7CFC9Acho tên ở TAB, scoreboard và trên đầu'
   decor-reset: '&#7CFC9A✔ Đã bỏ hiệu ứng tên động'
   # {tier}: tên tier trong tiers.yml
   locked: '&#FF6B6B✘ Màu này chưa mở khóa &8(&7cần {tier}&8)'
@@ -169,7 +169,7 @@ menu:
         - '&7• Đã mở khóa: &f{unlocked}&7/&f{total} &7màu'
         - '&7• Màu tùy chỉnh: {nick}'
         - '&7• Hiệu ứng động: {decor}'
-        - '&7  &8(TAB và trên đầu nhân vật)'
+        - '&7  &8(TAB, scoreboard, trên đầu)'
         - '&7• Mở hiệu ứng động: {animated}'
         - ''
         - '&8[&#7CFC9AChuột trái để mở&8]'
@@ -193,10 +193,10 @@ menu:
     title: '&8Màu tên'
     no-sample: '&7Chưa có màu'
     name-static:
-      name: '&#7FDBFFMàu tên &8(chat & scoreboard)'
+      name: '&#7FDBFFMàu tên &8(chat)'
       lore:
         - '&#BFC7D5Màu tên và nick của bạn'
-        - '&#BFC7D5trong chat và scoreboard'
+        - '&#BFC7D5trong chat'
         - ''
         - '&#FFD166Ví dụ:'
         - '&7• {example}'
@@ -204,8 +204,8 @@ menu:
         - '&#FFD166Thông tin:'
         - '&7• Đã mở khóa: &f{unlocked}&7/&f{total} &7màu'
         - '&7• Có bộ lọc đã/chưa sở hữu'
-        - '&7• TAB và tên trên đầu luôn là'
-        - '&7  tên thật, không đổi theo nick'
+        - '&7• TAB, scoreboard và tên trên đầu'
+        - '&7  luôn là tên thật, không đổi theo nick'
         - ''
         - '&#FFD166Màu tùy chỉnh &8(/nick)&#FFD166:'
         - '&7• Tự đặt tên, tô màu từng chữ'
@@ -217,7 +217,7 @@ menu:
       state-locked:
         - '&8[&#7CFC9AChuột trái để mở&8]'
     name-animated:
-      name: '&#E0A3FFHiệu ứng tên động &8(TAB & nametag)'
+      name: '&#E0A3FFHiệu ứng tên động &8(TAB, scoreboard, nametag)'
       lore:
         - '&#BFC7D5Trang trí tên thật của bạn'
         - '&#BFC7D5bằng màu chạy liên tục'
@@ -227,12 +227,13 @@ menu:
         - ''
         - '&#FFD166Hiện ở đâu:'
         - '&7• Danh sách người chơi &8(&7bấm phím &fTab&8)'
+        - '&7• Scoreboard bên phải màn hình'
         - '&7• Tên trên đầu nhân vật'
         - ''
         - '&#FFD166Lưu ý:'
         - '&7• Chỉ đổi màu, không đổi tên:'
         - '&7  luôn hiện tên thật, kể cả khi có nick'
-        - '&7• Không ảnh hưởng chat và scoreboard'
+        - '&7• Không ảnh hưởng tên trong chat'
         - '&7• Yêu cầu: {tier} &7trở lên'
         - '&7• Đã mở khóa: &f{unlocked}&7/&f{total} &7màu'
         - ''
@@ -254,7 +255,7 @@ menu:
       lore:
         - '&7• Hiệu ứng: {current}'
         - '&7• Xem trước: {preview}'
-        - '&7• Hiện ở TAB và trên đầu nhân vật'
+        - '&7• Hiện ở TAB, scoreboard, trên đầu'
     # Mỗi màu. {style} tên màu đã tô, {preview} câu mẫu, {kind} kiểu màu, {unlock} tier mở khóa
     # {note}: dòng ghi chú (bỏ nếu không có), {state}: các dòng state-* bên dưới
     item:
@@ -353,8 +354,8 @@ menu:
     nick:
       name: '&#E0A3FFMàu tùy chỉnh &8(/nick)'
       lore:
-        - '&#BFC7D5Tự đặt tên và tô màu, chỉ hiện'
-        - '&#BFC7D5ở chat và scoreboard'
+        - '&#BFC7D5Tự đặt tên và tô màu,'
+        - '&#BFC7D5chỉ hiện trong chat'
         - '&#BFC7D5từng chữ theo ý bạn'
         - ''
         - '&#FFD166Thông tin:'

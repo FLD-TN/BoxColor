@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.8.1 (2026-10-29)
+
+- Scoreboard hiện tên như TAB (`%boxcolor_tab%`: tên thật, hiệu ứng động hoặc màu rank); nick chỉ còn ở chat.
+  Sửa chữ trong GUI cho khớp.
+
 ## 1.8.0 (2026-10-29)
 
 Chống giả danh: nick chỉ hiện ở chat và scoreboard.
