@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.7.3 (2026-10-29)
+
+- Thêm màu rực (crate, không thuộc tier nào): 22 màu chat (7 đơn, 14 gradient, Cầu Vồng Neon) và 16 màu tên
+  (13 tĩnh, 3 động: Neon Động, Hỏa Long Động, Cầu Vồng Neon Động). Mọi màu đủ sáng để đọc trên nền chat tối.
+- Bỏ 6 màu chat crate quá nhạt: Thủy Tinh, Sương Mai, Ngọc Trai, Băng Hồng, Kẹo Dẻo, Cầu Vồng Nhạt.
+
 ## 1.7.2 (2026-10-29)
 
 - Tên tier hỗ trợ placeholder PlaceholderAPI. tiers.yml mặc định dùng ảnh rank của ItemsAdder
