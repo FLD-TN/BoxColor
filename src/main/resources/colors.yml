@@ -21,337 +21,246 @@ chat:
   bac_ha:
     display: 'Bạc Hà'
     type: solid
-    colors: ['#A0E7E5']
+    colors: ['#4FE3C1']
   hong_pastel:
     display: 'Hồng Pastel'
     type: solid
-    colors: ['#FFB3C6']
+    colors: ['#FF8FC8']
   # Titan
   vang_kem:
-    display: 'Vàng Kem'
+    display: 'Vàng Bơ'
     type: solid
-    colors: ['#FFE5A0']
+    colors: ['#FFD84D']
   oai_huong:
     display: 'Oải Hương'
     type: solid
-    colors: ['#C3B1E1']
+    colors: ['#B59BFF']
   # Hero
   cam_dao:
     display: 'Cam Đào'
     type: solid
-    colors: ['#FFC09F']
+    colors: ['#FF9A5C']
   xanh_troi:
     display: 'Xanh Trời'
     type: solid
-    colors: ['#A5D8FF']
+    colors: ['#5EB8FF']
   # Master
   la_non:
     display: 'Lá Non'
     type: solid
-    colors: ['#C0EB75']
+    colors: ['#9EE04A']
   hong_phan:
-    display: 'Hồng Phấn'
+    display: 'San Hô'
     type: solid
-    colors: ['#F8C8DC']
+    colors: ['#FF5F6D']
   # Legend
   bang_tuyet:
     display: 'Băng Tuyết'
     type: gradient
-    colors: ['#E0F7FF', '#A5D8FF']
+    colors: ['#B8F0FF', '#4D7CFF']
   dao_hong:
     display: 'Đào Hồng'
     type: gradient
-    colors: ['#FFB38A', '#FF8FAB']
+    colors: ['#FFB37A', '#FF5EA8']
   # Champion
   bien_lang:
     display: 'Biển Lặng'
     type: gradient
-    colors: ['#74C0FC', '#63E6BE']
+    colors: ['#2FA8FF', '#7B6BFF']
   nang_som:
     display: 'Nắng Sớm'
     type: gradient
-    colors: ['#FFE5A0', '#FFC09F']
+    colors: ['#FFF06A', '#6FE3FF']
   # Zeus
   mat_ong:
     display: 'Mật Ong'
     type: gradient
-    colors: ['#FFE066', '#FFA94D']
+    colors: ['#FFD54F', '#FF8A1C']
   chanh_day:
     display: 'Chanh Dây'
     type: gradient
-    colors: ['#D8F5A2', '#FFE066']
+    colors: ['#D4F53C', '#2EE6C8']
   # Ultimate
   hoa_anh_dao:
     display: 'Hoa Anh Đào'
     type: gradient
-    colors: ['#FFD1DC', '#FFA8C5', '#FFC6FF']
+    colors: ['#FFC2E0', '#FF6FA8', '#FF9A6B']
   ngoc_bich:
     display: 'Ngọc Bích'
     type: gradient
-    colors: ['#B2F2BB', '#63E6BE', '#3BC9DB']
+    colors: ['#2EE6A8', '#1FB5E8', '#5C7CFF']
   # Overlord
   sam_set:
     display: 'Sấm Sét'
     type: gradient
-    colors: ['#FFF3BF', '#FFE066', '#A5D8FF']
+    colors: ['#FFF24D', '#5CC8FF', '#A06BFF']
   hoang_gia:
     display: 'Hoàng Gia'
     type: gradient
-    colors: ['#FFE066', '#B197FC']
+    colors: ['#FFD24D', '#C04BFF']
 
   # ---------- Màu đặc sắc: không nằm trong tier nào ----------
-  # Chỉ mở bằng permission boxcolor.color.chat.<mã> (quay crate, mua, sự kiện)
-  # unlock-text: dòng "Mở khóa" trong GUI, bỏ trống thì dùng menu.unlock-special trong messages.yml
+  # Chỉ mở bằng permission boxcolor.color.chat.<mã> (phiếu /boxcolor give, quay crate)
   hoang_hon:
     display: 'Hoàng Hôn'
     type: gradient
-    colors: ['#FFD166', '#FF8A8A', '#C77DFF']
-  ngan_ha:
-    display: 'Ngân Hà'
-    type: gradient
-    colors: ['#9D8CFF', '#FF9DE2', '#8CE0FF']
-  cau_vong:
-    display: 'Cầu Vồng Pastel'
+    colors: ['#FFA94D', '#FF4F8B', '#6C63FF']
+  cau_vong_ruc:
+    display: 'Cầu Vồng Rực'
     type: rainbow
-    saturation: 0.5
+    saturation: 0.9
     brightness: 1.0
   tinh_van:
     display: 'Tinh Vân'
     type: gradient
-    colors: ['#F783AC', '#B197FC', '#74C0FC']
-  keo_ngot:
-    display: 'Kẹo Ngọt'
-    type: gradient
-    colors: ['#FFAFCC', '#FFC8DD', '#CDB4DB']
-  anh_trang:
-    display: 'Ánh Trăng'
-    type: gradient
-    colors: ['#E7F5FF', '#D0BFFF']
+    colors: ['#FF5FA2', '#A26BFF', '#4FA3FF']
   vu_tru:
     display: 'Vũ Trụ'
     type: gradient
-    colors: ['#9D8CFF', '#B197FC', '#FF9DE2', '#8CE0FF']
+    colors: ['#6C7BFF', '#D45BFF', '#FF6FCF', '#5CE8FF']
   kim_cuong:
     display: 'Kim Cương'
     type: gradient
-    colors: ['#E3FAFC', '#99E9F2', '#D0BFFF']
+    colors: ['#00E5FF', '#9D7CFF', '#00E5FF']
   phuong_hoang:
     display: 'Phượng Hoàng'
     type: gradient
-    colors: ['#FFE066', '#FF922B', '#F783AC']
-  binh_minh:
-    display: 'Bình Minh'
-    type: gradient
-    colors: ['#FFF3BF', '#FFD8A8', '#FFC9C9']
-  hoa_oai_huong:
-    display: 'Hoa Oải Hương'
-    type: gradient
-    colors: ['#E5DBFF', '#D0BFFF', '#F3D9FA']
-  luc_bao:
-    display: 'Lục Bảo'
-    type: gradient
-    colors: ['#B2F2BB', '#96F2D7', '#99E9F2']
-  rang_chieu:
-    display: 'Ráng Chiều'
-    type: gradient
-    colors: ['#FFC078', '#FF8787', '#F783AC']
-  nang_ha:
-    display: 'Nắng Hạ'
-    type: gradient
-    colors: ['#FFE066', '#FFC078', '#FFA8A8']
+    colors: ['#FFE14D', '#FF6A1A', '#E8174F']
   cuc_quang:
     display: 'Cực Quang'
     type: gradient
-    colors: ['#96F2D7', '#99E9F2', '#B197FC', '#FCC2D7']
+    colors: ['#3DFFB0', '#3DB8FF', '#B07CFF', '#FF7CD0']
   thien_ha:
     display: 'Thiên Hà'
     type: gradient
-    colors: ['#91A7FF', '#B197FC', '#F783AC', '#FFD8A8']
-  hoang_kim:
-    display: 'Hoàng Kim'
-    type: gradient
-    colors: ['#FFF3BF', '#FFE066', '#FFD43B', '#FFF9DB']
-  cau_vong_ruc:
-    display: 'Cầu Vồng Rực'
-    type: rainbow
-    saturation: 0.8
-    brightness: 1.0
-  hong_ngoc:
-    display: 'Hồng Ngọc'
-    type: gradient
-    colors: ['#FFA8A8', '#F783AC', '#E599F7']
-  bac_ha_chanh:
-    display: 'Bạc Hà Chanh'
-    type: gradient
-    colors: ['#D8F5A2', '#96F2D7', '#99E9F2']
-  lam_ngoc:
-    display: 'Lam Ngọc'
-    type: gradient
-    colors: ['#74C0FC', '#91A7FF', '#B197FC']
-
-  # ---------- Màu chat rực (crate) ----------
-  do_ruc:
-    display: 'Đỏ Rực'
-    type: solid
-    colors: ['#FF3B5C']
-  cam_lua:
-    display: 'Cam Lửa'
-    type: solid
-    colors: ['#FF7A00']
-  vang_chanh:
-    display: 'Vàng Chanh'
-    type: solid
-    colors: ['#FFD60A']
-  xanh_luc_bao:
-    display: 'Xanh Lục Bảo'
-    type: solid
-    colors: ['#00D68F']
-  xanh_dien:
-    display: 'Xanh Điện'
-    type: solid
-    colors: ['#00B4FF']
-  tim_hoang_gia:
-    display: 'Tím Hoàng Gia'
-    type: solid
-    colors: ['#9B5DE5']
-  hong_neon:
-    display: 'Hồng Neon'
-    type: solid
-    colors: ['#FF4FD8']
-  lua_dia_nguc:
-    display: 'Lửa Địa Ngục'
-    type: gradient
-    colors: ['#FF0844', '#FF6B00', '#FFD60A']
-  dai_duong_sau:
-    display: 'Đại Dương Sâu'
-    type: gradient
-    colors: ['#00B4FF', '#3A86FF', '#A066FF']
+    colors: ['#6B7BFF', '#C26BFF', '#FF9F6B']
   neon_cyber:
     display: 'Neon Cyber'
     type: gradient
-    colors: ['#00F5D4', '#00BBF9', '#F15BB5']
-  dung_nham:
-    display: 'Dung Nham'
-    type: gradient
-    colors: ['#FF3D00', '#FF9100']
+    colors: ['#00F5D4', '#F15BB5']
   rung_nhiet_doi:
     display: 'Rừng Nhiệt Đới'
     type: gradient
-    colors: ['#00D68F', '#B8F500']
+    colors: ['#00D68F', '#C8F500']
   tim_mong_ao:
     display: 'Tím Mộng Ảo'
     type: gradient
-    colors: ['#A066FF', '#FF006E']
-  hoang_hon_ruc:
-    display: 'Hoàng Hôn Rực'
-    type: gradient
-    colors: ['#FF006E', '#FF7A00', '#FFD60A']
+    colors: ['#7B5CFF', '#FF2E9A']
   bao_dien:
     display: 'Bão Điện'
     type: gradient
-    colors: ['#FFD60A', '#00B4FF', '#A066FF']
-  keo_neon:
-    display: 'Kẹo Neon'
+    colors: ['#FFE600', '#00B4FF', '#FFE600']
+  dai_duong_sau:
+    display: 'Đại Dương Sâu'
     type: gradient
-    colors: ['#FF4FD8', '#00F5D4']
-  ruby_vang:
-    display: 'Ruby Vàng'
+    colors: ['#00E5FF', '#3D8BFF']
+  bang_lua:
+    display: 'Băng Lửa'
     type: gradient
-    colors: ['#E63946', '#FFB703']
-  bac_cuc_quang:
-    display: 'Bắc Cực Quang'
-    type: gradient
-    colors: ['#00F5D4', '#3A86FF', '#9B5DE5', '#FF4FD8']
-  phuong_lua:
-    display: 'Phượng Lửa'
-    type: gradient
-    colors: ['#FFD60A', '#FF7A00', '#FF0844', '#D61CA8']
+    colors: ['#3DC8FF', '#FF5A1F']
   ngoc_luc:
     display: 'Ngọc Lục'
     type: gradient
-    colors: ['#06D6A0', '#1A9FE0']
+    colors: ['#00C9A7', '#9B5CFF']
   doc_to:
     display: 'Độc Tố'
     type: gradient
-    colors: ['#B8F500', '#00D68F', '#00B4FF']
-  cau_vong_neon:
-    display: 'Cầu Vồng Neon'
-    type: rainbow
-    saturation: 1.0
-    brightness: 1.0
+    colors: ['#B8F500', '#A855F7']
+  keo_neon:
+    display: 'Kẹo Neon'
+    type: gradient
+    colors: ['#FF4FD8', '#FFF04D']
+  tao_xanh:
+    display: 'Táo Xanh'
+    type: gradient
+    colors: ['#7CFF4D', '#FF4D4D']
+  dung_nham:
+    display: 'Dung Nham'
+    type: gradient
+    colors: ['#FF3D00', '#FFB800', '#FF3D00']
+  tu_dang:
+    display: 'Hoa Tử Đằng'
+    type: gradient
+    colors: ['#C9A6FF', '#6FB7FF']
+  dao_tien:
+    display: 'Đào Tiên'
+    type: gradient
+    colors: ['#FF8A5C', '#FFE14D', '#7CFF8A']
+  mau_dem:
+    display: 'Màn Đêm'
+    type: gradient
+    colors: ['#8C7BFF', '#FF5C7A']
+  xuan:
+    display: 'Mùa Xuân'
+    type: gradient
+    colors: ['#FF5FA2', '#5CE65C']
 
 name:
   # Elite
   ngoc_lam:
     display: 'Ngọc Lam'
     type: solid
-    colors: ['#5FE2C5']
+    colors: ['#3FE0C5']
   hong_dao:
     display: 'Hồng Đào'
     type: solid
-    colors: ['#FF8FAB']
+    colors: ['#FF7FB0']
   vang_nang:
     display: 'Vàng Nắng'
     type: solid
-    colors: ['#FFD166']
+    colors: ['#FFD23F']
   # Titan
   do_ruby:
     display: 'Đỏ Ruby'
     type: solid
-    colors: ['#FF6B6B']
+    colors: ['#FF4757']
   tim_mong:
     display: 'Tím Mộng'
     type: solid
-    colors: ['#B197FC']
+    colors: ['#A98BFF']
   xanh_duong:
     display: 'Xanh Dương'
     type: solid
-    colors: ['#74C0FC']
+    colors: ['#4FA3FF']
   # Hero
   bien_xanh:
     display: 'Biển Xanh'
     type: gradient
-    colors: ['#4DABF7', '#63E6BE']
+    colors: ['#38B6FF', '#3DE0A0']
   keo_bong:
     display: 'Kẹo Bông'
     type: gradient
-    colors: ['#FFAFCC', '#BDE0FE']
+    colors: ['#FF6FBF', '#4FB8FF']
   chanh_bac_ha:
-    display: 'Chanh Bạc Hà'
+    display: 'Kem Chanh Dâu'
     type: gradient
-    colors: ['#D8F5A2', '#63E6BE']
+    colors: ['#EFFF5C', '#FF7AB8']
   # Master
   lua_chay:
     display: 'Lửa Cháy'
     type: gradient
-    colors: ['#FFB347', '#FF6B6B']
+    colors: ['#FFB347', '#FF3B30']
   bang_gia:
     display: 'Băng Giá'
     type: gradient
-    colors: ['#E0F7FF', '#74C0FC', '#4DABF7']
+    colors: ['#8FE3FF', '#2F6BFF']
   rung_thong:
     display: 'Rừng Thông'
     type: gradient
-    colors: ['#8CE99A', '#38D9A9']
+    colors: ['#7EE081', '#1FA77A']
   # Legend
   hoang_kim:
     display: 'Hoàng Kim'
     type: gradient
-    colors: ['#FFE066', '#FFA94D', '#FF922B']
+    colors: ['#FFD000', '#FF7A00']
   hoa_sen:
     display: 'Hoa Sen'
     type: gradient
-    colors: ['#FFC6FF', '#BDB2FF']
+    colors: ['#FF5CA8', '#7DE04A']
   ho_phach:
-    display: 'Hổ Phách'
+    display: 'Hoàng Hôn Biển'
     type: gradient
-    colors: ['#FFB703', '#FB8500']
-  lua_dong:
-    display: 'Lửa Động'
-    type: gradient
-    animated: true
-    speed: 3000
-    colors: ['#FFD166', '#FF8A5B', '#FF6B6B']
+    colors: ['#FF8A3D', '#3DCFFF']
   # Champion
   cau_vong:
     display: 'Cầu Vồng'
@@ -361,36 +270,71 @@ name:
   doc_duoc:
     display: 'Độc Dược'
     type: gradient
-    colors: ['#C0EB75', '#69DB7C', '#20C997']
+    colors: ['#B8FF3D', '#9B5CFF']
   thach_anh:
-    display: 'Thạch Anh'
+    display: 'Thạch Anh Hồng'
     type: gradient
-    colors: ['#E5DBFF', '#B197FC']
+    colors: ['#FF7A9C', '#C77DFF']
+  # Zeus
+  vang_rong:
+    display: 'Vàng Ròng'
+    type: gradient
+    colors: ['#FFD000', '#FFFFFF', '#FFD000']
+  sam_chop:
+    display: 'Sấm Chớp'
+    type: gradient
+    colors: ['#FFF24D', '#4DC3FF']
+  bach_kim:
+    display: 'Neon Hồng Lam'
+    type: gradient
+    colors: ['#FF3DD4', '#3DE8FF']
+  # Ultimate (tĩnh)
+  hong_ngoc:
+    display: 'Hồng Ngọc'
+    type: gradient
+    colors: ['#FF2D6F', '#FFB86B']
+  mong_mo:
+    display: 'Mộng Mơ'
+    type: gradient
+    colors: ['#3DFFB0', '#FFE14D', '#FF4FA8']
+  lam_ngoc:
+    display: 'Lam Tím'
+    type: gradient
+    colors: ['#3DA5FF', '#B44DFF']
+  # Overlord (tĩnh)
+  de_vuong:
+    display: 'Đế Vương'
+    type: gradient
+    colors: ['#FFD43B', '#9B5CFF', '#6B7BFF']
+  huyet_long:
+    display: 'Huyết Long'
+    type: gradient
+    colors: ['#FF1744', '#9B3DFF', '#FF1744']
+  tinh_tu:
+    display: 'Tinh Tú'
+    type: gradient
+    colors: ['#6B7BFF', '#FF6BD5', '#FFE14D']
+
+  # ---------- Hiệu ứng tên động (TAB, scoreboard, nametag) ----------
+  # Ultimate (động)
+  lua_dong:
+    display: 'Lửa Động'
+    type: gradient
+    animated: true
+    speed: 2500
+    colors: ['#FFB800', '#FF3D00']
   song_bien:
     display: 'Sóng Biển'
     type: gradient
     animated: true
     speed: 3500
-    colors: ['#4DABF7', '#63E6BE', '#A5D8FF']
-  # Zeus
-  vang_rong:
-    display: 'Vàng Ròng'
-    type: gradient
-    colors: ['#FFE066', '#FFF9DB']
-  sam_chop:
-    display: 'Sấm Chớp'
-    type: gradient
-    colors: ['#FFF3BF', '#FFD43B', '#74C0FC']
-  bach_kim:
-    display: 'Bạch Kim'
-    type: gradient
-    colors: ['#F8F9FA', '#CED4DA', '#E9ECEF']
+    colors: ['#00B4FF', '#3DFFD2', '#FFFFFF']
   than_sam:
     display: 'Thần Sấm'
     type: gradient
     animated: true
-    speed: 2500
-    colors: ['#FFF3BF', '#FFD43B', '#74C0FC']
+    speed: 1800
+    colors: ['#FFF24D', '#3DCFFF']
   cau_vong_dong:
     display: 'Cầu Vồng Động'
     type: rainbow
@@ -398,73 +342,43 @@ name:
     speed: 3000
     saturation: 0.6
     brightness: 1.0
-  # Ultimate
-  hong_ngoc:
-    display: 'Hồng Ngọc'
-    type: gradient
-    colors: ['#FF8FAB', '#D64DCD']
-  mong_mo:
-    display: 'Mộng Mơ'
-    type: gradient
-    colors: ['#FFC6FF', '#A0C4FF']
-  lam_ngoc:
-    display: 'Lam Ngọc'
-    type: gradient
-    colors: ['#3BC9DB', '#748FFC']
   cuc_quang:
     display: 'Cực Quang'
     type: gradient
     animated: true
-    speed: 4000
-    colors: ['#63E6BE', '#74C0FC', '#B197FC', '#FF9DE2']
+    speed: 4500
+    colors: ['#3DFFB0', '#3DB8FF', '#B07CFF']
+  # Overlord (động)
   tinh_van_dong:
     display: 'Tinh Vân Động'
     type: gradient
     animated: true
     speed: 3500
-    colors: ['#F783AC', '#B197FC', '#74C0FC']
-  # Overlord
-  de_vuong:
-    display: 'Đế Vương'
-    type: gradient
-    colors: ['#FFD43B', '#B197FC', '#7560F5']
-  huyet_long:
-    display: 'Huyết Long'
-    type: gradient
-    colors: ['#FF8787', '#FA5252', '#F783AC']
-  tinh_tu:
-    display: 'Tinh Tú'
-    type: gradient
-    colors: ['#E3FAFC', '#B197FC', '#FF9DE2']
+    colors: ['#FF4FA8', '#8B5CFF', '#3DA5FF']
   ba_chu:
     display: 'Bá Chủ'
     type: gradient
     animated: true
     speed: 3000
-    colors: ['#7560F5', '#B197FC', '#FF9DE2']
+    colors: ['#FFD700', '#9B5CFF']
   phuong_hoang_lua:
-    display: 'Phượng Hoàng Lửa'
+    display: 'Phượng Hoàng Băng'
     type: gradient
     animated: true
     speed: 2500
-    colors: ['#FFE066', '#FF922B', '#FF6B6B', '#F783AC']
+    colors: ['#E0FBFF', '#3DC8FF', '#7A5CFF']
   cau_vong_ruc:
-    display: 'Cầu Vồng Rực'
-    type: rainbow
+    display: 'Hoàng Hôn Động'
+    type: gradient
     animated: true
-    speed: 2000
-    saturation: 0.85
-    brightness: 1.0
+    speed: 3000
+    colors: ['#FFA94D', '#FF4F8B', '#6C63FF']
 
-  # ---------- Màu tên rực (crate) ----------
-  do_tham_ruc:
-    display: 'Đỏ Thẫm'
-    type: solid
-    colors: ['#FF2E63']
+  # ---------- Màu tên đặc sắc (crate) ----------
   cam_hoang_kim:
-    display: 'Cam Hoàng Kim'
+    display: 'Cam Rực'
     type: solid
-    colors: ['#FFA41B']
+    colors: ['#FF8C1A']
   luc_neon:
     display: 'Lục Neon'
     type: solid
@@ -472,27 +386,15 @@ name:
   lam_dien:
     display: 'Lam Điện'
     type: solid
-    colors: ['#1E90FF']
+    colors: ['#1E6BFF']
   tim_thach_anh:
     display: 'Tím Thạch Anh'
     type: solid
-    colors: ['#A259FF']
+    colors: ['#B24DFF']
   hong_sen:
-    display: 'Hồng Sen'
+    display: 'Hồng Neon'
     type: solid
-    colors: ['#FF3CAC']
-  rong_lua:
-    display: 'Rồng Lửa'
-    type: gradient
-    colors: ['#FF0844', '#FF7A00']
-  bang_lam:
-    display: 'Băng Lam'
-    type: gradient
-    colors: ['#00C6FF', '#0072FF']
-  hoang_de:
-    display: 'Hoàng Đế'
-    type: gradient
-    colors: ['#FFD60A', '#FF7A00', '#E63946']
+    colors: ['#FF3CF0']
   ma_thuat:
     display: 'Ma Thuật'
     type: gradient
@@ -504,27 +406,26 @@ name:
   huyen_bi:
     display: 'Huyền Bí'
     type: gradient
-    colors: ['#A066FF', '#F107A3']
+    colors: ['#8A5CFF', '#3DFFB0']
   mat_troi:
-    display: 'Mặt Trời'
+    display: 'Hoa Hướng Dương'
     type: gradient
-    colors: ['#FFE600', '#FF5E00']
+    colors: ['#FFE600', '#7CC242']
   neon_dong:
     display: 'Neon Động'
     type: gradient
     animated: true
-    speed: 3000
-    colors: ['#00F5D4', '#00BBF9', '#F15BB5', '#FEE440']
-  hoa_long_dong:
-    display: 'Hỏa Long Động'
+    speed: 2500
+    colors: ['#00F5D4', '#F15BB5', '#FEE440']
+  anh_dao_dong:
+    display: 'Hoa Anh Đào Động'
     type: gradient
     animated: true
-    speed: 2500
-    colors: ['#FF0844', '#FF7A00', '#FFD60A']
-  cau_vong_neon_dong:
-    display: 'Cầu Vồng Neon Động'
-    type: rainbow
+    speed: 3000
+    colors: ['#FF6FB5', '#FF2E63']
+  rung_xanh_dong:
+    display: 'Rừng Xanh Động'
+    type: gradient
     animated: true
-    speed: 2000
-    saturation: 1.0
-    brightness: 1.0
+    speed: 3500
+    colors: ['#7CFF4D', '#1FA77A', '#D8F54D']

@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.8.2 (2026-10-29)
+
+- Thiết kế lại bảng màu để không màu nào trùng tông: đo bằng khoảng cách CIELAB trên 16 điểm mẫu (màu động so cả
+  khi lệch pha), mỗi tông chỉ một màu đại diện trong mỗi trang. Không còn màu nhạt/trắng, mọi mã màu đọc được trên
+  nền chat tối. Giữ nguyên mã các màu thuộc rank (tiers.yml không đổi), một số đổi tên hiển thị.
+- Màu chat 41 (18 rank + 23 crate), màu tên 48 (27 tĩnh rank + 9 hiệu ứng động rank + 12 crate).
+- Bỏ màu crate trùng tông: chat Cầu Vồng Pastel, Cầu Vồng Neon, Lửa Địa Ngục, Hoàng Hôn Rực, Dung Nham cũ,
+  Ruby Vàng, Hoàng Kim, Kẹo Ngọt, Ánh Trăng, Ngân Hà, Ráng Chiều, Nắng Hạ, Lục Bảo, Bạc Hà Chanh, Lam Ngọc,
+  Hồng Ngọc và 7 màu đơn crate; tên Đỏ Thẫm, Rồng Lửa, Biển Sâu, Hoàng Đế, Hỏa Long Động, Cầu Vồng Neon Động.
+
 ## 1.8.1 (2026-10-29)
 
 - Scoreboard hiện tên như TAB (`%boxcolor_tab%`: tên thật, hiệu ứng động hoặc màu rank); nick chỉ còn ở chat.
