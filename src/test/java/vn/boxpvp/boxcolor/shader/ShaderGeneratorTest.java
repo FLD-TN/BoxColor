@@ -81,12 +81,15 @@ class ShaderGeneratorTest {
     void generatesAllVersionFilesAsciiOnly() {
         List<ColorStyle> effects = withMarkers(new ArrayList<>()).shaderStyles();
         Map<String, String> files = ShaderGenerator.generate(effects, 100);
-        assertEquals(8, files.size());
+        assertEquals(9, files.size());
         assertTrue(files.containsKey("assets/minecraft/shaders/core/rendertype_text.fsh"));
-        assertTrue(files.containsKey("ia_overlay_1_21_2_plus/assets/minecraft/shaders/core/rendertype_text_see_through.json"));
-        assertTrue(files.containsKey("ia_overlay_1_21_6_plus/assets/minecraft/shaders/core/rendertype_text.fsh"));
+        assertTrue(files.containsKey("bc_1_21_2_plus/assets/minecraft/shaders/core/rendertype_text_see_through.json"));
+        assertTrue(files.containsKey("bc_1_21_6_plus/assets/minecraft/shaders/core/rendertype_text.fsh"));
+        String mcmeta = files.get("pack.mcmeta");
+        assertTrue(mcmeta.contains("\"directory\":\"bc_1_21_2_plus\"") && mcmeta.contains("\"directory\":\"bc_1_21_6_plus\""));
         for (Map.Entry<String, String> file : files.entrySet()) {
             String content = file.getValue();
+            if (file.getKey().equals("pack.mcmeta")) continue;
             assertTrue(content.chars().allMatch(c -> c < 128), "ký tự lạ trong " + file.getKey());
             if (file.getKey().endsWith(".fsh")) {
                 assertTrue(content.startsWith("#version 150"), file.getKey());
@@ -98,12 +101,19 @@ class ShaderGeneratorTest {
                 assertEquals(count(content, '{'), count(content, '}'), "ngoặc lệch " + file.getKey());
             }
         }
-        String modern = files.get("ia_overlay_1_21_6_plus/assets/minecraft/shaders/core/rendertype_text.fsh");
+        String modern = files.get("bc_1_21_6_plus/assets/minecraft/shaders/core/rendertype_text.fsh");
         assertTrue(modern.contains("apply_fog(") && modern.contains("globals.glsl"));
         assertFalse(modern.contains("uniform float GameTime"));
         String legacy = files.get("assets/minecraft/shaders/core/rendertype_text.fsh");
         assertTrue(legacy.contains("linear_fog(") && legacy.contains("uniform float GameTime;"));
         assertTrue(files.get("assets/minecraft/shaders/core/rendertype_text_see_through.json").contains("GameTime"));
+    }
+
+    @Test
+    void zipIsDeterministic() throws Exception {
+        Map<String, String> files = ShaderGenerator.generate(withMarkers(new ArrayList<>()).shaderStyles(), 100);
+        assertEquals(ShaderPack.hex(ShaderPack.sha1(ShaderPack.zip(files))),
+                ShaderPack.hex(ShaderPack.sha1(ShaderPack.zip(new java.util.TreeMap<>(files)))));
     }
 
     private static long count(String s, char c) {

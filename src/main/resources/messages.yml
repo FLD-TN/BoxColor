@@ -78,11 +78,16 @@ admin:
   what-name: '&fmàu tên'
   what-nick: '&fnick'
   what-all: '&fmàu chat, màu tên và nick'
-  # /boxcolor shader. {count} số màu chạy bằng shader, {enabled}: shader-enabled / shader-disabled
-  shader-done: '&#7CFC9A✔ Đã xuất shader cho &f{count} &#7CFC9Amàu. Chép thư mục &fplugins/BoxColor/shader-pack/boxcolor &#7CFC9Avào &fplugins/ItemsAdder/contents/ &#7CFC9A(đè thư mục cũ) rồi &f/iazip&#7CFC9A. {enabled}'
-  shader-enabled: '&7(shader.enabled đang bật)'
-  shader-disabled: '&#FFD166(shader.enabled đang tắt: cài pack xong thì bật rồi /boxcolor reload)'
+  # /boxcolor shader. {count} số màu chạy bằng shader, {sha1} mã SHA-1 của file zip
+  shader-done: '&#7CFC9A✔ Đã tạo pack màu động cho &f{count} &#7CFC9Amàu: &fplugins/BoxColor/shader-pack/BoxColor-shader.zip &8(SHA-1 {sha1})'
+  shader-no-url: '&#FFD166(!) &7Upload file zip đó lên &fmc-packs.net&7, dán link vào &fshader.pack.url &7trong config.yml rồi &f/boxcolor reload'
+  shader-reupload: '&#FFD166(!) &7Pack đã đổi: upload lại file zip lên &fmc-packs.net&7, dán link mới vào &fshader.pack.url &7rồi &f/boxcolor reload'
+  shader-disabled: '&#FFD166(!) &7shader.enabled đang tắt: kiểm tra pack xong thì bật rồi &f/boxcolor reload'
   shader-failed: '&#FF6B6B✘ Không ghi được shader, xem log console'
+
+shader:
+  # Dòng hiện trên màn hình hỏi tải pack màu động. '' là không có
+  pack-prompt: '&#BFC7D5Pack nhỏ để màu chữ chạy chuyển động &8(không bắt buộc)'
 
 placeholder:
   # %boxcolor_chatcolor%, %boxcolor_namecolor%, %boxcolor_tier% khi chưa có
