@@ -4,7 +4,7 @@ Màu chat, màu tên và nick cho BoxPvP (Paper 1.21.1). Mở khóa theo tier: m
 
 ## Cài đặt
 
-1. Chép `build/libs/BoxColor-1.5.0.jar` vào `plugins/`. Cần **PlaceholderAPI** để các plugin khác đọc được màu.
+1. Chép `build/libs/BoxColor-1.5.1.jar` vào `plugins/`. Cần **PlaceholderAPI** để các plugin khác đọc được màu.
 2. Khởi động server một lần để tạo `config.yml`, `colors.yml`, `tiers.yml`, `messages.yml`.
 3. Sửa `tiers.yml` cho đúng rank của server, rồi cấp quyền tier trong LuckPerms (xem phần dưới).
 4. Nối placeholder vào EzChat, TAB, UnlimitedNameTag (xem phần dưới).
@@ -70,8 +70,9 @@ Màu có `shader: <số>` trong `colors.yml` chạy bằng shader của resource
 gửi gói tin nào cho chuyển động. BoxColor chỉ thêm fragment shader của `rendertype_text` và bộ shader
 `rendertype_text_see_through` (nametag xuyên tường); vertex shader và hiệu ứng chữ của ItemsAdder giữ nguyên.
 
-1. `/boxcolor shader`: tạo `plugins/BoxColor/shader-pack/`.
-2. Chép **mọi thứ bên trong** `shader-pack/` vào `plugins/ItemsAdder/contents/boxcolor/resourcepack/`, rồi `/iazip`.
+1. `/boxcolor shader`: tạo `plugins/BoxColor/shader-pack/boxcolor/` (gồm `configs/boxcolor.yml` và `resourcepack/`).
+2. Chép **nguyên thư mục** `boxcolor` đó vào `plugins/ItemsAdder/contents/` (đè bản cũ), rồi `/iazip`.
+   ItemsAdder bỏ qua thư mục content không có `configs/`, nên đừng chỉ chép phần `resourcepack/`.
 3. Vào game kiểm tra (xem dưới), rồi đặt `shader.enabled: true` trong `config.yml` và `/boxcolor reload`.
 4. Khi `shader.enabled: true`, TAB và UNT không cần dòng làm mới `'%boxcolor_name%': 100` / `2` nữa.
 

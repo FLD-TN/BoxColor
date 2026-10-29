@@ -79,7 +79,7 @@ admin:
   what-nick: '&fnick'
   what-all: '&fmàu chat, màu tên và nick'
   # /boxcolor shader. {count} số màu chạy bằng shader, {enabled}: shader-enabled / shader-disabled
-  shader-done: '&#7CFC9A✔ Đã xuất shader cho &f{count} &#7CFC9Amàu vào &fplugins/BoxColor/shader-pack/&#7CFC9A. Chép vào &fItemsAdder/contents/boxcolor/resourcepack/ &#7CFC9Arồi &f/iazip&#7CFC9A. {enabled}'
+  shader-done: '&#7CFC9A✔ Đã xuất shader cho &f{count} &#7CFC9Amàu. Chép thư mục &fplugins/BoxColor/shader-pack/boxcolor &#7CFC9Avào &fplugins/ItemsAdder/contents/ &#7CFC9A(đè thư mục cũ) rồi &f/iazip&#7CFC9A. {enabled}'
   shader-enabled: '&7(shader.enabled đang bật)'
   shader-disabled: '&#FFD166(shader.enabled đang tắt: cài pack xong thì bật rồi /boxcolor reload)'
   shader-failed: '&#FF6B6B✘ Không ghi được shader, xem log console'

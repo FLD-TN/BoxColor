@@ -50,8 +50,8 @@ animation:
 # Màu động chạy bằng shader của resource pack (màu có 'shader: <số>' trong colors.yml)
 # Chạy được cả trong chat, server không tốn gói tin nào cho chuyển động
 # Cách cài:
-#   1. /boxcolor shader -> tạo plugins/BoxColor/shader-pack/
-#   2. Chép mọi thứ trong shader-pack/ vào plugins/ItemsAdder/contents/boxcolor/resourcepack/ rồi /iazip
+#   1. /boxcolor shader -> tạo plugins/BoxColor/shader-pack/boxcolor/
+#   2. Chép nguyên thư mục boxcolor đó vào plugins/ItemsAdder/contents/ (đè bản cũ) rồi /iazip
 #   3. Vào game kiểm tra, rồi mới đặt enabled: true và /boxcolor reload
 # Sửa màu shader trong colors.yml thì làm lại bước 1 và 2
 shader:
