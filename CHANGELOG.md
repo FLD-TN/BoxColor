@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.3.1 (2026-10-29)
+
+- `animation.enabled`: tắt toàn bộ màu chuyển động khi server nặng (màu vẫn giữ, chỉ đứng yên).
+- `animation.frame-ms`: làm tròn chuyển động theo khung hình; trong một khung `%boxcolor_name%` không đổi nên
+  TAB/UNT không gửi lại gói tin.
+
 ## 1.3.0 (2026-10-29)
 
 Tương thích InteractiveChat:

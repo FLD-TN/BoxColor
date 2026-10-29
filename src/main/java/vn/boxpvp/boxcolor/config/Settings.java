@@ -29,6 +29,8 @@ public final class Settings {
     private final List<RankColor> rankNameColors;
     private final boolean setDisplayName;
     private final int accessCheckSeconds;
+    private final boolean animationEnabled;
+    private final long animationFrameMillis;
     private final boolean chatEnabled;
     private final boolean keepTypedColors;
     private final Pattern typedColors;
@@ -55,6 +57,8 @@ public final class Settings {
         rankNameColors = rankColors(c, warn);
         setDisplayName = c.getBoolean("set-display-name", true);
         accessCheckSeconds = Math.max(5, c.getInt("access-check-seconds", 30));
+        animationEnabled = c.getBoolean("animation.enabled", true);
+        animationFrameMillis = Math.max(50L, c.getLong("animation.frame-ms", 100L));
 
         chatEnabled = c.getBoolean("chat.enabled", true);
         keepTypedColors = c.getBoolean("chat.keep-typed-colors", true);
@@ -174,6 +178,16 @@ public final class Settings {
 
     public int accessCheckSeconds() {
         return accessCheckSeconds;
+    }
+
+    /** {@code false}: màu chuyển động đứng yên ở mọi placeholder (TAB, nametag), dùng khi server nặng. */
+    public boolean animationEnabled() {
+        return animationEnabled;
+    }
+
+    /** Độ dài một khung hình của màu chuyển động (mili giây). */
+    public long animationFrameMillis() {
+        return animationFrameMillis;
     }
 
     public boolean chatEnabled() {

@@ -125,7 +125,12 @@ public final class ColorService {
     /** Tên đã tô màu cho placeholder. {@code animated = false}: khung đầu, dùng cho chat. */
     public String name(PlayerData data, boolean animated, HexFormat format) {
         ColorStyle style = nameStyle(data);
-        double phase = animated ? ColorRenderer.phase(style, System.currentTimeMillis()) : 0;
+        double phase = 0;
+        if (animated && plugin.settings().animationEnabled()) {
+            // Làm tròn theo khung hình: trong một khung chuỗi trả về không đổi, TAB/UNT không gửi lại gói tin
+            long now = System.currentTimeMillis();
+            phase = ColorRenderer.phase(style, now - now % plugin.settings().animationFrameMillis());
+        }
         return ColorRenderer.legacy(data.displayText(), style, phase, format);
     }
 
