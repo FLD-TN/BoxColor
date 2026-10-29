@@ -15,75 +15,28 @@
 # Màu tên có animated: true là hiệu ứng tên động (TAB, scoreboard, nametag), ai cũng vào được trang này
 
 chat:
-  # ---------- Màu theo rank: mỗi rank 2 màu đơn (xem tiers.yml) ----------
-  # Elite
-  bac_ha:
-    display: 'Bạc Hà'
-    type: solid
-    colors: ['#4FE3C1']
-  hong_pastel:
-    display: 'Hồng Pastel'
-    type: solid
-    colors: ['#FF8FC8']
-  # Titan
-  vang_kem:
-    display: 'Vàng Bơ'
-    type: solid
-    colors: ['#FFD84D']
-  oai_huong:
-    display: 'Oải Hương'
-    type: solid
-    colors: ['#B59BFF']
-  # Hero
-  cam_dao:
-    display: 'Cam Đào'
-    type: solid
-    colors: ['#FF9A5C']
-  xanh_troi:
-    display: 'Xanh Trời'
-    type: solid
-    colors: ['#5EB8FF']
+  # ---------- Màu theo rank: từ Master, mỗi rank 1 màu đơn (xem tiers.yml) ----------
   # Master
   la_non:
     display: 'Lá Non'
     type: solid
     colors: ['#9EE04A']
-  hong_phan:
-    display: 'San Hô'
-    type: solid
-    colors: ['#FF6B6B']
   # Legend
   do_ruc:
     display: 'Đỏ Rực'
     type: solid
     colors: ['#FF2E3D']
-  xanh_ngoc:
-    display: 'Xanh Ngọc'
-    type: solid
-    colors: ['#2EE6F0']
   # Champion
-  xanh_luc_bao:
-    display: 'Lục Bảo'
-    type: solid
-    colors: ['#2EE66B']
   tim_hoang_gia:
     display: 'Tím Hoàng Gia'
     type: solid
     colors: ['#B44DFF']
   # Zeus
-  vang_chanh:
-    display: 'Vàng Chanh'
-    type: solid
-    colors: ['#D4F52E']
   xanh_lam:
     display: 'Xanh Lam'
     type: solid
     colors: ['#5C7CFF']
   # Ultimate
-  hong_dam:
-    display: 'Hồng Đậm'
-    type: solid
-    colors: ['#FF3D8B']
   cam_lua:
     display: 'Cam Lửa'
     type: solid
@@ -93,10 +46,6 @@ chat:
     display: 'Hồng Neon'
     type: solid
     colors: ['#FF4FE8']
-  ho_phach:
-    display: 'Hổ Phách'
-    type: solid
-    colors: ['#FFB21A']
 
   # ---------- Màu chat crate: màu trộn từ 2 màu trở lên ----------
   # Chỉ mở bằng permission boxcolor.color.chat.<mã> (phiếu /boxcolor give, quay crate)

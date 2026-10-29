@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.9.3 (2026-10-29)
+
+- Màu chat miễn phí chỉ từ Master trở lên, mỗi rank 1 màu đơn: Master Lá Non, Legend Đỏ Rực, Champion Tím Hoàng Gia,
+  Zeus Xanh Lam, Ultimate Cam Lửa, Overlord Hồng Neon. Elite, Titan, Hero không có màu chat miễn phí.
+- Bỏ 12 màu chat đơn còn lại (crate chỉ có màu trộn). Màu chat: 38 (6 đơn theo rank + 32 màu trộn crate).
+
 ## 1.9.2 (2026-10-29)
 
 - Bỏ mọi chữ giải thích cách nhận: dòng "Mở khóa" trong lore màu, mục "Cách nhận / Rank tặng sẵn" của hiệu ứng động,

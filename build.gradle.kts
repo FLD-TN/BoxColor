@@ -3,7 +3,7 @@ plugins {
 }
 
 group = "vn.boxpvp"
-version = "1.9.2"
+version = "1.9.3"
 
 java {
     toolchain.languageVersion = JavaLanguageVersion.of(21)

@@ -22,41 +22,41 @@
 tiers:
   1:
     name: '&f%img_wellsetups_ranks_elite%'
-    chat-colors: [bac_ha, hong_pastel]
+    chat-colors: []
     name-colors: [ngoc_lam, hong_dao, vang_nang]
     # Màu tùy chỉnh: tự đặt tên, tô màu từng chữ (/nick)
     features: [nick]
   2:
     name: '&f%img_wellsetups_ranks_titan%'
-    chat-colors: [vang_kem, oai_huong]
+    chat-colors: []
     name-colors: [do_ruby, tim_mong, xanh_duong]
   3:
     name: '&f%img_wellsetups_ranks_hero%'
-    chat-colors: [cam_dao, xanh_troi]
+    chat-colors: []
     name-colors: [bien_xanh, keo_bong, chanh_bac_ha]
   4:
     name: '&f%img_wellsetups_ranks_master%'
-    chat-colors: [la_non, hong_phan]
+    chat-colors: [la_non]
     name-colors: [lua_chay, bang_gia, rung_thong]
   5:
     name: '&f%img_wellsetups_ranks_legend%'
-    chat-colors: [do_ruc, xanh_ngoc]
+    chat-colors: [do_ruc]
     name-colors: [hoang_kim, hoa_sen, ho_phach]
   6:
     name: '&f%img_wellsetups_ranks_champion%'
-    chat-colors: [xanh_luc_bao, tim_hoang_gia]
+    chat-colors: [tim_hoang_gia]
     name-colors: [cau_vong, doc_duoc, thach_anh]
   7:
     name: '&f%img_wellsetups_ranks_zeus%'
-    chat-colors: [vang_chanh, xanh_lam]
+    chat-colors: [xanh_lam]
     name-colors: [vang_rong, sam_chop, bach_kim]
   8:
     name: '&f%img_wellsetups_ranks_ultimate%'
-    chat-colors: [hong_dam, cam_lua]
+    chat-colors: [cam_lua]
     # 3 màu tĩnh + tặng 1 hiệu ứng động
     name-colors: [hong_ngoc, mong_mo, lam_ngoc, cau_vong_dong]
   9:
     name: '&f%img_wellsetups_ranks_overlord%'
-    chat-colors: [hong_neon, ho_phach]
+    chat-colors: [hong_neon]
     # 3 màu tĩnh + tặng 1 hiệu ứng động
     name-colors: [de_vuong, huyet_long, tinh_tu, ba_chu]

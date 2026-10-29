@@ -37,7 +37,7 @@ class TierRegistryTest {
     @Test
     void defaultsLoadWithoutWarnings() {
         assertEquals(List.of(), warnings);
-        assertEquals(50, styles.count(Channel.CHAT));
+        assertEquals(38, styles.count(Channel.CHAT));
         assertEquals(61, styles.count(Channel.NAME));
         assertEquals(9, tiers.all().size());
         assertEquals(StyleKind.RAINBOW, styles.get(Channel.NAME, "cau_vong_dong").kind());
@@ -46,13 +46,14 @@ class TierRegistryTest {
 
     @Test
     void higherTierIncludesLowerTiers() {
-        assertTrue(tiers.allows(1, Channel.CHAT, "hong_pastel"));
-        assertFalse(tiers.allows(1, Channel.CHAT, "oai_huong"));
-        assertTrue(tiers.allows(3, Channel.CHAT, "hong_pastel"));
-        assertTrue(tiers.allows(3, Channel.CHAT, "oai_huong"));
+        // Màu chat miễn phí từ Master (tier 4), mỗi rank 1 màu
+        assertFalse(tiers.allows(3, Channel.CHAT, "la_non"));
+        assertTrue(tiers.allows(4, Channel.CHAT, "la_non"));
+        assertFalse(tiers.allows(4, Channel.CHAT, "do_ruc"));
+        assertTrue(tiers.allows(9, Channel.CHAT, "la_non"));
         assertFalse(tiers.allows(8, Channel.NAME, "ba_chu"));
         assertTrue(tiers.allows(9, Channel.NAME, "ba_chu"));
-        assertFalse(tiers.allows(0, Channel.CHAT, "hong_pastel"));
+        assertFalse(tiers.allows(0, Channel.CHAT, "la_non"));
         assertTrue(tiers.allows(TierRegistry.ALL, Channel.NAME, "anything"));
     }
 
@@ -89,8 +90,10 @@ class TierRegistryTest {
         for (var style : styles.list(Channel.CHAT)) {
             if (tiers.unlockTier(Channel.CHAT, style.id()) != null) ranked++;
         }
-        assertEquals(18, ranked);
-        for (var tier : tiers.all()) assertEquals(2, tier.chatColors().size(), "rank " + tier.level());
+        assertEquals(6, ranked);
+        for (var tier : tiers.all()) {
+            assertEquals(tier.level() >= 4 ? 1 : 0, tier.chatColors().size(), "rank " + tier.level());
+        }
         // Màu crate chỉ mở bằng permission lẻ, kể cả rank cao nhất
         assertFalse(tiers.allows(9, Channel.CHAT, "vu_tru"));
         assertFalse(tiers.allows(9, Channel.CHAT, "cuc_quang"));

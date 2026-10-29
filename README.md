@@ -4,7 +4,7 @@ Màu chat, màu tên và nick cho BoxPvP (Paper 1.21.1). Mở khóa theo tier: m
 
 ## Cài đặt
 
-1. Chép `build/libs/BoxColor-1.9.2.jar` vào `plugins/`. Cần **PlaceholderAPI** để các plugin khác đọc được màu.
+1. Chép `build/libs/BoxColor-1.9.3.jar` vào `plugins/`. Cần **PlaceholderAPI** để các plugin khác đọc được màu.
 2. Khởi động server một lần để tạo `config.yml`, `colors.yml`, `tiers.yml`, `messages.yml`.
 3. Sửa `tiers.yml` cho đúng rank của server, rồi cấp quyền tier trong LuckPerms (xem phần dưới).
 4. Nối placeholder vào EzChat, TAB, UnlimitedNameTag (xem phần dưới).
@@ -65,7 +65,7 @@ Chọn một màu trong GUI thì giữ chữ của tên, chỉ tô lại bằng 
 
 ## Màu chat: rank và crate
 
-- Mỗi rank donate mở **2 màu chat** (`tiers.yml`). Không rank nào được tự chỉnh mã màu chat.
+- Từ **Master** trở lên, mỗi rank mở **1 màu chat đơn** (`tiers.yml`). Không rank nào được tự chỉnh mã màu chat.
 - Các màu chat **không nằm trong tier nào** (màu đặc sắc) chỉ mở bằng permission `boxcolor.color.chat.<mã>`.
 - GUI chỉ ghi **Đã sở hữu / Chưa sở hữu** ở từng màu (không ghi cách nhận), và có **bộ lọc** (ô góc phải dưới):
   Tất cả / Đã sở hữu / Chưa sở hữu. Bộ lọc nhớ theo người chơi cho tới khi thoát.
