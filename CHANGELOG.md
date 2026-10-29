@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.1.0 (2026-10-29)
+
+- `/nick` nhận mã màu ở bất kỳ đâu trong nick: `&#RRGGBB`, `#RRGGBB`, `&0`-`&f`. 1 mã = màu đơn, nhiều mã = chuyển màu.
+  Cần tính năng `custom-name`; màu được lưu như màu tên tự chỉnh. Gõ lại đúng nick cũ kèm mã màu chỉ đổi màu,
+  không tính thời gian chờ. `/boxcolor nick` của admin cũng nhận mã màu.
+- Bộ màu mẫu cho 9 rank donate: 27 màu chat, 27 màu tên.
+
 ## 1.0.0 (2026-10-29)
 
 Bản đầu tiên.

@@ -4,7 +4,7 @@ Màu chat, màu tên và nick cho BoxPvP (Paper 1.21.1). Mở khóa theo tier: m
 
 ## Cài đặt
 
-1. Chép `build/libs/BoxColor-1.0.0.jar` vào `plugins/`. Cần **PlaceholderAPI** để các plugin khác đọc được màu.
+1. Chép `build/libs/BoxColor-1.1.0.jar` vào `plugins/`. Cần **PlaceholderAPI** để các plugin khác đọc được màu.
 2. Khởi động server một lần để tạo `config.yml`, `colors.yml`, `tiers.yml`, `messages.yml`.
 3. Sửa `tiers.yml` cho đúng rank của server, rồi cấp quyền tier trong LuckPerms (xem phần dưới).
 4. Nối placeholder vào EzChat, TAB, UnlimitedNameTag (xem phần dưới).
@@ -18,6 +18,7 @@ Màu chat, màu tên và nick cho BoxPvP (Paper 1.21.1). Mở khóa theo tier: m
 | `/chatcolor reset`, `/namecolor reset` | Bỏ màu |
 | `/chatcolor custom #FFB3C6 #A0E7E5` | Tự chỉnh mã màu (cần tính năng `custom-chat` / `custom-name`) |
 | `/nick <tên>`, `/nick reset` | Đặt / bỏ nick (cần tính năng `nick`) |
+| `/nick #FFD166Đức #FF8FABAnh` | Nick kèm màu: mã `&#RRGGBB`, `#RRGGBB` hoặc `&a`... ở đâu cũng được, 1 mã = màu đơn, nhiều mã = chuyển màu cả nick. Cần thêm `custom-name`. Gõ lại nick cũ kèm mã chỉ đổi màu, không tính thời gian chờ |
 | `/realname <nick>` (`/tenthat`) | Xem nick là của ai |
 | `/boxcolor reload` | Nạp lại mọi file |
 | `/boxcolor reset <người chơi> <chat\|name\|nick\|all>` | Xóa màu/nick (offline: chỉ xóa được nick) |

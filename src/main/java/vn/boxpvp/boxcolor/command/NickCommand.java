@@ -9,12 +9,18 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import vn.boxpvp.boxcolor.BoxColorPlugin;
 import vn.boxpvp.boxcolor.data.PlayerData;
+import vn.boxpvp.boxcolor.nick.NickInput;
 import vn.boxpvp.boxcolor.nick.NickRules;
+import vn.boxpvp.boxcolor.style.Channel;
+import vn.boxpvp.boxcolor.style.ColorStyle;
 import vn.boxpvp.boxcolor.tier.Feature;
 import vn.boxpvp.boxcolor.ui.Icons;
 import vn.boxpvp.boxcolor.util.Durations;
 
-/** {@code /nick <tên>} và {@code /nick reset}. Cũng dùng cho ô "Đổi nick" trong GUI. */
+/**
+ * {@code /nick <tên>} và {@code /nick reset}. Cũng dùng cho ô "Đổi nick" trong GUI.
+ * Mã màu gõ kèm ({@link NickInput}) được lưu thành màu tên tự chỉnh, cần tính năng {@code custom-name}.
+ */
 public final class NickCommand implements TabExecutor {
 
     public static final String BYPASS_COOLDOWN = "boxcolor.nick.bypass-cooldown";
@@ -69,11 +75,36 @@ public final class NickCommand implements TabExecutor {
             plugin.messages().send(player, "nick.locked", "tier", new Icons(plugin).featureUnlock(Feature.NICK));
             return false;
         }
+        NickInput.Parsed parsed = NickInput.parse(input);
+        ColorStyle color = null;
+        if (parsed.hasColors()) {
+            // Màu trong nick = tự chỉnh màu tên, cần đúng quyền đó
+            if (!plugin.colors().hasFeature(player, Feature.CUSTOM_NAME)) {
+                plugin.messages().send(player, "nick.color-locked",
+                        "tier", new Icons(plugin).featureUnlock(Feature.CUSTOM_NAME));
+                return false;
+            }
+            int max = plugin.settings().customMaxColors();
+            if (parsed.colors().size() > max) {
+                plugin.messages().send(player, "color.custom-too-many", "max", String.valueOf(max));
+                return false;
+            }
+            color = ColorStyle.custom(parsed.colors());
+        }
         NickRules rules = plugin.settings().nickRules();
-        String nick = NickRules.clean(input);
+        String nick = NickRules.clean(parsed.text());
         if (nick.equals(data.nick())) {
-            plugin.messages().send(player, "nick.same");
-            return false;
+            if (color == null) {
+                plugin.messages().send(player, "nick.same");
+                return false;
+            }
+            // Giữ nick, chỉ đổi màu: không tính thời gian chờ
+            data.selection(Channel.NAME, color.encodeCustom());
+            plugin.cache().save(data);
+            plugin.colors().refresh(player);
+            plugin.messages().send(player, "nick.color-set",
+                    "nick", Icons.styled(nick, plugin.colors().nameStyle(data), false));
+            return true;
         }
         NickRules.Result result = rules.validate(nick);
         if (result != NickRules.Result.OK) {
@@ -91,6 +122,7 @@ public final class NickCommand implements TabExecutor {
             plugin.messages().send(player, "nick.cooldown", "time", Durations.format(wait, plugin.messages()));
             return false;
         }
+        if (color != null) data.selection(Channel.NAME, color.encodeCustom());
         set(player, data, nick, now);
         return true;
     }

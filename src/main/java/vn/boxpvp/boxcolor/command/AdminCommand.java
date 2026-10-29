@@ -14,8 +14,10 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import vn.boxpvp.boxcolor.BoxColorPlugin;
 import vn.boxpvp.boxcolor.data.PlayerData;
+import vn.boxpvp.boxcolor.nick.NickInput;
 import vn.boxpvp.boxcolor.nick.NickRules;
 import vn.boxpvp.boxcolor.style.Channel;
+import vn.boxpvp.boxcolor.style.ColorStyle;
 
 /**
  * {@code /boxcolor reload}, {@code /boxcolor reset <người chơi> <chat|name|nick|all>},
@@ -120,7 +122,8 @@ public final class AdminCommand implements TabExecutor {
                     "player", target.getName());
             return;
         }
-        String nick = NickRules.clean(input);
+        NickInput.Parsed parsed = NickInput.parse(input);
+        String nick = NickRules.clean(parsed.text());
         // Admin bỏ qua độ dài, từ cấm và thời gian chờ; vẫn chặn ký tự lạ và trùng tên
         NickRules.Result result = plugin.settings().nickRules().validate(nick);
         if (result == NickRules.Result.BAD_CHARS || result == NickRules.Result.NO_LETTERS) {
@@ -130,6 +133,9 @@ public final class AdminCommand implements TabExecutor {
         if (plugin.nicks().takenBy(target.getUniqueId(), nick) != null) {
             plugin.messages().send(sender, "nick.taken");
             return;
+        }
+        if (parsed.hasColors()) {
+            data.selection(Channel.NAME, ColorStyle.custom(parsed.colors()).encodeCustom());
         }
         plugin.nickCommand().set(target, data, nick, data.nickChangedAt());
         plugin.messages().send(sender, "admin.nick-done", "player", target.getName(), "nick", nick);
