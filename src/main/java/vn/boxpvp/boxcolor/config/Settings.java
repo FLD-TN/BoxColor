@@ -31,6 +31,8 @@ public final class Settings {
     private final int accessCheckSeconds;
     private final boolean animationEnabled;
     private final long animationFrameMillis;
+    private final boolean shaderEnabled;
+    private final double shaderSpreadPixels;
     private final boolean chatEnabled;
     private final boolean keepTypedColors;
     private final Pattern typedColors;
@@ -59,6 +61,8 @@ public final class Settings {
         accessCheckSeconds = Math.max(5, c.getInt("access-check-seconds", 30));
         animationEnabled = c.getBoolean("animation.enabled", true);
         animationFrameMillis = Math.max(50L, c.getLong("animation.frame-ms", 100L));
+        shaderEnabled = c.getBoolean("shader.enabled", false);
+        shaderSpreadPixels = Math.max(10.0, c.getDouble("shader.spread-pixels", 100.0));
 
         chatEnabled = c.getBoolean("chat.enabled", true);
         keepTypedColors = c.getBoolean("chat.keep-typed-colors", true);
@@ -183,6 +187,16 @@ public final class Settings {
     /** {@code false}: màu chuyển động đứng yên ở mọi placeholder (TAB, nametag), dùng khi server nặng. */
     public boolean animationEnabled() {
         return animationEnabled;
+    }
+
+    /** Màu có {@code shader:} xuất mã tín hiệu cho resource pack (chỉ bật sau khi đã cài pack). */
+    public boolean shaderEnabled() {
+        return shaderEnabled;
+    }
+
+    /** Số điểm ảnh ngang trên màn hình cho một vòng màu shader. */
+    public double shaderSpreadPixels() {
+        return shaderSpreadPixels;
     }
 
     /** Độ dài một khung hình của màu chuyển động (mili giây). */

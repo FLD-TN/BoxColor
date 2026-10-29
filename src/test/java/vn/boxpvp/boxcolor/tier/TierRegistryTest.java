@@ -37,7 +37,7 @@ class TierRegistryTest {
     @Test
     void defaultsLoadWithoutWarnings() {
         assertEquals(List.of(), warnings);
-        assertEquals(27, styles.count(Channel.CHAT));
+        assertEquals(32, styles.count(Channel.CHAT));
         assertEquals(36, styles.count(Channel.NAME));
         assertEquals(9, tiers.all().size());
         assertEquals(StyleKind.RAINBOW, styles.get(Channel.NAME, "cau_vong_dong").kind());

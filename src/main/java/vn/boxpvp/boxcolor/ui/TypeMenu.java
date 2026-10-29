@@ -8,20 +8,21 @@ import org.bukkit.inventory.ItemStack;
 import vn.boxpvp.boxcolor.BoxColorPlugin;
 import vn.boxpvp.boxcolor.config.Messages;
 import vn.boxpvp.boxcolor.data.PlayerData;
+import vn.boxpvp.boxcolor.service.ColorService;
 import vn.boxpvp.boxcolor.style.Channel;
 import vn.boxpvp.boxcolor.style.ColorStyle;
 import vn.boxpvp.boxcolor.tier.Feature;
 import vn.boxpvp.boxcolor.ui.ColorMenu.Section;
 
 /**
- * Chọn loại màu tên: tĩnh hoặc động. Lore mỗi loại có tên người chơi tô bằng một màu mẫu của loại đó.
+ * Chọn loại màu (tĩnh hoặc động) của màu chat hoặc màu tên. Lore mỗi loại có chữ mẫu tô bằng một màu của loại đó.
  * <pre>
  *  B  B  B  B  B  B  B  B  B
  *  B  F [T] F  F  F [Đ] F  B      T = màu tĩnh (11), Đ = màu động (15)
- *  B  B  B  B [<] B  B  B  B      < = quay lại (22)
+ *  B  B  B  B [<] B  B  B  B      < = về trang chính (22)
  * </pre>
  */
-public final class NameTypeMenu extends MenuView {
+public final class TypeMenu extends MenuView {
 
     private static final int SLOT_STATIC = 11;
     private static final int SLOT_ANIMATED = 15;
@@ -29,12 +30,14 @@ public final class NameTypeMenu extends MenuView {
 
     private final BoxColorPlugin plugin;
     private final Player viewer;
+    private final Channel channel;
     private final Icons icons;
 
-    public NameTypeMenu(BoxColorPlugin plugin, Player viewer) {
-        super(27, plugin.messages().text("menu.name-type.title"));
+    public TypeMenu(BoxColorPlugin plugin, Player viewer, Channel channel) {
+        super(27, plugin.messages().text("menu.type.title-" + channel.key()));
         this.plugin = plugin;
         this.viewer = viewer;
+        this.channel = channel;
         this.icons = new Icons(plugin);
     }
 
@@ -54,39 +57,40 @@ public final class NameTypeMenu extends MenuView {
     private void drawItems() {
         PlayerData data = plugin.cache().get(viewer.getUniqueId());
         if (data == null) return;
-        inventory.setItem(SLOT_STATIC, typeItem(Section.NAME_STATIC, Material.NAME_TAG, data));
-        inventory.setItem(SLOT_ANIMATED, typeItem(Section.NAME_ANIMATED, Material.NETHER_STAR, data));
+        Material staticIcon = channel == Channel.CHAT ? Material.WRITABLE_BOOK : Material.NAME_TAG;
+        inventory.setItem(SLOT_STATIC, typeItem(Section.of(channel, false), staticIcon, data));
+        inventory.setItem(SLOT_ANIMATED, typeItem(Section.of(channel, true), Material.NETHER_STAR, data));
     }
 
     private ItemStack typeItem(Section section, Material material, PlayerData data) {
         Messages m = plugin.messages();
         List<ColorStyle> styles = section.styles(plugin);
         ColorStyle sample = sample(styles);
-        String example = sample == null ? m.raw("menu.name-type.no-sample")
-                : Icons.styled(data.displayText(), sample, true);
-        boolean locked = section == Section.NAME_ANIMATED
-                && !plugin.colors().hasFeature(viewer, Feature.ANIMATED_NAME);
+        String text = icons.previewText(channel, data.displayText());
+        String example = sample == null ? m.raw("menu.type.no-sample") : Icons.styled(text, sample, true);
+        Feature feature = ColorService.animatedFeature(channel);
+        boolean locked = section.animated() && !plugin.colors().hasFeature(viewer, feature);
         int unlocked = 0;
         for (ColorStyle style : styles) {
-            if (plugin.colors().canUse(viewer, Channel.NAME, style)) unlocked++;
+            if (plugin.colors().canUse(viewer, channel, style)) unlocked++;
         }
-        String path = "menu.name-type." + section.key();
+        String path = "menu.type." + section.key();
         String[] ph = {
                 "example", example,
-                "sample", sample == null ? "" : icons.styleName(sample, true),
                 "unlocked", String.valueOf(unlocked),
                 "total", String.valueOf(styles.size()),
-                "tier", icons.featureUnlock(Feature.ANIMATED_NAME)
+                "tier", icons.featureUnlock(feature)
         };
         return Icons.item(material, m.line(path + ".name", ph),
-                m.lines(path + ".lore", "state", m.rawList(path + ".state-" + (locked ? "locked" : "unlocked"), ph), ph),
+                m.lines(path + ".lore", "state", m.rawList("menu.type.state-" + (locked ? "locked" : "unlocked"), ph),
+                        ph),
                 false);
     }
 
     /** Màu đầu tiên người chơi dùng được, không có thì màu đầu tiên của loại đó. */
     private ColorStyle sample(List<ColorStyle> styles) {
         for (ColorStyle style : styles) {
-            if (plugin.colors().canUse(viewer, Channel.NAME, style)) return style;
+            if (plugin.colors().canUse(viewer, channel, style)) return style;
         }
         return styles.isEmpty() ? null : styles.get(0);
     }
@@ -94,14 +98,15 @@ public final class NameTypeMenu extends MenuView {
     @Override
     public void onClick(Player player, int slot, ClickType click) {
         switch (slot) {
-            case SLOT_STATIC -> plugin.menus().open(player, new ColorMenu(plugin, player, Section.NAME_STATIC, 0));
+            case SLOT_STATIC -> plugin.menus().open(player, new ColorMenu(plugin, player, Section.of(channel, false), 0));
             case SLOT_ANIMATED -> {
-                if (!plugin.colors().hasFeature(player, Feature.ANIMATED_NAME)) {
+                Feature feature = ColorService.animatedFeature(channel);
+                if (!plugin.colors().hasFeature(player, feature)) {
                     plugin.messages().send(player, "color.animated-locked",
-                            "tier", icons.featureUnlock(Feature.ANIMATED_NAME));
+                            "channel", icons.channelName(channel), "tier", icons.featureUnlock(feature));
                     return;
                 }
-                plugin.menus().open(player, new ColorMenu(plugin, player, Section.NAME_ANIMATED, 0));
+                plugin.menus().open(player, new ColorMenu(plugin, player, Section.of(channel, true), 0));
             }
             case SLOT_BACK -> plugin.menus().open(player, new MainMenu(plugin, player));
             default -> {

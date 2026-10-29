@@ -75,7 +75,7 @@ public final class MainMenu extends MenuView {
                 "total", String.valueOf(plugin.styles().count(channel)),
                 "custom", icons.yesNo(plugin.colors().hasFeature(viewer, ColorService.customFeature(channel))),
                 "nick", icons.yesNo(plugin.colors().hasFeature(viewer, Feature.NICK)),
-                "animated", icons.yesNo(plugin.colors().hasFeature(viewer, Feature.ANIMATED_NAME))
+                "animated", icons.yesNo(plugin.colors().hasFeature(viewer, ColorService.animatedFeature(channel)))
         };
         return Icons.item(material, m.line(path + ".name", ph), m.lines(path + ".lore", ph), false);
     }
@@ -107,7 +107,7 @@ public final class MainMenu extends MenuView {
 
     @Override
     public void onClick(Player player, int slot, ClickType click) {
-        if (slot == SLOT_CHAT) plugin.menus().open(player, new ColorMenu(plugin, player, ColorMenu.Section.CHAT, 0));
-        else if (slot == SLOT_NAME) plugin.menus().open(player, new NameTypeMenu(plugin, player));
+        if (slot == SLOT_CHAT) plugin.menus().open(player, new TypeMenu(plugin, player, Channel.CHAT));
+        else if (slot == SLOT_NAME) plugin.menus().open(player, new TypeMenu(plugin, player, Channel.NAME));
     }
 }

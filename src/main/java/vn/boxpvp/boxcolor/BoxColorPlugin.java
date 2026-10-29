@@ -1,6 +1,14 @@
 package vn.boxpvp.boxcolor;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Stream;
 import java.sql.SQLException;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
@@ -26,7 +34,10 @@ import vn.boxpvp.boxcolor.listener.MenuClickListener;
 import vn.boxpvp.boxcolor.listener.SessionListener;
 import vn.boxpvp.boxcolor.nick.NickService;
 import vn.boxpvp.boxcolor.service.ColorService;
+import vn.boxpvp.boxcolor.shader.ReservedColors;
+import vn.boxpvp.boxcolor.shader.ShaderGenerator;
 import vn.boxpvp.boxcolor.style.Channel;
+import vn.boxpvp.boxcolor.style.ColorStyle;
 import vn.boxpvp.boxcolor.style.StyleRegistry;
 import vn.boxpvp.boxcolor.tier.TierRegistry;
 import vn.boxpvp.boxcolor.ui.InputPrompts;
@@ -37,6 +48,8 @@ public final class BoxColorPlugin extends JavaPlugin {
     private Messages messages;
     private Settings settings;
     private StyleRegistry styles;
+    /** colors.yml đã gán mã tín hiệu shader (dùng khi bật shader và để xuất pack). */
+    private StyleRegistry shaderStyles;
     private TierRegistry tiers;
     private Storage storage;
     private PlayerCache cache;
@@ -129,7 +142,10 @@ public final class BoxColorPlugin extends JavaPlugin {
             getLogger().warning(messages.log("log.config-warning", "message", line));
         };
         settings = Settings.load(getConfig(), warn);
-        styles = StyleRegistry.load(yaml("colors.yml"), warn);
+        StyleRegistry loaded = StyleRegistry.load(yaml("colors.yml"), warn);
+        // Luôn tính sẵn mã tín hiệu để /boxcolor shader xuất được pack trước khi bật shader.enabled
+        shaderStyles = loaded.withShaderMarkers(ReservedColors.of(settings), warn);
+        styles = settings.shaderEnabled() ? shaderStyles : loaded;
         tiers = TierRegistry.load(yaml("tiers.yml"), styles, warn);
         return count.get();
     }
@@ -153,6 +169,29 @@ public final class BoxColorPlugin extends JavaPlugin {
         colors.start();
         colors.refreshAll();
         return warnings;
+    }
+
+    /**
+     * {@code /boxcolor shader}: ghi shader vào {@code plugins/BoxColor/shader-pack/} (xoá bản cũ trước), để chép vào
+     * {@code contents/<tên>/resourcepack/} của ItemsAdder.
+     *
+     * @return số màu chạy bằng shader
+     */
+    public int exportShader() throws IOException {
+        List<ColorStyle> effects = shaderStyles.shaderStyles();
+        Path root = getDataFolder().toPath().resolve("shader-pack");
+        if (Files.exists(root)) {
+            try (Stream<Path> walk = Files.walk(root)) {
+                for (Path p : walk.sorted(Comparator.reverseOrder()).toList()) Files.delete(p);
+            }
+        }
+        for (Map.Entry<String, String> file
+                : ShaderGenerator.generate(effects, settings.shaderSpreadPixels()).entrySet()) {
+            Path target = root.resolve(file.getKey());
+            Files.createDirectories(target.getParent());
+            Files.writeString(target, file.getValue(), StandardCharsets.UTF_8);
+        }
+        return effects.size();
     }
 
     /** Lỗi không mong đợi trong một tác vụ (menu, sự kiện), ghi log kèm nơi xảy ra. */

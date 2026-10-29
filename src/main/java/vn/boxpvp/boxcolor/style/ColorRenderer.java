@@ -29,12 +29,14 @@ public final class ColorRenderer {
 
     /** Pha chuyển động tại thời điểm {@code nowMillis}, trong [0, 1). Kiểu tĩnh luôn là 0. */
     public static double phase(ColorStyle style, long nowMillis) {
-        if (!style.animated()) return 0;
+        if (!style.animated() || style.usesShader()) return 0;
         return (nowMillis % style.cycleMillis()) / (double) style.cycleMillis();
     }
 
     /** Màu RGB của ký tự nhìn thấy thứ {@code index} (đếm từ 0) trong chuỗi có {@code length} ký tự nhìn thấy. */
     public static int rgbAt(ColorStyle style, int index, int length, double phase) {
+        // Chạy bằng shader: mọi chữ cùng một mã tín hiệu, resource pack vẽ chuyển động
+        if (style.usesShader()) return style.marker();
         int len = Math.max(1, length);
         switch (style.kind()) {
             case SOLID:

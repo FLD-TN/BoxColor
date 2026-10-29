@@ -6,7 +6,9 @@ public enum Feature {
     /** "Màu tùy chỉnh": tự đặt tên, tô màu từng chữ ({@code /nick}). */
     NICK("nick"),
     /** Vào được GUI màu tên động. */
-    ANIMATED_NAME("animated-name");
+    ANIMATED_NAME("animated-name"),
+    /** Vào được GUI màu chat động (chạy bằng shader). */
+    ANIMATED_CHAT("animated-chat");
 
     private final String key;
 
