@@ -93,6 +93,7 @@ public final class BoxColorPlugin extends JavaPlugin {
         nickCommand = new NickCommand(this);
         shaderPack = new ShaderPack(this);
         shaderPack.reloadHash();
+        shaderPack.loadItemsAdder();
 
         PluginManager pm = getServer().getPluginManager();
         pm.registerEvents(new SessionListener(this), this);
@@ -171,6 +172,7 @@ public final class BoxColorPlugin extends JavaPlugin {
         messages.load();
         int warnings = loadConfigs();
         shaderPack.reloadHash();
+        shaderPack.loadItemsAdder();
         colors.start();
         colors.refreshAll();
         return warnings;

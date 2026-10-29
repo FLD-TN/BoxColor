@@ -1,6 +1,7 @@
 package vn.boxpvp.boxcolor.shader;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.net.URI;
@@ -9,8 +10,11 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.EnumSet;
+import java.util.HashMap;
 import java.util.HexFormat;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeMap;
 import java.util.UUID;
 import java.util.zip.ZipEntry;
@@ -18,7 +22,10 @@ import java.util.zip.ZipOutputStream;
 import net.kyori.adventure.resource.ResourcePackInfo;
 import net.kyori.adventure.resource.ResourcePackRequest;
 import org.bukkit.Bukkit;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.event.player.PlayerResourcePackStatusEvent;
+import org.bukkit.scheduler.BukkitTask;
 import vn.boxpvp.boxcolor.BoxColorPlugin;
 
 /**
@@ -35,8 +42,22 @@ public final class ShaderPack {
     /** Thời điểm cố định cho mọi file trong zip: cùng nội dung luôn ra cùng SHA-1. */
     private static final long FIXED_TIME = 1_700_000_000_000L;
 
+    /** Trạng thái kết thúc của một lần tải pack. */
+    private static final Set<PlayerResourcePackStatusEvent.Status> FINAL = EnumSet.of(
+            PlayerResourcePackStatusEvent.Status.SUCCESSFULLY_LOADED,
+            PlayerResourcePackStatusEvent.Status.DECLINED,
+            PlayerResourcePackStatusEvent.Status.FAILED_DOWNLOAD,
+            PlayerResourcePackStatusEvent.Status.INVALID_URL,
+            PlayerResourcePackStatusEvent.Status.FAILED_RELOAD,
+            PlayerResourcePackStatusEvent.Status.DISCARDED);
+
     private final BoxColorPlugin plugin;
     private byte[] sha1;
+    /** Pack của ItemsAdder ({@code resource-pack.uuid}), {@code null} nếu không có hoặc ItemsAdder không tự gửi. */
+    private UUID iaPackId;
+    private boolean iaBeforeJoin;
+    /** Người đang chờ pack ItemsAdder xong, kèm task gửi dự phòng khi hết thời gian chờ. */
+    private final Map<UUID, BukkitTask> waiting = new HashMap<>();
 
     public ShaderPack(BoxColorPlugin plugin) {
         this.plugin = plugin;
@@ -94,11 +115,60 @@ public final class ShaderPack {
         return plugin.settings().shaderEnabled() && !plugin.settings().shaderPackUrl().isEmpty() && sha1 != null;
     }
 
-    /** Gửi pack sau {@code shader.pack.delay-ticks}, để pack của ItemsAdder tải xong trước. */
-    public void sendLater(Player player) {
+    /**
+     * Đọc {@code resource-pack.uuid} và {@code auto_apply} trong config của ItemsAdder, để biết pack nào cần chờ.
+     * Gọi lúc bật plugin và khi reload.
+     */
+    public void loadItemsAdder() {
+        iaPackId = null;
+        iaBeforeJoin = false;
+        File file = new File(plugin.getDataFolder().getParentFile(), "ItemsAdder/config.yml");
+        if (!file.isFile()) return;
+        YamlConfiguration ia = YamlConfiguration.loadConfiguration(file);
+        if (!ia.getBoolean("resource-pack.auto_apply.enabled", true)) return;
+        try {
+            iaPackId = UUID.fromString(ia.getString("resource-pack.uuid", ""));
+        } catch (IllegalArgumentException e) {
+            return;
+        }
+        iaBeforeJoin = ia.getBoolean("resource-pack.auto_apply.before_join", false);
+    }
+
+    /**
+     * Người chơi vào server. Thứ tự ưu tiên không phụ thuộc pack nào tải xong trước (pack gửi sau luôn đè pack gửi
+     * trước); chờ chỉ để người chơi không gặp hai màn hình tải cùng lúc:
+     * <ul>
+     *   <li>ItemsAdder tải pack trước khi vào game ({@code before_join}) hoặc không có pack ItemsAdder: gửi ngay</li>
+     *   <li>còn lại: chờ client báo pack ItemsAdder xong ({@link #onStatus}), tối đa {@code shader.pack.max-wait-seconds}</li>
+     * </ul>
+     */
+    public void onJoin(Player player) {
         if (!ready()) return;
-        long delay = plugin.settings().shaderPackDelayTicks();
-        Bukkit.getScheduler().runTaskLater(plugin, () -> send(player), delay);
+        UUID uuid = player.getUniqueId();
+        if (iaPackId == null || iaBeforeJoin) {
+            Bukkit.getScheduler().runTask(plugin, () -> send(player));
+            return;
+        }
+        long ticks = plugin.settings().shaderPackMaxWaitSeconds() * 20L;
+        BukkitTask previous = waiting.put(uuid, Bukkit.getScheduler().runTaskLater(plugin, () -> {
+            waiting.remove(uuid);
+            send(player);
+        }, ticks));
+        if (previous != null) previous.cancel();
+    }
+
+    /** Client báo trạng thái một pack: pack ItemsAdder đã xong (thành công hay không) thì gửi pack BoxColor. */
+    public void onStatus(Player player, UUID packId, PlayerResourcePackStatusEvent.Status status) {
+        if (iaPackId == null || !iaPackId.equals(packId) || !FINAL.contains(status)) return;
+        BukkitTask task = waiting.remove(player.getUniqueId());
+        if (task == null) return;
+        task.cancel();
+        send(player);
+    }
+
+    public void onQuit(UUID uuid) {
+        BukkitTask task = waiting.remove(uuid);
+        if (task != null) task.cancel();
     }
 
     public void send(Player player) {
