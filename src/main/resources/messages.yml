@@ -1,0 +1,271 @@
+# BoxColor - toàn bộ chữ hiển thị. Mã màu '&' và hex '&#RRGGBB'
+# Một dòng mỗi tin nhắn, không chấm cuối câu. Tin nhắn để '' thì không gửi
+# Khoá thiếu trong file này tự lấy giá trị mặc định trong jar
+
+# Thêm vào đầu mọi tin nhắn chat, '' là không có
+prefix: ''
+
+units:
+  second: 'giây'
+  minute: 'phút'
+  hour: 'giờ'
+  day: 'ngày'
+
+command:
+  no-permission: '&#FF6B6B✘ Bạn không có quyền dùng lệnh này'
+  player-only: '&#FF6B6B✘ Lệnh này chỉ dùng trong game'
+  not-loaded: '&#FF6B6B✘ Dữ liệu của bạn chưa tải xong, thử lại sau giây lát'
+  player-not-found: '&#FF6B6B✘ Không tìm thấy người chơi &f{player}'
+  # {label}: chatcolor hoặc namecolor
+  usage-color: '&#FFD166(!) &7Dùng: &f/{label} &7(mở menu), &f/{label} reset&7, &f/{label} custom <#mã> &8(tối đa {max} mã)'
+  reloaded: '&#7CFC9A✔ Đã nạp lại BoxColor &8(&f{chat} &7màu chat, &f{name} &7màu tên, &f{tiers} &7tier, &f{warnings} &7cảnh báo&8)'
+
+color:
+  # {channel}: màu chat / màu tên, {style}: tên màu đã tô màu
+  selected: '&#7CFC9A✔ Đã chọn {channel} {style}'
+  reset: '&#7CFC9A✔ Đã bỏ {channel}, dùng lại màu mặc định'
+  # {tier}: tên tier trong tiers.yml
+  locked: '&#FF6B6B✘ Màu này chưa mở khóa &8(&7cần {tier}&8)'
+  custom-locked: '&#FF6B6B✘ Tự chỉnh {channel} chưa mở khóa &8(&7cần {tier}&8)'
+  custom-invalid: '&#FF6B6B✘ Mã màu không hợp lệ, ví dụ: &f#FFB3C6 #A0E7E5'
+  custom-too-many: '&#FF6B6B✘ Chỉ được tối đa &f{max} &#FF6B6Bmã màu'
+
+# Ô nhập trong chat sau khi bấm "Tự chỉnh mã màu" hoặc "Đổi nick". Dòng người chơi gõ không hiện cho ai khác
+prompt:
+  color: '&#FFD166(!) &7Nhập mã màu vào chat, ví dụ &f#FFB3C6 #A0E7E5 &8(1 mã = màu đơn, 2-{max} mã = chuyển màu)'
+  nick: '&#FFD166(!) &7Nhập nick mới vào chat &8({min}-{maxlength} ký tự, có dấu và dấu cách)'
+  cancel-hint: '&7Gõ &fhuy &7để hủy, tự hủy sau &f{seconds} giây'
+  cancelled: '&7Đã hủy'
+  expired: '&7Hết thời gian nhập, đã hủy'
+
+nick:
+  usage: '&#FFD166(!) &7Dùng: &f/{label} <tên> &7hoặc &f/{label} reset'
+  # {nick}: nick đã tô theo màu tên
+  set: '&#7CFC9A✔ Đã đổi tên hiển thị thành {nick}'
+  reset: '&#7CFC9A✔ Đã bỏ nick, dùng lại tên thật'
+  none: '&#FF6B6B✘ Bạn chưa đặt nick'
+  same: '&#FFD166(!) &7Bạn đang dùng nick này rồi'
+  locked: '&#FF6B6B✘ Đổi nick chưa mở khóa &8(&7cần {tier}&8)'
+  too-short: '&#FF6B6B✘ Nick phải có ít nhất &f{min} &#FF6B6Bký tự'
+  too-long: '&#FF6B6B✘ Nick chỉ được tối đa &f{max} &#FF6B6Bký tự'
+  bad-chars: '&#FF6B6B✘ Nick chỉ được có chữ, số, dấu cách và dấu _'
+  no-letters: '&#FF6B6B✘ Nick phải có ít nhất một chữ hoặc số'
+  blocked: '&#FF6B6B✘ Nick chứa từ không được phép dùng'
+  taken: '&#FF6B6B✘ Nick này trùng hoặc quá giống tên của người chơi khác'
+  # {time}: thời gian còn lại
+  cooldown: '&#FF6B6B✘ Bạn cần chờ &f{time} &#FF6B6Bnữa mới đổi nick được'
+  # Nick bị gỡ vì một người chơi có tên thật trùng nick vừa vào server lần đầu. {nick} {player}
+  removed-conflict: '&#FFD166(!) &7Nick &f{nick} &7đã bị gỡ vì trùng tên người chơi &f{player}'
+  realname: '&#7FDBFF{nick} &7là nick của &f{player}'
+  realname-none: '&#FF6B6B✘ Không có ai dùng nick &f{nick}'
+  realname-usage: '&#FFD166(!) &7Dùng: &f/{label} <nick>'
+
+admin:
+  usage: '&#FFD166(!) &7Dùng: &f/{label} reload&7, &f/{label} reset <người chơi> <chat|name|nick|all>&7, &f/{label} nick <người chơi> <tên|reset>'
+  not-loaded: '&#FF6B6B✘ Dữ liệu của &f{player} &#FF6B6Bchưa tải xong'
+  offline-nick-only: '&#FF6B6B✘ &f{player} &#FF6B6Bđang offline, chỉ xóa được nick'
+  # {what}: một trong các dòng what-* bên dưới
+  reset-done: '&#7CFC9A✔ Đã xóa {what} &#7CFC9Acủa &f{player}'
+  nick-done: '&#7CFC9A✔ Đã đặt nick của &f{player} &#7CFC9Athành &f{nick}'
+  what-chat: '&fmàu chat'
+  what-name: '&fmàu tên'
+  what-nick: '&fnick'
+  what-all: '&fmàu chat, màu tên và nick'
+
+placeholder:
+  # %boxcolor_chatcolor%, %boxcolor_namecolor%, %boxcolor_tier% khi chưa có
+  none: 'Chưa có'
+
+menu:
+  channel:
+    chat: 'màu chat'
+    name: 'màu tên'
+  # Tên hiển thị của màu tự chỉnh
+  custom-display: 'Tự chỉnh'
+  # Có / không có tính năng
+  unlocked: '&#7CFC9A✔'
+  locked: '&#FF6B6B✘'
+  # Màu không nằm trong tier nào (chỉ có qua permission lẻ)
+  unlock-special: '&#FFD166Sự kiện'
+  kind:
+    solid: 'Màu đơn'
+    gradient: 'Chuyển màu'
+    rainbow: 'Cầu vồng'
+    animated-suffix: ' &8(&#7FDBFFchuyển động&8)'
+
+  main:
+    title: '&8Màu chat và màu tên'
+    current-none: '&7Mặc định'
+    nick-none: '&7Chưa đặt'
+    nick-hidden: '&7{nick} &8(đang ẩn)'
+    tier-none: '&7Chưa có'
+    # {current} {unlocked} {total} {custom}
+    chat:
+      name: '&#7FDBFFMàu chat'
+      lore:
+        - '&#BFC7D5Đổi màu chữ khi bạn chat'
+        - ''
+        - '&#FFD166Thông tin:'
+        - '&7• Đang dùng: {current}'
+        - '&7• Đã mở khóa: &f{unlocked}&7/&f{total} &7màu'
+        - '&7• Tự chỉnh mã màu: {custom}'
+        - ''
+        - '&8[&#7CFC9AChuột trái để mở&8]'
+    # {current} {unlocked} {total} {custom} {nick}
+    name:
+      name: '&#E0A3FFMàu tên'
+      lore:
+        - '&#BFC7D5Đổi màu tên ở chat, TAB'
+        - '&#BFC7D5và trên đầu nhân vật'
+        - ''
+        - '&#FFD166Thông tin:'
+        - '&7• Đang dùng: {current}'
+        - '&7• Đã mở khóa: &f{unlocked}&7/&f{total} &7màu'
+        - '&7• Tự chỉnh mã màu: {custom}'
+        - '&7• Đổi nick: {nick}'
+        - ''
+        - '&8[&#7CFC9AChuột trái để mở&8]'
+    # {name} tên đã tô màu, {realname} {nick} {tier}
+    head:
+      name: '{name}'
+      lore:
+        - '&#FFD166Thông tin:'
+        - '&7• Tên thật: &f{realname}'
+        - '&7• Nick: {nick}'
+        - '&7• Cấp màu: {tier}'
+        - ''
+        - '&#FFD166Lưu ý:'
+        - '&7• Lên rank để mở thêm màu'
+        - '&7• Màu chuyển động chỉ chạy'
+        - '&7  ở TAB và trên đầu nhân vật'
+
+  color:
+    # {page} {pages}
+    title-chat: '&8Màu chat &7({page}/{pages})'
+    title-name: '&8Màu tên &7({page}/{pages})'
+    # Mỗi màu. {style} tên màu đã tô, {preview} câu mẫu, {kind} kiểu màu, {unlock} tier mở khóa
+    # {note}: dòng ghi chú (bỏ nếu không có), {state}: các dòng state-* bên dưới
+    item:
+      name: '{style}'
+      lore:
+        - '&#BFC7D5Xem trước: {preview}'
+        - ''
+        - '&#FFD166Thông tin:'
+        - '&7• Kiểu: &f{kind}'
+        - '&7• Mở khóa: {unlock}'
+        - '{note}'
+        - ''
+        - '{state}'
+    note-animated-chat: '&7• Trong chat hiện màu đứng yên'
+    state-selected:
+      - '&#7CFC9A✔ Đang sử dụng'
+      - '&8[&#FF8A8AChuột trái để bỏ chọn&8]'
+    state-unlocked:
+      - '&#7CFC9A✔ Đã mở khóa'
+      - '&8[&#7CFC9AChuột trái để chọn&8]'
+    state-locked:
+      - '&#FF6B6B✘ Chưa mở khóa'
+    # Ô trên cùng. {channel} {current} {preview}
+    info:
+      name: '&fĐang dùng'
+      lore:
+        - '&7• Loại: &f{channel}'
+        - '&7• Màu: {current}'
+        - '&7• Xem trước: {preview}'
+    back:
+      name: '&fQuay lại'
+      lore:
+        - '&8[&#7FDBFFChuột trái để về trang chính&8]'
+    reset:
+      name: '&#FF8A8ABỏ màu'
+      lore:
+        - '&#BFC7D5Bỏ {channel}, dùng lại'
+        - '&#BFC7D5màu mặc định'
+        - ''
+        - '&8[&#FF8A8AChuột trái để bỏ màu&8]'
+    # {page}: trang sẽ mở khi bấm
+    previous-page:
+      name: '&fTrang trước'
+      lore:
+        - '&8[&#7FDBFFChuột trái để về trang {page}&8]'
+    next-page:
+      name: '&fTrang sau'
+      lore:
+        - '&8[&#7FDBFFChuột trái để sang trang {page}&8]'
+    # {page} {pages} {total}
+    page-info:
+      name: '&fTrang {page}&7/&f{pages}'
+      lore:
+        - '&7• Tổng cộng: &f{total} &7màu'
+    # Tự chỉnh mã màu. {max} {tier} {current}
+    custom:
+      name: '&#FFD166Tự chỉnh mã màu'
+      lore:
+        - '&#BFC7D5Tự nhập mã hex của riêng bạn'
+        - ''
+        - '&#FFD166Cách dùng:'
+        - '&7• 1 mã: màu đơn'
+        - '&7• 2-{max} mã: chuyển màu'
+        - '&7• Ví dụ: &f#FFB3C6 #A0E7E5'
+        - ''
+        - '{state}'
+      state-active:
+        - '&#7CFC9A✔ Đang dùng: {current}'
+        - '&8[&#7CFC9AChuột trái để nhập mã mới&8]'
+      state-unlocked:
+        - '&#7CFC9A✔ Đã mở khóa'
+        - '&8[&#7CFC9AChuột trái để nhập mã màu&8]'
+      state-locked:
+        - '&#FF6B6B✘ Chưa mở khóa &8(&7cần {tier}&8)'
+    # Đổi nick, chỉ có ở menu màu tên. {nick} {min} {max} {tier}
+    nick:
+      name: '&#E0A3FFĐổi nick'
+      lore:
+        - '&#BFC7D5Đặt tên hiển thị riêng,'
+        - '&#BFC7D5tô theo màu tên đang dùng'
+        - ''
+        - '&#FFD166Thông tin:'
+        - '&7• Nick hiện tại: {nick}'
+        - '&7• Độ dài: &f{min}-{max} &7ký tự'
+        - '&7• Được dùng dấu và dấu cách'
+        - '&7• Lệnh: &f/nick <tên>'
+        - ''
+        - '{state}'
+      state-has-nick:
+        - '&8[&#7CFC9AChuột trái để đổi nick&8]'
+        - '&8[&#FF8A8AChuột phải để bỏ nick&8]'
+      state-unlocked:
+        - '&8[&#7CFC9AChuột trái để đặt nick&8]'
+      state-locked:
+        - '&#FF6B6B✘ Chưa mở khóa &8(&7cần {tier}&8)'
+
+  # Xem trước màu tự chỉnh. {preview} {channel} {kind} {codes}
+  confirm:
+    title: '&8Xác nhận màu tự chỉnh'
+    preview:
+      name: '{preview}'
+      lore:
+        - '&#FFD166Thông tin:'
+        - '&7• Loại: &f{channel}'
+        - '&7• Kiểu: &f{kind}'
+        - '&7• Mã màu: {codes}'
+    accept:
+      name: '&#7CFC9AÁp dụng'
+      lore:
+        - '&8[&#7CFC9AChuột trái để áp dụng&8]'
+    cancel:
+      name: '&#FF8A8AHủy'
+      lore:
+        - '&8[&#FF8A8AChuột trái để quay lại&8]'
+
+# Log console
+log:
+  messages-default-failed: 'Không đọc được messages.yml mặc định trong jar: {error}'
+  database-open-failed: 'Không mở được data.db, tắt BoxColor'
+  load-failed: 'Không tải được dữ liệu của {player}'
+  save-failed: 'Không lưu được dữ liệu của {player}'
+  shutdown-timeout: 'Còn dữ liệu chưa lưu xong sau 10 giây'
+  nick-conflict: 'Đã gỡ nick của {owner} vì trùng tên thật của {player}'
+  no-papi: 'Không có PlaceholderAPI, placeholder %boxcolor_...% sẽ không hoạt động'
+  config-warning: 'Cấu hình: {message}'
+  error: 'Lỗi không mong đợi ({where})'

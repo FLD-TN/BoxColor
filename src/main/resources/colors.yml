@@ -1,0 +1,104 @@
+# BoxColor - các màu có sẵn trong shop. Thứ tự trong file = thứ tự trong GUI
+# Rank nào được màu nào: xem tiers.yml
+#
+# Mỗi màu:
+#   display:  tên hiện trong GUI (tự tô bằng chính màu đó, không cần mã màu)
+#   type:     solid (màu đơn) | gradient (chuyển màu, cần 2 mã trở lên) | rainbow (cầu vồng)
+#   colors:   các mã hex (rainbow không cần)
+#   animated: true = màu chạy liên tục (chỉ chạy ở TAB, nametag và GUI; trong chat hiện đứng yên)
+#   speed:    thời gian chạy hết một vòng màu, tính bằng mili giây (mặc định 3000)
+#   saturation, brightness: độ đậm và độ sáng của cầu vồng, từ 0 đến 1 (mặc định 0.6 và 1)
+#   icon:     item trong GUI (không bắt buộc, mặc định gui.default-color-icon trong config.yml)
+#
+# Đổi mã (tên khoá như hong_pastel) của màu đang có người dùng thì họ sẽ mất màu đó
+
+chat:
+  hong_pastel:
+    display: 'Hồng Pastel'
+    type: solid
+    colors: ['#FFB3C6']
+  bac_ha:
+    display: 'Bạc Hà'
+    type: solid
+    colors: ['#A0E7E5']
+  vang_kem:
+    display: 'Vàng Kem'
+    type: solid
+    colors: ['#FFE5A0']
+  oai_huong:
+    display: 'Oải Hương'
+    type: solid
+    colors: ['#C3B1E1']
+  dao_hong:
+    display: 'Đào Hồng'
+    type: gradient
+    colors: ['#FFB38A', '#FF8FAB']
+  bien_xanh:
+    display: 'Biển Xanh'
+    type: gradient
+    colors: ['#74C0FC', '#63E6BE']
+  hoang_hon:
+    display: 'Hoàng Hôn'
+    type: gradient
+    colors: ['#FFD166', '#FF8A8A', '#C77DFF']
+  bang_tuyet:
+    display: 'Băng Tuyết'
+    type: gradient
+    colors: ['#E0F7FF', '#A5D8FF', '#74C0FC']
+  ngan_ha:
+    display: 'Ngân Hà'
+    type: gradient
+    colors: ['#9D8CFF', '#FF9DE2', '#8CE0FF']
+  cau_vong:
+    display: 'Cầu Vồng Pastel'
+    type: rainbow
+    saturation: 0.5
+    brightness: 1.0
+
+name:
+  xanh_ngoc:
+    display: 'Xanh Ngọc'
+    type: solid
+    colors: ['#63E6BE']
+  hong_dao:
+    display: 'Hồng Đào'
+    type: solid
+    colors: ['#FF8FAB']
+  vang_nang:
+    display: 'Vàng Nắng'
+    type: solid
+    colors: ['#FFD166']
+  tim_mong:
+    display: 'Tím Mộng'
+    type: solid
+    colors: ['#B197FC']
+  lua_chay:
+    display: 'Lửa Cháy'
+    type: gradient
+    colors: ['#FFB347', '#FF6B6B']
+  dai_duong:
+    display: 'Đại Dương'
+    type: gradient
+    colors: ['#4DABF7', '#63E6BE']
+  keo_bong:
+    display: 'Kẹo Bông'
+    type: gradient
+    colors: ['#FFAFCC', '#BDE0FE']
+  cau_vong:
+    display: 'Cầu Vồng'
+    type: rainbow
+    saturation: 0.6
+    brightness: 1.0
+  cau_vong_dong:
+    display: 'Cầu Vồng Động'
+    type: rainbow
+    animated: true
+    speed: 3000
+    saturation: 0.6
+    brightness: 1.0
+  cuc_quang:
+    display: 'Cực Quang'
+    type: gradient
+    animated: true
+    speed: 4000
+    colors: ['#63E6BE', '#74C0FC', '#B197FC', '#FF9DE2']

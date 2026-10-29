@@ -1,0 +1,37 @@
+name: BoxColor
+version: ${version}
+author: Dexterityy_
+main: vn.boxpvp.boxcolor.BoxColorPlugin
+api-version: '1.21'
+softdepend: [PlaceholderAPI, LuckPerms]
+commands:
+  chatcolor:
+    aliases: [mauchat]
+    description: Mở menu màu chat và màu tên
+  namecolor:
+    aliases: [mauten]
+    description: Mở menu màu chat và màu tên
+  nick:
+    description: Đặt tên hiển thị riêng
+  realname:
+    aliases: [tenthat]
+    description: Xem tên thật của một nick
+  boxcolor:
+    description: Quản trị BoxColor
+permissions:
+  boxcolor.use:
+    description: Mở menu, chọn màu đã mở khóa, dùng /nick nếu tier cho phép
+    default: true
+  boxcolor.realname:
+    description: /realname
+    default: true
+  boxcolor.nick.bypass-cooldown:
+    description: Đổi nick không cần chờ
+    default: op
+  boxcolor.admin:
+    description: Toàn quyền, mở mọi màu và tính năng
+    default: op
+    children:
+      boxcolor.use: true
+      boxcolor.realname: true
+      boxcolor.nick.bypass-cooldown: true

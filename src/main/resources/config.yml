@@ -1,0 +1,65 @@
+# BoxColor - cấu hình chung
+# Màu có sẵn nằm trong colors.yml, rank nào được màu nào nằm trong tiers.yml
+
+# Cách viết mã màu trong placeholder %boxcolor_name%, %boxcolor_chat%...
+#   ampersand   = &#RRGGBB        (TAB, UnlimitedNameTags, EzChat)
+#   section     = §x§R§R§G§G§B§B   (plugin không tự đổi mã '&')
+#   minimessage = <#RRGGBB>
+# Thêm đuôi _mm vào placeholder để lấy MiniMessage bất kể dòng này
+placeholder-format: ampersand
+
+# Màu tên khi người chơi chưa chọn màu
+default-name-color: '#FFFFFF'
+
+# Đặt display name của người chơi theo nick + màu tên (tin nhắn chết, vào/thoát server...)
+# Nếu dùng EssentialsX: đặt change-displayname: false trong config của Essentials để hai plugin không ghi đè nhau
+set-display-name: true
+
+# Bao lâu kiểm tra lại quyền một lần (giây). Mất rank thì màu/nick tạm ẩn, lên lại rank là hiện lại
+access-check-seconds: 30
+
+chat:
+  # Tô màu nội dung chat theo màu chat đã chọn
+  enabled: true
+  # Người chơi tự gõ mã màu (có quyền dùng '&') thì giữ màu của họ
+  keep-typed-colors: true
+  # Giữ nguyên không tô màu để plugin khác vẫn nhận ra (InteractiveChat...)
+  keep-plain:
+    - '[item]'
+    - '[i]'
+    - '[inv]'
+    - '[hand]'
+    - '[ec]'
+  # Câu mẫu xem trước màu chat trong GUI
+  preview-text: 'Xin chào mọi người'
+
+nick:
+  min-length: 3
+  max-length: 16
+  allow-spaces: true
+  allow-vietnamese: true
+  # Thời gian chờ giữa hai lần đổi nick (giây), 0 = không chờ. Bỏ qua bằng boxcolor.nick.bypass-cooldown
+  cooldown-seconds: 3600
+  # Chặn nick trùng hoặc gần giống tên thật của người chơi khác (kể cả offline), chống giả mạo
+  # So sánh bỏ dấu, không phân biệt hoa thường, coi 0=o, 1=i=l, 3=e, 4=a, 5=s, 7=t, bỏ dấu cách và _
+  check-real-names: true
+  # Nick chứa các từ này (so như trên) sẽ bị chặn
+  blocked-words:
+    - admin
+    - owner
+    - staff
+    - moderator
+    - helper
+    - console
+
+custom:
+  # Số mã màu tối đa khi tự chỉnh (1 mã = màu đơn, từ 2 mã = chuyển màu)
+  max-colors: 5
+  # Thời gian chờ người chơi nhập mã màu/nick vào chat sau khi bấm trong GUI (giây)
+  input-timeout-seconds: 45
+
+gui:
+  border: GRAY_STAINED_GLASS_PANE
+  filler: BLACK_STAINED_GLASS_PANE
+  # Icon mặc định của mỗi màu (giáp da sẽ được nhuộm theo màu). Đổi riêng từng màu bằng 'icon' trong colors.yml
+  default-color-icon: LEATHER_CHESTPLATE

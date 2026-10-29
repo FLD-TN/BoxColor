@@ -1,0 +1,39 @@
+# BoxColor - rank nào được màu nào
+#
+# Mỗi rank chỉ cần MỘT permission trong LuckPerms: boxcolor.tier.<số>
+#   ví dụ: /lp group vip permission set boxcolor.tier.1
+# Tier cao tự có hết màu và tính năng của các tier thấp hơn, không cần cho kế thừa trong LuckPerms
+# Mỗi tier chỉ ghi những gì nó MỞ THÊM
+#
+#   name:        tên hiện trong GUI ở dòng "Mở khóa: ...", có mã màu '&'
+#   chat-colors: mã màu trong colors.yml (mục chat)
+#   name-colors: mã màu trong colors.yml (mục name)
+#   features:    custom-chat (tự chỉnh mã màu chat), custom-name (tự chỉnh mã màu tên), nick (/nick)
+#
+# Màu không nằm trong tier nào: chỉ mở bằng permission lẻ boxcolor.color.<chat|name>.<mã>, ví dụ quà sự kiện
+# Tính năng lẻ: boxcolor.feature.<custom-chat|custom-name|nick>
+# boxcolor.admin: mở mọi thứ
+# Sửa xong chạy /boxcolor reload
+
+tiers:
+  1:
+    name: '&#A0E7E5VIP'
+    chat-colors: [hong_pastel, bac_ha]
+    name-colors: [xanh_ngoc, hong_dao]
+  2:
+    name: '&#FFD166VIP+'
+    chat-colors: [vang_kem, oai_huong]
+    name-colors: [vang_nang, tim_mong]
+  3:
+    name: '&#74C0FCMVP'
+    chat-colors: [dao_hong, bien_xanh]
+    name-colors: [lua_chay, dai_duong]
+  4:
+    name: '&#FF8FABMVP+'
+    chat-colors: [hoang_hon, bang_tuyet]
+    name-colors: [keo_bong, cau_vong]
+  5:
+    name: '&#C77DFFLegend'
+    chat-colors: [ngan_ha, cau_vong]
+    name-colors: [cau_vong_dong, cuc_quang]
+    features: [custom-chat, custom-name, nick]
