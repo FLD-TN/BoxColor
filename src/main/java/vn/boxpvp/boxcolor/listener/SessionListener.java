@@ -23,7 +23,6 @@ public final class SessionListener implements Listener {
             plugin.report("join", e);
         }
         plugin.cache().load(event.getPlayer(), data -> plugin.colors().refresh(event.getPlayer()));
-        plugin.shaderPack().sendLater(event.getPlayer());
     }
 
     @EventHandler(priority = EventPriority.MONITOR)

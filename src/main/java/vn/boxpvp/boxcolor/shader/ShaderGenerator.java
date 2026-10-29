@@ -8,13 +8,13 @@ import vn.boxpvp.boxcolor.style.ColorStyle;
 import vn.boxpvp.boxcolor.style.StyleKind;
 
 /**
- * Sinh resource pack riêng của BoxColor (gửi kèm sau pack của ItemsAdder, vì ItemsAdder không nhận shader từ nguồn ngoài).
- * Chỉ có fragment shader của {@code rendertype_text} (vertex shader và hiệu ứng chữ của ItemsAdder giữ nguyên, Minecraft
- * ghép từng file giữa các pack) và bộ shader {@code rendertype_text_see_through} (nametag xuyên tường). Overlay:
+ * Sinh shader chữ cho resource pack từ các màu chạy bằng shader. Chỉ thay fragment shader của {@code rendertype_text}
+ * (ItemsAdder giữ vertex shader và hiệu ứng chữ của nó) và bộ shader {@code rendertype_text_see_through} (nametag xuyên
+ * tường). Đường dẫn trả về đặt sẵn vào các overlay mà ItemsAdder tạo trong pack.mcmeta:
  * <ul>
  *   <li>{@code assets/}: 1.20.5 - 1.21.1 (format 32-34), và là bản nền cho mọi bản</li>
- *   <li>{@code bc_1_21_2_plus/}: 1.21.2 - 1.21.5 (đổi cách đặt tên trong json và {@code moj_import})</li>
- *   <li>{@code bc_1_21_6_plus/}: 1.21.6 trở lên (uniform chuyển sang khối Globals/DynamicTransforms/Fog)</li>
+ *   <li>{@code ia_overlay_1_21_2_plus/}: 1.21.2 - 1.21.5 (đổi cách đặt tên trong json và {@code moj_import})</li>
+ *   <li>{@code ia_overlay_1_21_6_plus/}: 1.21.6 trở lên (uniform chuyển sang khối Globals/DynamicTransforms/Fog)</li>
  * </ul>
  * Màu ở mỗi điểm ảnh tính theo vị trí ngang trên màn hình và {@code GameTime}, giống cách
  * {@link vn.boxpvp.boxcolor.style.ColorRenderer} tính phía server.
@@ -22,16 +22,8 @@ import vn.boxpvp.boxcolor.style.StyleKind;
 public final class ShaderGenerator {
 
     private static final String CORE = "assets/minecraft/shaders/core/";
-    private static final String OVERLAY_1_21_2 = "bc_1_21_2_plus/";
-    private static final String OVERLAY_1_21_6 = "bc_1_21_6_plus/";
-
-    /** Cùng cách khai báo với pack của ItemsAdder (chạy được từ 1.20.5 tới 1.21.10). */
-    private static final String PACK_MCMETA = "{\"pack\":{\"pack_format\":34,\"description\":\"BoxColor - màu động\"},"
-            + "\"supported_formats\":[32,9999],"
-            + "\"overlays\":{\"entries\":["
-            + "{\"directory\":\"bc_1_21_2_plus\",\"formats\":[42,9999],\"min_format\":42,\"max_format\":9999},"
-            + "{\"directory\":\"bc_1_21_6_plus\",\"formats\":[63,9999],\"min_format\":63,\"max_format\":9999}"
-            + "]}}\n";
+    private static final String OVERLAY_1_21_2 = "ia_overlay_1_21_2_plus/";
+    private static final String OVERLAY_1_21_6 = "ia_overlay_1_21_6_plus/";
 
     private ShaderGenerator() {
     }
@@ -44,7 +36,6 @@ public final class ShaderGenerator {
     public static Map<String, String> generate(List<ColorStyle> styles, double spreadPixels) {
         String common = common(styles, spreadPixels);
         Map<String, String> files = new LinkedHashMap<>();
-        files.put("pack.mcmeta", PACK_MCMETA);
         files.put(CORE + "rendertype_text.fsh", textLegacy("<fog.glsl>", common));
         files.put(CORE + "rendertype_text_see_through.fsh", seeThroughLegacy(common));
         files.put(CORE + "rendertype_text_see_through.json", seeThroughJson("rendertype_text_see_through"));

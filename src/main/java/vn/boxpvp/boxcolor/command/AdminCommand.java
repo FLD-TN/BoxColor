@@ -55,10 +55,8 @@ public final class AdminCommand implements TabExecutor {
                 try {
                     int count = plugin.exportShader();
                     plugin.messages().send(sender, "admin.shader-done", "count", String.valueOf(count),
-                            "sha1", plugin.shaderPack().hashHex());
-                    plugin.messages().send(sender, plugin.settings().shaderPackUrl().isEmpty()
-                            ? "admin.shader-no-url" : "admin.shader-reupload");
-                    if (!plugin.settings().shaderEnabled()) plugin.messages().send(sender, "admin.shader-disabled");
+                            "enabled", plugin.messages().raw(plugin.settings().shaderEnabled()
+                                    ? "admin.shader-enabled" : "admin.shader-disabled"));
                 } catch (IOException e) {
                     plugin.report("shader-export", e);
                     plugin.messages().send(sender, "admin.shader-failed");

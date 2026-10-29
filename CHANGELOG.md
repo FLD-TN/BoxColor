@@ -1,13 +1,5 @@
 # Changelog
 
-## 1.6.0 (2026-10-29)
-
-- ItemsAdder bỏ shader đến từ `contents/` và `merge_other_plugins_resourcepacks_folders`, nên shader màu động giờ là
-  **pack riêng** `shader-pack/BoxColor-shader.zip` (pack.mcmeta + overlay `bc_1_21_2_plus`, `bc_1_21_6_plus`).
-  Upload lên mc-packs.net, dán link vào `shader.pack.url`; BoxColor gửi kèm sau pack IA khi người chơi vào
-  (`replace: false`, không bắt buộc), bỏ qua client dưới 1.20.5 qua ViaVersion. Zip cố định thời gian file nên cùng
-  màu luôn ra cùng SHA-1.
-
 ## 1.5.1 (2026-10-29)
 
 - `/boxcolor shader` xuất nguyên thư mục content ItemsAdder `shader-pack/boxcolor/` (có `configs/boxcolor.yml`):

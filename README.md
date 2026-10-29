@@ -4,7 +4,7 @@ Màu chat, màu tên và nick cho BoxPvP (Paper 1.21.1). Mở khóa theo tier: m
 
 ## Cài đặt
 
-1. Chép `build/libs/BoxColor-1.6.0.jar` vào `plugins/`. Cần **PlaceholderAPI** để các plugin khác đọc được màu.
+1. Chép `build/libs/BoxColor-1.5.1.jar` vào `plugins/`. Cần **PlaceholderAPI** để các plugin khác đọc được màu.
 2. Khởi động server một lần để tạo `config.yml`, `colors.yml`, `tiers.yml`, `messages.yml`.
 3. Sửa `tiers.yml` cho đúng rank của server, rồi cấp quyền tier trong LuckPerms (xem phần dưới).
 4. Nối placeholder vào EzChat, TAB, UnlimitedNameTag (xem phần dưới).
@@ -66,23 +66,24 @@ Chọn một màu trong GUI thì giữ chữ của tên, chỉ tô lại bằng 
 
 ## Màu động bằng shader (resource pack)
 
-Màu có `shader: <số>` trong `colors.yml` chạy bằng shader: chạy được **cả trong chat**, server không gửi gói tin nào cho
-chuyển động. ItemsAdder không nhận shader từ `contents/` hay `merge_other_plugins_resourcepacks_folders`, nên BoxColor
-có một **pack nhỏ riêng** (~10 KB), gửi kèm **sau** pack của ItemsAdder (không thay pack IA, không bắt buộc).
-Pack chỉ có fragment shader của `rendertype_text` và bộ `rendertype_text_see_through` (nametag xuyên tường); vertex
-shader và hiệu ứng chữ của ItemsAdder giữ nguyên.
+Màu có `shader: <số>` trong `colors.yml` chạy bằng shader của resource pack: chạy được **cả trong chat**, server không
+gửi gói tin nào cho chuyển động. BoxColor chỉ thêm fragment shader của `rendertype_text` và bộ shader
+`rendertype_text_see_through` (nametag xuyên tường); vertex shader và hiệu ứng chữ của ItemsAdder giữ nguyên.
 
-1. `/boxcolor shader`: tạo `plugins/BoxColor/shader-pack/BoxColor-shader.zip` (và bản giải nén `shader-pack/pack/`).
-2. Upload file zip lên **mc-packs.net**, dán link tải vào `shader.pack.url` trong `config.yml`.
-3. Đặt `shader.enabled: true`, `/boxcolor reload`. Người chơi nhận pack khi vào lại server
-   (`shader.pack.delay-ticks` sau khi vào, để pack IA tải xong trước).
-4. Khi đã bật, TAB và UNT không cần dòng làm mới `'%boxcolor_name%': 100` / `2` nữa.
+1. `/boxcolor shader`: tạo `plugins/BoxColor/shader-pack/boxcolor/` (gồm `configs/boxcolor.yml` và `resourcepack/`).
+2. Chép **nguyên thư mục** `boxcolor` đó vào `plugins/ItemsAdder/contents/` (đè bản cũ), rồi `/iazip`.
+   ItemsAdder bỏ qua thư mục content không có `configs/`, nên đừng chỉ chép phần `resourcepack/`.
+3. Vào game kiểm tra (xem dưới), rồi đặt `shader.enabled: true` trong `config.yml` và `/boxcolor reload`.
+4. Khi `shader.enabled: true`, TAB và UNT không cần dòng làm mới `'%boxcolor_name%': 100` / `2` nữa.
 
-Sửa màu shader trong `colors.yml` thì làm lại cả 3 bước: zip mới có SHA-1 mới, link cũ sẽ bị client từ chối.
+Sửa màu shader trong `colors.yml` thì làm lại bước 1 và 2. Mỗi màu shader có một **mã tín hiệu** gần màu đầu tiên của
+nó (người chơi tắt pack thấy màu gần giống), BoxColor tự chọn không trùng màu nào khác.
 
-Không gửi pack cho client dưới 1.20.5 (đọc qua ViaVersion): các bản đó không nhận hai pack cùng lúc, gửi thêm có thể
-thay mất pack của ItemsAdder. Overlay trong pack: bản nền cho 1.20.5 - 1.21.1, `bc_1_21_2_plus` cho 1.21.2 - 1.21.5
-(trên 1.21.5 chữ có thể đứng yên), `bc_1_21_6_plus` cho 1.21.6 trở lên.
+Phiên bản: file nền cho 1.20.5 - 1.21.1, overlay `ia_overlay_1_21_2_plus` cho 1.21.2 - 1.21.5 (trên 1.21.5 chữ có thể
+đứng yên), `ia_overlay_1_21_6_plus` cho 1.21.6 trở lên. Client dưới 1.20.5 không dùng được pack của ItemsAdder.
+
+Kiểm tra sau `/iazip`: chọn một màu chat động, chat thử, nhìn chữ trong chat, TAB và trên đầu nhân vật. Nếu pack báo
+lỗi khi tải, gỡ thư mục `contents/boxcolor` rồi `/iazip` lại.
 
 ## Placeholder
 

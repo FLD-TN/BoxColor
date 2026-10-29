@@ -36,7 +36,6 @@ import vn.boxpvp.boxcolor.nick.NickService;
 import vn.boxpvp.boxcolor.service.ColorService;
 import vn.boxpvp.boxcolor.shader.ReservedColors;
 import vn.boxpvp.boxcolor.shader.ShaderGenerator;
-import vn.boxpvp.boxcolor.shader.ShaderPack;
 import vn.boxpvp.boxcolor.style.Channel;
 import vn.boxpvp.boxcolor.style.ColorStyle;
 import vn.boxpvp.boxcolor.style.StyleRegistry;
@@ -59,7 +58,6 @@ public final class BoxColorPlugin extends JavaPlugin {
     private MenuManager menus;
     private InputPrompts prompts;
     private NickCommand nickCommand;
-    private ShaderPack shaderPack;
 
     @Override
     public void onEnable() {
@@ -91,8 +89,6 @@ public final class BoxColorPlugin extends JavaPlugin {
         menus = new MenuManager(this);
         prompts = new InputPrompts(this);
         nickCommand = new NickCommand(this);
-        shaderPack = new ShaderPack(this);
-        shaderPack.reloadHash();
 
         PluginManager pm = getServer().getPluginManager();
         pm.registerEvents(new SessionListener(this), this);
@@ -170,16 +166,18 @@ public final class BoxColorPlugin extends JavaPlugin {
         reloadConfig();
         messages.load();
         int warnings = loadConfigs();
-        shaderPack.reloadHash();
         colors.start();
         colors.refreshAll();
         return warnings;
     }
 
+    /** Tên thư mục content của ItemsAdder mà {@code /boxcolor shader} tạo ra. */
+    public static final String SHADER_CONTENT = "boxcolor";
+
     /**
-     * {@code /boxcolor shader}: tạo pack riêng {@code plugins/BoxColor/shader-pack/BoxColor-shader.zip} (kèm bản giải nén
-     * trong {@code shader-pack/pack/} để xem), xoá bản cũ trước. ItemsAdder không nhận shader từ nguồn ngoài, nên pack
-     * này được upload riêng và BoxColor tự gửi cho người chơi ({@link ShaderPack}).
+     * {@code /boxcolor shader}: ghi một thư mục content ItemsAdder hoàn chỉnh vào
+     * {@code plugins/BoxColor/shader-pack/boxcolor/} (xoá bản cũ trước), để chép nguyên vào {@code ItemsAdder/contents/}.
+     * Có cả {@code configs/}: ItemsAdder bỏ qua thư mục content không có config.
      *
      * @return số màu chạy bằng shader
      */
@@ -191,14 +189,17 @@ public final class BoxColorPlugin extends JavaPlugin {
                 for (Path p : walk.sorted(Comparator.reverseOrder()).toList()) Files.delete(p);
             }
         }
-        Map<String, String> files = ShaderGenerator.generate(effects, settings.shaderSpreadPixels());
-        for (Map.Entry<String, String> file : files.entrySet()) {
-            Path target = root.resolve("pack").resolve(file.getKey());
+        Path content = root.resolve(SHADER_CONTENT);
+        for (Map.Entry<String, String> file
+                : ShaderGenerator.generate(effects, settings.shaderSpreadPixels()).entrySet()) {
+            Path target = content.resolve("resourcepack").resolve(file.getKey());
             Files.createDirectories(target.getParent());
             Files.writeString(target, file.getValue(), StandardCharsets.UTF_8);
         }
-        Files.write(shaderPack.file(), ShaderPack.zip(files));
-        shaderPack.reloadHash();
+        Path config = content.resolve("configs").resolve(SHADER_CONTENT + ".yml");
+        Files.createDirectories(config.getParent());
+        Files.writeString(config, "# Tạo bởi /boxcolor shader. Chỉ để ItemsAdder nhận thư mục này, không có item nào\n"
+                + "info:\n  namespace: " + SHADER_CONTENT + "\n", StandardCharsets.UTF_8);
         return effects.size();
     }
 
@@ -241,10 +242,6 @@ public final class BoxColorPlugin extends JavaPlugin {
 
     public InputPrompts prompts() {
         return prompts;
-    }
-
-    public ShaderPack shaderPack() {
-        return shaderPack;
     }
 
     public NickCommand nickCommand() {

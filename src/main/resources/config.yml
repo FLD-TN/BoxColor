@@ -49,22 +49,16 @@ animation:
 
 # Màu động chạy bằng shader của resource pack (màu có 'shader: <số>' trong colors.yml)
 # Chạy được cả trong chat, server không tốn gói tin nào cho chuyển động
-# ItemsAdder không nhận shader từ nguồn ngoài, nên BoxColor có pack nhỏ riêng, gửi kèm sau pack của ItemsAdder
 # Cách cài:
-#   1. /boxcolor shader -> tạo plugins/BoxColor/shader-pack/BoxColor-shader.zip
-#   2. Upload file zip đó lên mc-packs.net, dán link tải vào pack.url bên dưới
-#   3. Đặt enabled: true rồi /boxcolor reload. Người chơi nhận pack khi vào lại server
-# Sửa màu shader trong colors.yml thì làm lại cả 3 bước (link cũ sẽ không dùng được nữa)
+#   1. /boxcolor shader -> tạo plugins/BoxColor/shader-pack/boxcolor/
+#   2. Chép nguyên thư mục boxcolor đó vào plugins/ItemsAdder/contents/ (đè bản cũ) rồi /iazip
+#   3. Vào game kiểm tra, rồi mới đặt enabled: true và /boxcolor reload
+# Sửa màu shader trong colors.yml thì làm lại bước 1 và 2
 shader:
-  # false: màu có shader chạy kiểu cũ (TAB/nametag làm mới) và không gửi pack
+  # false: màu có shader chạy kiểu cũ (TAB/nametag làm mới), true: xuất mã tín hiệu cho resource pack
   enabled: false
   # Số điểm ảnh ngang trên màn hình cho một vòng màu (nhỏ = màu đổi nhanh qua từng chữ)
   spread-pixels: 100
-  pack:
-    # Link tải trực tiếp của BoxColor-shader.zip
-    url: ''
-    # Chờ bao nhiêu tick sau khi vào server mới gửi (để pack ItemsAdder tải xong trước), 20 tick = 1 giây
-    delay-ticks: 60
 
 chat:
   # Tô màu nội dung chat theo màu chat đã chọn

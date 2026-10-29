@@ -33,8 +33,6 @@ public final class Settings {
     private final long animationFrameMillis;
     private final boolean shaderEnabled;
     private final double shaderSpreadPixels;
-    private final String shaderPackUrl;
-    private final long shaderPackDelayTicks;
     private final boolean chatEnabled;
     private final boolean keepTypedColors;
     private final Pattern typedColors;
@@ -65,8 +63,6 @@ public final class Settings {
         animationFrameMillis = Math.max(50L, c.getLong("animation.frame-ms", 100L));
         shaderEnabled = c.getBoolean("shader.enabled", false);
         shaderSpreadPixels = Math.max(10.0, c.getDouble("shader.spread-pixels", 100.0));
-        shaderPackUrl = c.getString("shader.pack.url", "").trim();
-        shaderPackDelayTicks = Math.max(1L, c.getLong("shader.pack.delay-ticks", 60L));
 
         chatEnabled = c.getBoolean("chat.enabled", true);
         keepTypedColors = c.getBoolean("chat.keep-typed-colors", true);
@@ -196,16 +192,6 @@ public final class Settings {
     /** Màu có {@code shader:} xuất mã tín hiệu cho resource pack (chỉ bật sau khi đã cài pack). */
     public boolean shaderEnabled() {
         return shaderEnabled;
-    }
-
-    /** Link tải trực tiếp của BoxColor-shader.zip (đã upload), rỗng là chưa có. */
-    public String shaderPackUrl() {
-        return shaderPackUrl;
-    }
-
-    /** Chờ bao nhiêu tick sau khi vào server mới gửi pack (để pack ItemsAdder tải xong trước). */
-    public long shaderPackDelayTicks() {
-        return shaderPackDelayTicks;
     }
 
     /** Số điểm ảnh ngang trên màn hình cho một vòng màu shader. */
