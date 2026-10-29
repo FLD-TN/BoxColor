@@ -41,15 +41,23 @@ access-check-seconds: 30
 chat:
   # Tô màu nội dung chat theo màu chat đã chọn
   enabled: true
-  # Người chơi tự gõ mã màu (có quyền dùng '&') thì giữ màu của họ
+  # Người chơi tự gõ mã màu thì giữ màu của họ, không tô màu chat
   keep-typed-colors: true
-  # Giữ nguyên không tô màu để plugin khác vẫn nhận ra (InteractiveChat...)
+  # Tin nhắn có một trong các mẫu này được coi là tự gõ màu (dòng 'regex:' là biểu thức chính quy)
+  # Gồm mã '&', hex, và tag [color=...] [font=...] của InteractiveChat
+  typed-color-patterns:
+    - 'regex:&[0-9a-fk-orA-FK-OR]'
+    - 'regex:&?#[0-9a-fA-F]{6}'
+    - 'regex:<#[0-9a-fA-F]{6}>'
+    - 'regex:(?i)\[color='
+    - 'regex:(?i)\[font='
+  # Giữ nguyên không tô màu để InteractiveChat vẫn nhận ra (dòng 'regex:' là biểu thức chính quy)
+  # Mặc định: mọi từ khoá dạng [chữ] ([item], [inv], [e], [money], [ah], [pos]...) và tag @tên
   keep-plain:
-    - '[item]'
-    - '[i]'
-    - '[inv]'
-    - '[hand]'
-    - '[ec]'
+    - 'regex:\[[^\[\]\s]{1,24}\]'
+    - 'regex:@\S+'
+  # Giữ nguyên tên thật và nick của người đang online trong tin nhắn, để InteractiveChat gắn hover/click
+  keep-player-names: true
   # Câu mẫu xem trước màu chat trong GUI
   preview-text: 'Xin chào mọi người'
 

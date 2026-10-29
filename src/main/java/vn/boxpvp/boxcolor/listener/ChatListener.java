@@ -1,6 +1,10 @@
 package vn.boxpvp.boxcolor.listener;
 
 import io.papermc.paper.event.player.AsyncChatEvent;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.regex.Pattern;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.Bukkit;
@@ -50,10 +54,40 @@ public final class ChatListener implements Listener {
         ColorStyle style = data.shown(Channel.CHAT);
         if (style == null) return;
         Component message = event.message();
-        // Người chơi tự gõ mã màu (có quyền dùng '&'): giữ màu của họ
-        if (plugin.settings().keepTypedColors() && hasColor(message)) return;
         String text = PlainTextComponentSerializer.plainText().serialize(message);
-        event.message(ColorRenderer.component(text, style, 0, plugin.settings().keepPlain()));
+        // Người chơi tự gõ mã màu ('&', hex, tag [color=] của InteractiveChat): giữ màu của họ
+        if (plugin.settings().keepTypedColors()) {
+            if (hasColor(message)) return;
+            Pattern typed = plugin.settings().typedColors();
+            if (typed != null && typed.matcher(text).find()) return;
+        }
+        event.message(ColorRenderer.component(text, style, 0, keepPlain()));
+    }
+
+    /**
+     * Đoạn giữ nguyên không tô: từ khoá trong config, cộng tên thật và nick của người đang online (để InteractiveChat
+     * vẫn gắn hover/click vào tên).
+     */
+    private Pattern keepPlain() {
+        Pattern base = plugin.settings().keepPlain();
+        if (!plugin.settings().keepPlayerNames()) return base;
+        List<String> names = new ArrayList<>();
+        for (Player p : Bukkit.getOnlinePlayers()) {
+            names.add(p.getName());
+            PlayerData data = plugin.cache().get(p.getUniqueId());
+            if (data != null && data.shownNick() != null) names.add(data.shownNick());
+        }
+        if (names.isEmpty()) return base;
+        // Tên dài trước để "Steve123" không bị khớp thành "Steve"
+        names.sort(Comparator.comparingInt(String::length).reversed());
+        StringBuilder regex = new StringBuilder(base != null ? "(?:" + base.pattern() + ")|" : "");
+        regex.append("(?<![\\p{L}\\p{N}_])(?:");
+        for (int i = 0; i < names.size(); i++) {
+            if (i > 0) regex.append('|');
+            regex.append(Pattern.quote(names.get(i)));
+        }
+        regex.append(")(?![\\p{L}\\p{N}_])");
+        return Pattern.compile(regex.toString(), Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE);
     }
 
     private static boolean hasColor(Component component) {

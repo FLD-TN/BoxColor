@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.function.Consumer;
 import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
 import org.bukkit.Material;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.ConfigurationSection;
@@ -30,7 +31,9 @@ public final class Settings {
     private final int accessCheckSeconds;
     private final boolean chatEnabled;
     private final boolean keepTypedColors;
+    private final Pattern typedColors;
     private final Pattern keepPlain;
+    private final boolean keepPlayerNames;
     private final NickRules nickRules;
     private final long nickCooldownMillis;
     private final boolean checkRealNames;
@@ -55,14 +58,16 @@ public final class Settings {
 
         chatEnabled = c.getBoolean("chat.enabled", true);
         keepTypedColors = c.getBoolean("chat.keep-typed-colors", true);
-        List<String> plain = c.isList("chat.keep-plain")
+        // Mã màu người chơi tự gõ: '&', hex, và tag của InteractiveChat ([color=...], [font=...])
+        typedColors = pattern(c.isList("chat.typed-color-patterns")
+                ? c.getStringList("chat.typed-color-patterns")
+                : List.of("regex:&[0-9a-fk-orA-FK-OR]", "regex:&?#[0-9a-fA-F]{6}", "regex:<#[0-9a-fA-F]{6}>",
+                        "regex:(?i)\\[color=", "regex:(?i)\\[font="), "chat.typed-color-patterns", warn);
+        // Từ khoá InteractiveChat ([item], [inv], [money]...) và tag @tên
+        keepPlain = pattern(c.isList("chat.keep-plain")
                 ? c.getStringList("chat.keep-plain")
-                : List.of("[item]", "[i]", "[inv]", "[hand]", "[ec]");
-        List<String> quoted = new ArrayList<>();
-        for (String s : plain) {
-            if (!s.isEmpty()) quoted.add(Pattern.quote(s));
-        }
-        keepPlain = quoted.isEmpty() ? null : Pattern.compile(String.join("|", quoted), Pattern.CASE_INSENSITIVE);
+                : List.of("regex:\\[[^\\[\\]\\s]{1,24}\\]", "regex:@\\S+"), "chat.keep-plain", warn);
+        keepPlayerNames = c.getBoolean("chat.keep-player-names", true);
         chatPreview = c.getString("chat.preview-text", "Xin chào mọi người");
 
         List<String> blocked = c.isList("nick.blocked-words")
@@ -79,6 +84,29 @@ public final class Settings {
         border = material(c.getString("gui.border", "GRAY_STAINED_GLASS_PANE"), Material.GRAY_STAINED_GLASS_PANE, warn);
         filler = material(c.getString("gui.filler", "BLACK_STAINED_GLASS_PANE"), Material.BLACK_STAINED_GLASS_PANE, warn);
         defaultIcon = material(c.getString("gui.default-color-icon", "LEATHER_CHESTPLATE"), Material.LEATHER_CHESTPLATE, warn);
+    }
+
+    /**
+     * Gộp danh sách thành một Pattern (không phân biệt hoa thường). Dòng bắt đầu bằng {@code regex:} là biểu thức
+     * chính quy, còn lại là chữ thường. Rỗng thì {@code null}.
+     */
+    static Pattern pattern(List<String> entries, String path, Consumer<String> warn) {
+        List<String> parts = new ArrayList<>();
+        for (String s : entries) {
+            if (s == null || s.isEmpty()) continue;
+            if (!s.startsWith("regex:")) {
+                parts.add(Pattern.quote(s));
+                continue;
+            }
+            String regex = s.substring("regex:".length());
+            try {
+                Pattern.compile(regex);
+                parts.add("(?:" + regex + ")");
+            } catch (PatternSyntaxException e) {
+                warn.accept(path + ": regex sai '" + regex + "'");
+            }
+        }
+        return parts.isEmpty() ? null : Pattern.compile(String.join("|", parts), Pattern.CASE_INSENSITIVE);
     }
 
     /** Theo thứ tự trong file; khoá là tên group LuckPerms (kiểm tra bằng permission {@code group.<tên>}). */
@@ -155,6 +183,16 @@ public final class Settings {
     /** Người chơi tự gõ mã màu trong chat thì giữ màu của họ, không tô màu chat. */
     public boolean keepTypedColors() {
         return keepTypedColors;
+    }
+
+    /** Tin nhắn khớp mẫu này là người chơi tự gõ màu: không tô màu chat. {@code null} nếu không có. */
+    public Pattern typedColors() {
+        return typedColors;
+    }
+
+    /** Giữ nguyên tên/nick của người đang online trong tin nhắn (cho InteractiveChat nhận ra). */
+    public boolean keepPlayerNames() {
+        return keepPlayerNames;
     }
 
     /** Đoạn chat giữ nguyên không tô màu, {@code null} nếu không có. */

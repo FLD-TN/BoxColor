@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.3.0 (2026-10-29)
+
+Tương thích InteractiveChat:
+- `chat.keep-plain` nhận regex (dòng `regex:`). Mặc định giữ nguyên mọi từ khoá dạng `[chữ]` ([item], [inv], [e],
+  [money], [ah], [pos]...) và tag `@tên`, để IC vẫn nhận ra.
+- `chat.keep-player-names`: giữ nguyên tên thật và nick của người đang online trong tin nhắn, để IC gắn hover/click.
+- `chat.typed-color-patterns`: tin nhắn có mã `&`, hex, `[color=...]`, `[font=...]` được coi là người chơi tự gõ màu,
+  BoxColor không tô đè.
+
 ## 1.2.0 (2026-10-29)
 
 - `rank-name-colors` trong config.yml: màu tên theo group LuckPerms, dùng khi người chơi chưa chọn màu tên.
