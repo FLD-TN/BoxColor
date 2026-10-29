@@ -9,20 +9,24 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitTask;
 import vn.boxpvp.boxcolor.BoxColorPlugin;
+import vn.boxpvp.boxcolor.nick.NickInput;
 import vn.boxpvp.boxcolor.style.Channel;
 import vn.boxpvp.boxcolor.style.ColorStyle;
 import vn.boxpvp.boxcolor.style.Hex;
 
 /**
- * Chờ người chơi gõ vào chat sau khi bấm "Tự chỉnh mã màu" hoặc "Đổi nick" trong GUI. Dòng chat đó bị chặn (không ai
+ * Chờ người chơi gõ vào chat sau khi bấm "Tự chỉnh mã màu" (chat), "Màu tùy chỉnh" hoặc "Đổi chữ" (tên) trong GUI. Dòng chat đó bị chặn (không ai
  * khác thấy). Map đồng thời vì sự kiện chat chạy async; xử lý luôn chuyển về main thread.
  */
 public final class InputPrompts {
 
     public enum Kind {
+        /** Danh sách mã hex cho màu chat tự chỉnh. */
         CHAT_COLOR,
-        NAME_COLOR,
-        NICK
+        /** "Màu tùy chỉnh": tên kèm mã màu từng chữ. */
+        NICK,
+        /** Chỉ đổi chữ của tên (trang màu động): mã màu gõ kèm bị bỏ, màu động giữ nguyên. */
+        RENAME
     }
 
     private record Pending(Kind kind, BukkitTask timeout) {
@@ -53,7 +57,7 @@ public final class InputPrompts {
                 "min", String.valueOf(plugin.settings().nickRules().minLength()),
                 "maxlength", String.valueOf(plugin.settings().nickRules().maxLength())
         };
-        plugin.messages().send(player, kind == Kind.NICK ? "prompt.nick" : "prompt.color", ph);
+        plugin.messages().send(player, "prompt." + kind.name().toLowerCase(Locale.ROOT).replace('_', '-'), ph);
         plugin.messages().send(player, "prompt.cancel-hint", ph);
     }
 
@@ -76,16 +80,16 @@ public final class InputPrompts {
             plugin.messages().send(player, "prompt.cancelled");
             return;
         }
-        if (p.kind() == Kind.NICK) {
+        if (p.kind() != Kind.CHAT_COLOR) {
+            String name = p.kind() == Kind.RENAME ? NickInput.parse(text).text() : text;
             // Sai luật thì vẫn chờ, người chơi gõ lại được
-            if (plugin.nickCommand().apply(player, text)) cancel(player.getUniqueId());
+            if (plugin.nickCommand().apply(player, name)) cancel(player.getUniqueId());
             return;
         }
-        Channel channel = p.kind() == Kind.CHAT_COLOR ? Channel.CHAT : Channel.NAME;
         ColorStyle style = parseCustom(player, text);
         if (style == null) return;
         cancel(player.getUniqueId());
-        plugin.menus().open(player, new CustomConfirmMenu(plugin, player, channel, style));
+        plugin.menus().open(player, new CustomConfirmMenu(plugin, player, Channel.CHAT, style));
     }
 
     /** Đọc danh sách mã; sai thì báo lỗi và trả {@code null}. */

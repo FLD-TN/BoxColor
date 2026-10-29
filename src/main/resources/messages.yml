@@ -18,6 +18,8 @@ command:
   player-not-found: '&#FF6B6B✘ Không tìm thấy người chơi &f{player}'
   # {label}: chatcolor hoặc namecolor
   usage-color: '&#FFD166(!) &7Dùng: &f/{label} &7(mở menu), &f/{label} reset&7, &f/{label} custom <#mã> &8(tối đa {max} mã)'
+  # /namecolor custom: màu tên tự chỉnh đã chuyển sang Màu tùy chỉnh
+  name-custom-moved: '&#FFD166(!) &7Màu tên tùy chỉnh dùng &f/nick <tên kèm mã màu>&7, ví dụ &f/nick &#FFD166#FFD166Đức &#FF8FAB#FF8FABAnh'
   reloaded: '&#7CFC9A✔ Đã nạp lại BoxColor &8(&f{chat} &7màu chat, &f{name} &7màu tên, &f{tiers} &7tier, &f{warnings} &7cảnh báo&8)'
 
 color:
@@ -28,24 +30,25 @@ color:
   locked: '&#FF6B6B✘ Màu này chưa mở khóa &8(&7cần {tier}&8)'
   custom-locked: '&#FF6B6B✘ Tự chỉnh {channel} chưa mở khóa &8(&7cần {tier}&8)'
   custom-invalid: '&#FF6B6B✘ Mã màu không hợp lệ, ví dụ: &f#FFB3C6 #A0E7E5'
+  # Bấm Màu động khi chưa đủ rank
+  animated-locked: '&#FF6B6B✘ Màu tên động chưa mở khóa &8(&7cần {tier}&8)'
   custom-too-many: '&#FF6B6B✘ Chỉ được tối đa &f{max} &#FF6B6Bmã màu'
 
 # Ô nhập trong chat sau khi bấm "Tự chỉnh mã màu" hoặc "Đổi nick". Dòng người chơi gõ không hiện cho ai khác
 prompt:
-  color: '&#FFD166(!) &7Nhập mã màu vào chat, ví dụ &f#FFB3C6 #A0E7E5 &8(1 mã = màu đơn, 2-{max} mã = chuyển màu)'
-  nick: '&#FFD166(!) &7Nhập nick mới vào chat &8({min}-{maxlength} ký tự, có dấu và dấu cách, kèm mã màu nếu có quyền tự chỉnh màu tên)'
+  chat-color: '&#FFD166(!) &7Nhập mã màu vào chat, ví dụ &f#FFB3C6 #A0E7E5 &8(1 mã = màu đơn, 2-{max} mã = chuyển màu)'
+  nick: '&#FFD166(!) &7Nhập tên vào chat, kèm mã màu nếu muốn, ví dụ &f&#FFD166#FFD166Đức &#FF8FAB#FF8FABAnh &8({min}-{maxlength} ký tự; không gõ mã màu thì giữ màu đang dùng)'
+  rename: '&#FFD166(!) &7Nhập tên vào chat &8({min}-{maxlength} ký tự, màu động giữ nguyên)'
   cancel-hint: '&7Gõ &fhuy &7để hủy, tự hủy sau &f{seconds} giây'
   cancelled: '&7Đã hủy'
   expired: '&7Hết thời gian nhập, đã hủy'
 
 nick:
-  usage: '&#FFD166(!) &7Dùng: &f/{label} <tên> &7hoặc &f/{label} reset&7. Kèm màu: &f/{label} &#FFD166#FFD166&#FF8FABĐức #FF8FABAnh'
+  usage: '&#FFD166(!) &7Dùng: &f/{label} <tên> &7hoặc &f/{label} reset&7. Mã màu tô các chữ phía sau nó: &f/{label} &#FFD166#FFD166Đức &#FF8FAB#FF8FABAnh'
   # {nick}: nick đã tô theo màu tên
   set: '&#7CFC9A✔ Đã đổi tên hiển thị thành {nick}'
   # Gõ lại đúng nick cũ kèm mã màu: chỉ đổi màu, không tính thời gian chờ
   color-set: '&#7CFC9A✔ Đã đổi màu nick thành {nick}'
-  # Gõ mã màu trong nick khi chưa có quyền tự chỉnh màu tên
-  color-locked: '&#FF6B6B✘ Màu trong nick cần quyền tự chỉnh màu tên &8(&7cần {tier}&8)'
   reset: '&#7CFC9A✔ Đã bỏ nick, dùng lại tên thật'
   none: '&#FF6B6B✘ Bạn chưa đặt nick'
   same: '&#FFD166(!) &7Bạn đang dùng nick này rồi'
@@ -95,6 +98,7 @@ menu:
     solid: 'Màu đơn'
     gradient: 'Chuyển màu'
     rainbow: 'Cầu vồng'
+    per_char: 'Tô từng chữ'
     animated-suffix: ' &8(&#7FDBFFchuyển động&8)'
 
   main:
@@ -115,7 +119,7 @@ menu:
         - '&7• Tự chỉnh mã màu: {custom}'
         - ''
         - '&8[&#7CFC9AChuột trái để mở&8]'
-    # {current} {unlocked} {total} {custom} {nick}
+    # {current} {unlocked} {total} {nick} {animated}
     name:
       name: '&#E0A3FFMàu tên'
       lore:
@@ -125,8 +129,8 @@ menu:
         - '&#FFD166Thông tin:'
         - '&7• Đang dùng: {current}'
         - '&7• Đã mở khóa: &f{unlocked}&7/&f{total} &7màu'
-        - '&7• Tự chỉnh mã màu: {custom}'
-        - '&7• Đổi nick: {nick}'
+        - '&7• Màu tùy chỉnh: {nick}'
+        - '&7• Màu động: {animated}'
         - ''
         - '&8[&#7CFC9AChuột trái để mở&8]'
     # {name} tên đã tô màu, {realname} {nick} {tier}
@@ -140,13 +144,53 @@ menu:
         - ''
         - '&#FFD166Lưu ý:'
         - '&7• Lên rank để mở thêm màu'
-        - '&7• Màu chuyển động chỉ chạy'
-        - '&7  ở TAB và trên đầu nhân vật'
+        - '&7• Màu động chỉ chạy ở TAB'
+        - '&7  và trên đầu nhân vật'
+
+  # Chọn loại màu tên. {example} tên của bạn tô màu mẫu, {sample} tên màu mẫu,
+  # {unlocked} {total} số màu, {tier} rank mở màu động. {state}: các dòng state-* bên dưới
+  name-type:
+    title: '&8Màu tên'
+    no-sample: '&7Chưa có màu'
+    name-static:
+      name: '&#7FDBFFMàu tĩnh'
+      lore:
+        - '&#BFC7D5Màu đứng yên, hiện giống nhau'
+        - '&#BFC7D5ở chat, TAB và trên đầu'
+        - ''
+        - '&#FFD166Thông tin:'
+        - '&7• Ví dụ: {example}'
+        - '&7• Đã mở khóa: &f{unlocked}&7/&f{total} &7màu'
+        - '&7• Có Màu tùy chỉnh: tự tô'
+        - '&7  màu từng chữ'
+        - ''
+        - '{state}'
+      state-unlocked:
+        - '&8[&#7CFC9AChuột trái để mở&8]'
+      state-locked:
+        - '&8[&#7CFC9AChuột trái để mở&8]'
+    name-animated:
+      name: '&#E0A3FFMàu động'
+      lore:
+        - '&#BFC7D5Màu chạy liên tục ở TAB'
+        - '&#BFC7D5và trên đầu nhân vật'
+        - ''
+        - '&#FFD166Thông tin:'
+        - '&7• Ví dụ: {example}'
+        - '&7• Đã mở khóa: &f{unlocked}&7/&f{total} &7màu'
+        - '&7• Trong chat hiện đứng yên'
+        - ''
+        - '{state}'
+      state-unlocked:
+        - '&8[&#7CFC9AChuột trái để mở&8]'
+      state-locked:
+        - '&#FF6B6B✘ Chưa mở khóa &8(&7cần {tier}&8)'
 
   color:
     # {page} {pages}
     title-chat: '&8Màu chat &7({page}/{pages})'
-    title-name: '&8Màu tên &7({page}/{pages})'
+    title-name-static: '&8Màu tên tĩnh &7({page}/{pages})'
+    title-name-animated: '&8Màu tên động &7({page}/{pages})'
     # Mỗi màu. {style} tên màu đã tô, {preview} câu mẫu, {kind} kiểu màu, {unlock} tier mở khóa
     # {note}: dòng ghi chú (bỏ nếu không có), {state}: các dòng state-* bên dưới
     item:
@@ -180,6 +224,11 @@ menu:
       name: '&fQuay lại'
       lore:
         - '&8[&#7FDBFFChuột trái để về trang chính&8]'
+    # Nút quay lại ở trang màu tên tĩnh/động
+    back-name:
+      name: '&fQuay lại'
+      lore:
+        - '&8[&#7FDBFFChuột trái để về chọn loại màu&8]'
     reset:
       name: '&#FF8A8ABỏ màu'
       lore:
@@ -221,27 +270,52 @@ menu:
         - '&8[&#7CFC9AChuột trái để nhập mã màu&8]'
       state-locked:
         - '&#FF6B6B✘ Chưa mở khóa &8(&7cần {tier}&8)'
-    # Đổi nick, chỉ có ở menu màu tên. {nick} {min} {max} {tier}
+    # Màu tùy chỉnh, ở trang màu tên tĩnh. {nick} tên hiện tại, {min} {max} {tier}
     nick:
-      name: '&#E0A3FFĐổi nick'
+      name: '&#E0A3FFMàu tùy chỉnh'
       lore:
-        - '&#BFC7D5Đặt tên hiển thị riêng,'
-        - '&#BFC7D5tô theo màu tên đang dùng'
+        - '&#BFC7D5Tự đặt tên và tô màu'
+        - '&#BFC7D5từng chữ theo ý bạn'
         - ''
         - '&#FFD166Thông tin:'
-        - '&7• Nick hiện tại: {nick}'
+        - '&7• Tên hiện tại: {nick}'
         - '&7• Độ dài: &f{min}-{max} &7ký tự'
         - '&7• Được dùng dấu và dấu cách'
+        - ''
+        - '&#FFD166Cách dùng:'
+        - '&7• Mã màu tô các chữ sau nó'
+        - '&7• Ví dụ: &f#FFD166Đức #FF8FABAnh'
+        - '&7• Nhận mã hex và mã màu'
+        - '&7  Minecraft thông thường'
+        - '&7• Không gõ mã: giữ màu cũ'
         - '&7• Lệnh: &f/nick <tên>'
-        - '&7• Kèm màu: &f/nick #FFD166Tên'
-        - '&8  (cần quyền tự chỉnh màu tên)'
         - ''
         - '{state}'
       state-has-nick:
-        - '&8[&#7CFC9AChuột trái để đổi nick&8]'
-        - '&8[&#FF8A8AChuột phải để bỏ nick&8]'
+        - '&8[&#7CFC9AChuột trái để đổi tên&8]'
+        - '&8[&#FF8A8AChuột phải để về tên thật&8]'
       state-unlocked:
-        - '&8[&#7CFC9AChuột trái để đặt nick&8]'
+        - '&8[&#7CFC9AChuột trái để đặt tên&8]'
+      state-locked:
+        - '&#FF6B6B✘ Chưa mở khóa &8(&7cần {tier}&8)'
+    # Đổi chữ của tên, ở trang màu tên động (mã màu gõ kèm bị bỏ, màu động giữ nguyên)
+    rename:
+      name: '&#E0A3FFĐổi chữ của tên'
+      lore:
+        - '&#BFC7D5Đặt tên hiển thị riêng,'
+        - '&#BFC7D5chạy theo màu động đang chọn'
+        - ''
+        - '&#FFD166Thông tin:'
+        - '&7• Tên hiện tại: {nick}'
+        - '&7• Độ dài: &f{min}-{max} &7ký tự'
+        - '&7• Được dùng dấu và dấu cách'
+        - ''
+        - '{state}'
+      state-has-nick:
+        - '&8[&#7CFC9AChuột trái để đổi tên&8]'
+        - '&8[&#FF8A8AChuột phải để về tên thật&8]'
+      state-unlocked:
+        - '&8[&#7CFC9AChuột trái để đặt tên&8]'
       state-locked:
         - '&#FF6B6B✘ Chưa mở khóa &8(&7cần {tier}&8)'
 

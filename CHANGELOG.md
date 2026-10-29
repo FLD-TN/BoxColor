@@ -1,5 +1,17 @@
 # Changelog
 
+## 1.4.0 (2026-10-29)
+
+- Màu tên tách hai trang: **Màu tĩnh** và **Màu động**, chọn từ menu mới sau ô Màu tên. Lore mỗi loại có tên mẫu.
+- **Màu tùy chỉnh** gộp "Tự chỉnh mã màu" và "Đổi nick" (tính năng `nick`): mã màu đọc như Minecraft, mỗi mã tô các
+  chữ phía sau nó (`&x&R&R&G&G&B&B`, `&#RRGGBB`, `#RRGGBB`, `&0`-`&f`, `&r`). Không gõ mã thì chỉ đổi chữ, giữ màu.
+  Cách gõ `#mã` của 1.1.0 (gradient qua cả tên) không còn.
+- Trang Màu động cần tính năng `animated-name`; ô "Đổi chữ của tên" đặt tên cho màu động chạy theo.
+- `custom-name` trong tiers.yml được đọc thành `nick`. `/namecolor custom` chuyển người chơi sang `/nick`.
+- Mặc định bỏ từ cấm và thời gian chờ đổi tên, vẫn chặn trùng tên người khác.
+- Bộ màu mẫu: Màu tùy chỉnh từ Elite, màu động chỉ từ Ultimate (5 màu) và Overlord (4 màu); 9 màu tĩnh mới bù cho
+  các rank bị chuyển màu động đi.
+
 ## 1.3.1 (2026-10-29)
 
 - `animation.enabled`: tắt toàn bộ màu chuyển động khi server nặng (màu vẫn giữ, chỉ đứng yên).

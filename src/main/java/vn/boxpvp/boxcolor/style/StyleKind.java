@@ -5,7 +5,9 @@ import java.util.Locale;
 public enum StyleKind {
     SOLID,
     GRADIENT,
-    RAINBOW;
+    RAINBOW,
+    /** Màu riêng cho từng chữ, theo đúng mã người chơi gõ (chỉ có ở tên tùy chỉnh, không đọc từ colors.yml). */
+    PER_CHAR;
 
     /** {@code solid} / {@code gradient} / {@code rainbow}, không phân biệt hoa thường; sai thì {@code null}. */
     public static StyleKind parse(String s) {

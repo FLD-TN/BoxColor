@@ -39,6 +39,12 @@ public final class ColorRenderer {
         switch (style.kind()) {
             case SOLID:
                 return style.colors().isEmpty() ? 0xFFFFFF : style.colors().get(0);
+            case PER_CHAR: {
+                List<Integer> colors = style.colors();
+                if (colors.isEmpty()) return 0xFFFFFF;
+                int rgb = colors.get(Math.min(index, colors.size() - 1));
+                return rgb == ColorStyle.NO_COLOR ? 0xFFFFFF : rgb;
+            }
             case RAINBOW: {
                 float hue = (float) frac(index / (double) len - phase);
                 return Color.HSBtoRGB(hue, style.saturation(), style.brightness()) & 0xFFFFFF;

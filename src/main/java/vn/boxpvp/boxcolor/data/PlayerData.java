@@ -1,5 +1,6 @@
 package vn.boxpvp.boxcolor.data;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import vn.boxpvp.boxcolor.style.Channel;
@@ -114,6 +115,20 @@ public final class PlayerData {
     /** Kiểu màu của một lựa chọn đã lưu; {@code null} nếu chưa chọn hoặc màu đã bị xoá khỏi colors.yml. */
     public static ColorStyle resolve(String selection, Channel channel, StyleRegistry styles) {
         if (selection == null || selection.isEmpty()) return null;
+        if (selection.startsWith(ColorStyle.PER_CHAR_PREFIX)) {
+            String[] parts = selection.substring(ColorStyle.PER_CHAR_PREFIX.length()).split(",");
+            List<Integer> rgb = new ArrayList<>(parts.length);
+            for (String part : parts) {
+                if (part.equals("-")) {
+                    rgb.add(ColorStyle.NO_COLOR);
+                    continue;
+                }
+                int c = Hex.parse(part);
+                if (c < 0) return null;
+                rgb.add(c);
+            }
+            return rgb.isEmpty() ? null : ColorStyle.perChar(rgb);
+        }
         if (selection.startsWith("#")) {
             List<Integer> rgb = Hex.parseList(selection);
             return rgb == null ? null : ColorStyle.custom(rgb);

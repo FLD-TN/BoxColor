@@ -60,6 +60,11 @@ public final class ColorCommand implements TabExecutor {
     }
 
     private void custom(Player player, String label, String[] codes) {
+        // Màu tên tự chỉnh nằm ở "Màu tùy chỉnh" (/nick), chỉ màu chat còn nhập theo danh sách mã
+        if (channel == Channel.NAME) {
+            plugin.messages().send(player, "command.name-custom-moved");
+            return;
+        }
         Feature feature = ColorService.customFeature(channel);
         if (!plugin.colors().hasFeature(player, feature)) {
             Icons icons = new Icons(plugin);

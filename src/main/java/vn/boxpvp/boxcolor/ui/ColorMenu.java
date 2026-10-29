@@ -1,5 +1,6 @@
 package vn.boxpvp.boxcolor.ui;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,18 +18,53 @@ import vn.boxpvp.boxcolor.tier.Feature;
 import vn.boxpvp.boxcolor.ui.InputPrompts.Kind;
 
 /**
- * Danh sách màu của một kênh (chat hoặc tên), 28 màu mỗi trang.
+ * Danh sách màu của một trang ({@link Section}), 28 màu mỗi trang.
  * <pre>
  *  B  B  B  B [i] B  B  B  B      i = đang dùng (4)
  *  B  .  .  .  .  .  .  .  B      . = màu (10-16, 19-25, 28-34, 37-43)
  *  B  .  .  .  .  .  .  .  B
  *  B  .  .  .  .  .  .  .  B
  *  B  .  .  .  .  .  .  .  B
- * [<] B [x][«][#][»][T] B [N]     < quay lại (45), x bỏ màu (47), « » trang (48, 50), # số trang (49),
- *                                 T tự chỉnh (51), N đổi nick (53, chỉ màu tên)
+ * [<] B [x][«][#][»][T] B  B      < quay lại (45), x bỏ màu (47), « » trang (48, 50), # số trang (49),
+ *                                 T (51): chat = tự chỉnh mã màu, tên tĩnh = Màu tùy chỉnh,
+ *                                 tên động = đổi chữ của tên
  * </pre>
  */
 public final class ColorMenu extends MenuView {
+
+    /** Trang màu: chat, tên tĩnh hoặc tên động. {@link #key()} dùng trong messages.yml. */
+    public enum Section {
+        CHAT(Channel.CHAT, "chat"),
+        NAME_STATIC(Channel.NAME, "name-static"),
+        NAME_ANIMATED(Channel.NAME, "name-animated");
+
+        private final Channel channel;
+        private final String key;
+
+        Section(Channel channel, String key) {
+            this.channel = channel;
+            this.key = key;
+        }
+
+        public Channel channel() {
+            return channel;
+        }
+
+        public String key() {
+            return key;
+        }
+
+        /** Các màu thuộc trang này, theo thứ tự colors.yml. */
+        public List<ColorStyle> styles(BoxColorPlugin plugin) {
+            List<ColorStyle> all = plugin.styles().list(channel);
+            if (this == CHAT) return all;
+            List<ColorStyle> out = new ArrayList<>();
+            for (ColorStyle style : all) {
+                if (style.animated() == (this == NAME_ANIMATED)) out.add(style);
+            }
+            return out;
+        }
+    }
 
     private static final int[] SLOTS = {
             10, 11, 12, 13, 14, 15, 16,
@@ -43,10 +79,10 @@ public final class ColorMenu extends MenuView {
     private static final int SLOT_PAGE = 49;
     private static final int SLOT_NEXT = 50;
     private static final int SLOT_CUSTOM = 51;
-    private static final int SLOT_NICK = 53;
 
     private final BoxColorPlugin plugin;
     private final Player viewer;
+    private final Section section;
     private final Channel channel;
     private final Icons icons;
     private final List<ColorStyle> styles;
@@ -55,17 +91,18 @@ public final class ColorMenu extends MenuView {
     /** Ô → màu trên trang này. */
     private final Map<Integer, ColorStyle> slotStyles = new LinkedHashMap<>();
 
-    public ColorMenu(BoxColorPlugin plugin, Player viewer, Channel channel, int page) {
-        this(plugin, viewer, channel, page, plugin.styles().list(channel));
+    public ColorMenu(BoxColorPlugin plugin, Player viewer, Section section, int page) {
+        this(plugin, viewer, section, page, section.styles(plugin));
     }
 
-    private ColorMenu(BoxColorPlugin plugin, Player viewer, Channel channel, int page, List<ColorStyle> styles) {
-        super(54, plugin.messages().text("menu.color.title-" + channel.key(),
+    private ColorMenu(BoxColorPlugin plugin, Player viewer, Section section, int page, List<ColorStyle> styles) {
+        super(54, plugin.messages().text("menu.color.title-" + section.key(),
                 "page", String.valueOf(clampPage(page, styles.size()) + 1),
                 "pages", String.valueOf(pageCount(styles.size()))));
         this.plugin = plugin;
         this.viewer = viewer;
-        this.channel = channel;
+        this.section = section;
+        this.channel = section.channel();
         this.icons = new Icons(plugin);
         this.styles = styles;
         this.pages = pageCount(styles.size());
@@ -91,7 +128,8 @@ public final class ColorMenu extends MenuView {
         drawStyles(false);
         drawInfo();
         Messages m = plugin.messages();
-        inventory.setItem(SLOT_BACK, icons.button(Material.ARROW, "menu.color.back"));
+        inventory.setItem(SLOT_BACK, icons.button(Material.ARROW,
+                section == Section.CHAT ? "menu.color.back" : "menu.color.back-name"));
         inventory.setItem(SLOT_RESET, icons.button(Material.BARRIER, "menu.color.reset",
                 "channel", icons.channelName(channel)));
         if (page > 0) {
@@ -105,8 +143,7 @@ public final class ColorMenu extends MenuView {
         inventory.setItem(SLOT_PAGE, Icons.item(Material.PAPER,
                 m.line("menu.color.page-info.name", "page", String.valueOf(page + 1), "pages", String.valueOf(pages)),
                 m.lines("menu.color.page-info.lore", "total", String.valueOf(styles.size())), false));
-        inventory.setItem(SLOT_CUSTOM, customItem());
-        if (channel == Channel.NAME) inventory.setItem(SLOT_NICK, nickItem());
+        inventory.setItem(SLOT_CUSTOM, section == Section.CHAT ? chatCustomItem() : nameCustomItem());
     }
 
     /** Màu chuyển động chạy cả trong GUI. */
@@ -161,12 +198,13 @@ public final class ColorMenu extends MenuView {
                 m.line("menu.color.info.name", ph), m.lines("menu.color.info.lore", ph), false));
     }
 
-    private ItemStack customItem() {
+    /** Tự chỉnh màu chat bằng danh sách mã hex. */
+    private ItemStack chatCustomItem() {
         Messages m = plugin.messages();
-        Feature feature = ColorService.customFeature(channel);
+        Feature feature = ColorService.customFeature(Channel.CHAT);
         boolean unlocked = plugin.colors().hasFeature(viewer, feature);
         PlayerData data = plugin.cache().get(viewer.getUniqueId());
-        ColorStyle shown = data == null ? null : data.shown(channel);
+        ColorStyle shown = data == null ? null : data.shown(Channel.CHAT);
         String state = !unlocked ? "locked" : shown != null && shown.isCustom() ? "active" : "unlocked";
         String[] ph = {
                 "max", String.valueOf(plugin.settings().customMaxColors()),
@@ -178,21 +216,27 @@ public final class ColorMenu extends MenuView {
                 m.lines("menu.color.custom.lore", lists, ph), false);
     }
 
-    private ItemStack nickItem() {
+    /**
+     * Tên tĩnh: "Màu tùy chỉnh" (đặt tên kèm mã màu từng chữ). Tên động: chỉ đổi chữ, màu động giữ nguyên.
+     * Cả hai đều là tính năng {@code nick}.
+     */
+    private ItemStack nameCustomItem() {
         Messages m = plugin.messages();
         boolean unlocked = plugin.colors().hasFeature(viewer, Feature.NICK);
         PlayerData data = plugin.cache().get(viewer.getUniqueId());
-        String nick = data == null || data.nick() == null ? m.raw("menu.main.nick-none") : "&f" + data.nick();
-        String state = unlocked ? (data != null && data.nick() != null ? "has-nick" : "unlocked") : "locked";
+        boolean hasNick = data != null && data.nick() != null;
+        String nick = hasNick ? Icons.styled(data.nick(), plugin.colors().nameStyle(data), false)
+                : m.raw("menu.main.nick-none");
+        String state = !unlocked ? "locked" : hasNick ? "has-nick" : "unlocked";
+        String path = "menu.color." + (section == Section.NAME_ANIMATED ? "rename" : "nick");
         String[] ph = {
                 "nick", nick,
                 "min", String.valueOf(plugin.settings().nickRules().minLength()),
                 "max", String.valueOf(plugin.settings().nickRules().maxLength()),
                 "tier", icons.featureUnlock(Feature.NICK)
         };
-        Map<String, List<String>> lists = Map.of("state", m.rawList("menu.color.nick.state-" + state, ph));
-        return Icons.item(Material.NAME_TAG, m.line("menu.color.nick.name", ph),
-                m.lines("menu.color.nick.lore", lists, ph), false);
+        Map<String, List<String>> lists = Map.of("state", m.rawList(path + ".state-" + state, ph));
+        return Icons.item(Material.NAME_TAG, m.line(path + ".name", ph), m.lines(path + ".lore", lists, ph), false);
     }
 
     @Override
@@ -203,22 +247,23 @@ public final class ColorMenu extends MenuView {
             return;
         }
         switch (slot) {
-            case SLOT_BACK -> plugin.menus().open(player, new MainMenu(plugin, player));
+            case SLOT_BACK -> plugin.menus().open(player, section == Section.CHAT
+                    ? new MainMenu(plugin, player) : new NameTypeMenu(plugin, player));
             case SLOT_RESET -> {
                 plugin.colors().select(player, channel, null);
                 render();
             }
             case SLOT_PREVIOUS -> {
-                if (page > 0) plugin.menus().open(player, new ColorMenu(plugin, player, channel, page - 1, styles));
+                if (page > 0) plugin.menus().open(player, new ColorMenu(plugin, player, section, page - 1, styles));
             }
             case SLOT_NEXT -> {
                 if (page < pages - 1) {
-                    plugin.menus().open(player, new ColorMenu(plugin, player, channel, page + 1, styles));
+                    plugin.menus().open(player, new ColorMenu(plugin, player, section, page + 1, styles));
                 }
             }
-            case SLOT_CUSTOM -> clickCustom(player);
-            case SLOT_NICK -> {
-                if (channel == Channel.NAME) clickNick(player, click);
+            case SLOT_CUSTOM -> {
+                if (section == Section.CHAT) clickChatCustom(player);
+                else clickNameCustom(player, click);
             }
             default -> {
             }
@@ -237,18 +282,18 @@ public final class ColorMenu extends MenuView {
         render();
     }
 
-    private void clickCustom(Player player) {
-        Feature feature = ColorService.customFeature(channel);
+    private void clickChatCustom(Player player) {
+        Feature feature = ColorService.customFeature(Channel.CHAT);
         if (!plugin.colors().hasFeature(player, feature)) {
             plugin.messages().send(player, "color.custom-locked",
-                    "channel", icons.channelName(channel), "tier", icons.featureUnlock(feature));
+                    "channel", icons.channelName(Channel.CHAT), "tier", icons.featureUnlock(feature));
             return;
         }
         plugin.menus().close(player, this);
-        plugin.prompts().start(player, channel == Channel.CHAT ? Kind.CHAT_COLOR : Kind.NAME_COLOR);
+        plugin.prompts().start(player, Kind.CHAT_COLOR);
     }
 
-    private void clickNick(Player player, ClickType click) {
+    private void clickNameCustom(Player player, ClickType click) {
         PlayerData data = plugin.cache().get(player.getUniqueId());
         if (data == null) return;
         if (click.isRightClick() && data.nick() != null) {
@@ -261,6 +306,6 @@ public final class ColorMenu extends MenuView {
             return;
         }
         plugin.menus().close(player, this);
-        plugin.prompts().start(player, Kind.NICK);
+        plugin.prompts().start(player, section == Section.NAME_ANIMATED ? Kind.RENAME : Kind.NICK);
     }
 }

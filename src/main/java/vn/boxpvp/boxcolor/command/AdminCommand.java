@@ -135,7 +135,7 @@ public final class AdminCommand implements TabExecutor {
             return;
         }
         if (parsed.hasColors()) {
-            data.selection(Channel.NAME, ColorStyle.custom(parsed.colors()).encodeCustom());
+            data.selection(Channel.NAME, ColorStyle.perChar(parsed.colors()).encodeCustom());
         }
         plugin.nickCommand().set(target, data, nick, data.nickChangedAt());
         plugin.messages().send(sender, "admin.nick-done", "player", target.getName(), "nick", nick);

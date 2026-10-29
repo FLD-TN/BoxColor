@@ -12,6 +12,7 @@
 #
 # Đổi mã (tên khoá như hong_pastel) của màu đang có người dùng thì họ sẽ mất màu đó
 # Màu chat để sáng, dễ đọc trên nền chat tối. Màu chuyển động chỉ dùng cho tên
+# Màu tên có animated: true nằm ở trang Màu động, cần thêm tính năng animated-name (tiers.yml)
 
 chat:
   # Elite
@@ -195,6 +196,10 @@ name:
     display: 'Hoa Sen'
     type: gradient
     colors: ['#FFC6FF', '#BDB2FF']
+  ho_phach:
+    display: 'Hổ Phách'
+    type: gradient
+    colors: ['#FFB703', '#FB8500']
   lua_dong:
     display: 'Lửa Động'
     type: gradient
@@ -211,6 +216,10 @@ name:
     display: 'Độc Dược'
     type: gradient
     colors: ['#C0EB75', '#69DB7C', '#20C997']
+  thach_anh:
+    display: 'Thạch Anh'
+    type: gradient
+    colors: ['#E5DBFF', '#B197FC']
   song_bien:
     display: 'Sóng Biển'
     type: gradient
@@ -222,6 +231,14 @@ name:
     display: 'Vàng Ròng'
     type: gradient
     colors: ['#FFE066', '#FFF9DB']
+  sam_chop:
+    display: 'Sấm Chớp'
+    type: gradient
+    colors: ['#FFF3BF', '#FFD43B', '#74C0FC']
+  bach_kim:
+    display: 'Bạch Kim'
+    type: gradient
+    colors: ['#F8F9FA', '#CED4DA', '#E9ECEF']
   than_sam:
     display: 'Thần Sấm'
     type: gradient
@@ -240,6 +257,14 @@ name:
     display: 'Hồng Ngọc'
     type: gradient
     colors: ['#FF8FAB', '#D64DCD']
+  mong_mo:
+    display: 'Mộng Mơ'
+    type: gradient
+    colors: ['#FFC6FF', '#A0C4FF']
+  lam_ngoc:
+    display: 'Lam Ngọc'
+    type: gradient
+    colors: ['#3BC9DB', '#748FFC']
   cuc_quang:
     display: 'Cực Quang'
     type: gradient
@@ -253,6 +278,18 @@ name:
     speed: 3500
     colors: ['#F783AC', '#B197FC', '#74C0FC']
   # Overlord
+  de_vuong:
+    display: 'Đế Vương'
+    type: gradient
+    colors: ['#FFD43B', '#B197FC', '#7560F5']
+  huyet_long:
+    display: 'Huyết Long'
+    type: gradient
+    colors: ['#FF8787', '#FA5252', '#F783AC']
+  tinh_tu:
+    display: 'Tinh Tú'
+    type: gradient
+    colors: ['#E3FAFC', '#B197FC', '#FF9DE2']
   ba_chu:
     display: 'Bá Chủ'
     type: gradient

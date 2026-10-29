@@ -52,7 +52,7 @@ public final class StyleRegistry {
 
     private static ColorStyle parse(String id, ConfigurationSection s, String path, Consumer<String> warn) {
         StyleKind kind = StyleKind.parse(s.getString("type", "solid"));
-        if (kind == null) {
+        if (kind == null || kind == StyleKind.PER_CHAR) {
             warn.accept(path + ": type phải là solid, gradient hoặc rainbow");
             return null;
         }

@@ -20,6 +20,10 @@ public record ColorStyle(String id, String display, StyleKind kind, List<Integer
 
     /** Mã của kiểu tự chỉnh trong dữ liệu người chơi. */
     public static final String CUSTOM_ID = "custom";
+    /** Đầu mã lưu của kiểu tô từng chữ: {@code ~#FF0000,#00FF00,...}. */
+    public static final String PER_CHAR_PREFIX = "~";
+    /** Chữ chưa có mã màu nào phía trước, trong kiểu tô từng chữ. */
+    public static final int NO_COLOR = -1;
 
     public ColorStyle {
         colors = List.copyOf(colors);
@@ -34,6 +38,14 @@ public record ColorStyle(String id, String display, StyleKind kind, List<Integer
         return new ColorStyle(CUSTOM_ID, CUSTOM_ID, kind, rgb, false, 3000L, 1f, 1f, null);
     }
 
+    /**
+     * Tô từng chữ: phần tử thứ i là màu của chữ nhìn thấy thứ i ({@link #NO_COLOR} = chưa có màu). Chữ vượt quá danh
+     * sách dùng màu cuối cùng.
+     */
+    public static ColorStyle perChar(List<Integer> rgb) {
+        return new ColorStyle(CUSTOM_ID, CUSTOM_ID, StyleKind.PER_CHAR, rgb, false, 3000L, 1f, 1f, null);
+    }
+
     public boolean isCustom() {
         return CUSTOM_ID.equals(id);
     }
@@ -41,7 +53,10 @@ public record ColorStyle(String id, String display, StyleKind kind, List<Integer
     /** Màu đầu tiên, dùng cho icon da nhuộm và placeholder {@code chat}. */
     public int firstColor() {
         if (kind == StyleKind.RAINBOW || colors.isEmpty()) return ColorRenderer.rgbAt(this, 0, 1, 0);
-        return colors.get(0);
+        for (int rgb : colors) {
+            if (rgb != NO_COLOR) return rgb;
+        }
+        return 0xFFFFFF;
     }
 
     /**
@@ -49,8 +64,9 @@ public record ColorStyle(String id, String display, StyleKind kind, List<Integer
      */
     public String encodeCustom() {
         List<String> parts = new ArrayList<>(colors.size());
-        for (int rgb : colors) parts.add(hex(rgb));
-        return String.join(",", parts);
+        for (int rgb : colors) parts.add(rgb == NO_COLOR ? "-" : hex(rgb));
+        String joined = String.join(",", parts);
+        return kind == StyleKind.PER_CHAR ? PER_CHAR_PREFIX + joined : joined;
     }
 
     public static String hex(int rgb) {

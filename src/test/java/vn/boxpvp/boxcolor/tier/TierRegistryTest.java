@@ -38,7 +38,7 @@ class TierRegistryTest {
     void defaultsLoadWithoutWarnings() {
         assertEquals(List.of(), warnings);
         assertEquals(27, styles.count(Channel.CHAT));
-        assertEquals(27, styles.count(Channel.NAME));
+        assertEquals(36, styles.count(Channel.NAME));
         assertEquals(9, tiers.all().size());
         assertEquals(StyleKind.RAINBOW, styles.get(Channel.NAME, "cau_vong_dong").kind());
         assertTrue(styles.get(Channel.NAME, "cau_vong_dong").animated());
@@ -58,11 +58,24 @@ class TierRegistryTest {
 
     @Test
     void featuresUnlockAtTheirTier() {
+        assertFalse(tiers.hasFeature(0, Feature.NICK));
+        assertTrue(tiers.hasFeature(1, Feature.NICK));
         assertFalse(tiers.hasFeature(6, Feature.CUSTOM_CHAT));
         assertTrue(tiers.hasFeature(7, Feature.CUSTOM_CHAT));
-        assertFalse(tiers.hasFeature(7, Feature.NICK));
-        assertTrue(tiers.hasFeature(8, Feature.NICK));
-        assertEquals(9, tiers.featureTier(Feature.CUSTOM_NAME).level());
+        assertFalse(tiers.hasFeature(7, Feature.ANIMATED_NAME));
+        assertTrue(tiers.hasFeature(8, Feature.ANIMATED_NAME));
+        // custom-name (1.3) đọc thành nick
+        assertEquals(Feature.NICK, Feature.parse("custom-name"));
+    }
+
+    @Test
+    void animatedNameColorsOnlyFromUltimate() {
+        for (var style : styles.list(Channel.NAME)) {
+            if (!style.animated()) continue;
+            assertTrue(tiers.unlockTier(Channel.NAME, style.id()).level() >= 8, style.id());
+        }
+        assertEquals(8, tiers.unlockTier(Channel.NAME, "cuc_quang").level());
+        assertEquals(9, tiers.unlockTier(Channel.NAME, "ba_chu").level());
     }
 
     @Test

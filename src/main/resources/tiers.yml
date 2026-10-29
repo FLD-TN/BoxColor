@@ -9,10 +9,11 @@
 #   name:        tên hiện trong GUI ở dòng "Mở khóa: ...", có mã màu '&'
 #   chat-colors: mã màu trong colors.yml (mục chat)
 #   name-colors: mã màu trong colors.yml (mục name)
-#   features:    custom-chat (tự chỉnh mã màu chat), custom-name (tự chỉnh mã màu tên), nick (/nick)
+#   features:    custom-chat (tự chỉnh mã màu chat), nick (Màu tùy chỉnh: tự đặt tên, tô màu từng chữ, /nick),
+#                animated-name (vào trang Màu tên động)
 #
 # Màu không nằm trong tier nào: chỉ mở bằng permission lẻ boxcolor.color.<chat|name>.<mã>, ví dụ quà sự kiện
-# Tính năng lẻ: boxcolor.feature.<custom-chat|custom-name|nick>
+# Tính năng lẻ: boxcolor.feature.<custom-chat|nick|animated-name>
 # boxcolor.admin: mở mọi thứ
 # Sửa xong chạy /boxcolor reload
 
@@ -21,6 +22,8 @@ tiers:
     name: '&#5FE2C5Elite'
     chat-colors: [bac_ha, hong_pastel, vang_kem]
     name-colors: [ngoc_lam, hong_dao, vang_nang]
+    # Màu tùy chỉnh: tự đặt tên, tô màu từng chữ (/nick)
+    features: [nick]
   2:
     name: '&#CF2121Titan'
     chat-colors: [oai_huong, cam_dao, xanh_troi]
@@ -36,23 +39,24 @@ tiers:
   5:
     name: '&#FDA94BLegend'
     chat-colors: [hoang_hon, mat_ong, hoa_anh_dao]
-    name-colors: [hoang_kim, hoa_sen, lua_dong]
+    name-colors: [hoang_kim, hoa_sen, ho_phach]
   6:
     name: '&#D2FD8CChampion'
     chat-colors: [ngoc_bich, chanh_day, ngan_ha]
-    name-colors: [cau_vong, doc_duoc, song_bien]
+    name-colors: [cau_vong, doc_duoc, thach_anh]
   7:
     name: '&#CCCC33Zeus'
     chat-colors: [cau_vong, sam_set, hoang_gia]
-    name-colors: [vang_rong, than_sam, cau_vong_dong]
+    name-colors: [vang_rong, sam_chop, bach_kim]
     features: [custom-chat]
   8:
     name: '&#D64DCDUltimate'
     chat-colors: [tinh_van, keo_ngot, anh_trang]
-    name-colors: [hong_ngoc, cuc_quang, tinh_van_dong]
-    features: [nick]
+    # Màu tĩnh + 5 màu động (trang Màu động mở từ đây)
+    name-colors: [hong_ngoc, mong_mo, lam_ngoc, lua_dong, song_bien, than_sam, cau_vong_dong, cuc_quang]
+    features: [animated-name]
   9:
     name: '&#7560F5Overlord'
     chat-colors: [vu_tru, kim_cuong, phuong_hoang]
-    name-colors: [ba_chu, phuong_hoang_lua, cau_vong_ruc]
-    features: [custom-name]
+    # Màu tĩnh + 4 màu động
+    name-colors: [de_vuong, huyet_long, tinh_tu, tinh_van_dong, ba_chu, phuong_hoang_lua, cau_vong_ruc]

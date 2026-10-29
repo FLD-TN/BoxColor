@@ -18,8 +18,7 @@ import vn.boxpvp.boxcolor.ui.Icons;
 import vn.boxpvp.boxcolor.util.Durations;
 
 /**
- * {@code /nick <tên>} và {@code /nick reset}. Cũng dùng cho ô "Đổi nick" trong GUI.
- * Mã màu gõ kèm ({@link NickInput}) được lưu thành màu tên tự chỉnh, cần tính năng {@code custom-name}.
+ * {@code /nick <tên>} và {@code /nick reset}: "Màu tùy chỉnh", cũng dùng cho ô đó trong GUI (tính năng {@code nick}).
  */
 public final class NickCommand implements TabExecutor {
 
@@ -61,7 +60,9 @@ public final class NickCommand implements TabExecutor {
     }
 
     /**
-     * Kiểm tra đủ luật rồi đặt nick, báo kết quả cho người chơi.
+     * "Màu tùy chỉnh": đặt tên hiển thị, có thể kèm mã màu từng chữ ({@link NickInput}).
+     * Có mã màu: đổi cả chữ lẫn màu (lưu thành màu tên tô từng chữ). Không có mã: chỉ đổi chữ, giữ màu đang dùng
+     * (màu có sẵn, màu động hoặc màu tô từng chữ cũ).
      *
      * @return {@code true} nếu đã đổi được
      */
@@ -76,21 +77,7 @@ public final class NickCommand implements TabExecutor {
             return false;
         }
         NickInput.Parsed parsed = NickInput.parse(input);
-        ColorStyle color = null;
-        if (parsed.hasColors()) {
-            // Màu trong nick = tự chỉnh màu tên, cần đúng quyền đó
-            if (!plugin.colors().hasFeature(player, Feature.CUSTOM_NAME)) {
-                plugin.messages().send(player, "nick.color-locked",
-                        "tier", new Icons(plugin).featureUnlock(Feature.CUSTOM_NAME));
-                return false;
-            }
-            int max = plugin.settings().customMaxColors();
-            if (parsed.colors().size() > max) {
-                plugin.messages().send(player, "color.custom-too-many", "max", String.valueOf(max));
-                return false;
-            }
-            color = ColorStyle.custom(parsed.colors());
-        }
+        ColorStyle color = parsed.hasColors() ? ColorStyle.perChar(parsed.colors()) : null;
         NickRules rules = plugin.settings().nickRules();
         String nick = NickRules.clean(parsed.text());
         if (nick.equals(data.nick())) {
@@ -98,7 +85,7 @@ public final class NickCommand implements TabExecutor {
                 plugin.messages().send(player, "nick.same");
                 return false;
             }
-            // Giữ nick, chỉ đổi màu: không tính thời gian chờ
+            // Giữ chữ, chỉ đổi màu: không tính thời gian chờ
             data.selection(Channel.NAME, color.encodeCustom());
             plugin.cache().save(data);
             plugin.colors().refresh(player);
@@ -139,6 +126,9 @@ public final class NickCommand implements TabExecutor {
 
     public void reset(Player player, PlayerData data) {
         plugin.nicks().set(data, null);
+        // Màu tô từng chữ gắn với chữ của nick, bỏ nick thì bỏ luôn
+        String selection = data.selection(Channel.NAME);
+        if (selection != null && selection.startsWith(ColorStyle.PER_CHAR_PREFIX)) data.selection(Channel.NAME, null);
         plugin.cache().save(data);
         plugin.colors().refresh(player);
         plugin.messages().send(player, "nick.reset");

@@ -76,10 +76,10 @@ public final class Settings {
 
         List<String> blocked = c.isList("nick.blocked-words")
                 ? c.getStringList("nick.blocked-words")
-                : List.of("admin", "owner", "staff", "moderator", "helper", "console");
+                : List.<String>of();
         nickRules = new NickRules(c.getInt("nick.min-length", 3), c.getInt("nick.max-length", 16),
                 c.getBoolean("nick.allow-spaces", true), c.getBoolean("nick.allow-vietnamese", true), blocked);
-        nickCooldownMillis = Math.max(0L, c.getLong("nick.cooldown-seconds", 3600L)) * 1000L;
+        nickCooldownMillis = Math.max(0L, c.getLong("nick.cooldown-seconds", 0L)) * 1000L;
         checkRealNames = c.getBoolean("nick.check-real-names", true);
 
         customMaxColors = Math.max(1, Math.min(10, c.getInt("custom.max-colors", 5)));

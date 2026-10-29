@@ -90,6 +90,10 @@ public final class ColorService {
 
     private boolean canUse(Player player, int level, Channel channel, ColorStyle style) {
         if (style.isCustom()) return hasFeature(player, level, customFeature(channel));
+        // Màu tên động cần thêm quyền vào GUI màu động
+        if (channel == Channel.NAME && style.animated() && !hasFeature(player, level, Feature.ANIMATED_NAME)) {
+            return false;
+        }
         return plugin.tiers().allows(level, channel, style.id())
                 || player.hasPermission(COLOR_PERMISSION + channel.key() + "." + style.id());
     }
@@ -102,8 +106,9 @@ public final class ColorService {
         return plugin.tiers().hasFeature(level, feature) || player.hasPermission(FEATURE_PERMISSION + feature.key());
     }
 
+    /** Màu chat tự chỉnh: {@code custom-chat}. Màu tên tự chỉnh là "Màu tùy chỉnh": {@code nick}. */
     public static Feature customFeature(Channel channel) {
-        return channel == Channel.CHAT ? Feature.CUSTOM_CHAT : Feature.CUSTOM_NAME;
+        return channel == Channel.CHAT ? Feature.CUSTOM_CHAT : Feature.NICK;
     }
 
     /** Màu tên đang hiện; chưa chọn thì màu rank; không có màu rank thì {@code default-name-color}. */

@@ -76,18 +76,12 @@ nick:
   allow-spaces: true
   allow-vietnamese: true
   # Thời gian chờ giữa hai lần đổi nick (giây), 0 = không chờ. Bỏ qua bằng boxcolor.nick.bypass-cooldown
-  cooldown-seconds: 3600
+  cooldown-seconds: 0
   # Chặn nick trùng hoặc gần giống tên thật của người chơi khác (kể cả offline), chống giả mạo
   # So sánh bỏ dấu, không phân biệt hoa thường, coi 0=o, 1=i=l, 3=e, 4=a, 5=s, 7=t, bỏ dấu cách và _
   check-real-names: true
-  # Nick chứa các từ này (so như trên) sẽ bị chặn
-  blocked-words:
-    - admin
-    - owner
-    - staff
-    - moderator
-    - helper
-    - console
+  # Nick chứa các từ này (so như trên) sẽ bị chặn. Để trống là không chặn từ nào, ví dụ: [admin, staff]
+  blocked-words: []
 
 custom:
   # Số mã màu tối đa khi tự chỉnh (1 mã = màu đơn, từ 2 mã = chuyển màu)

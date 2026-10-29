@@ -4,7 +4,7 @@ Màu chat, màu tên và nick cho BoxPvP (Paper 1.21.1). Mở khóa theo tier: m
 
 ## Cài đặt
 
-1. Chép `build/libs/BoxColor-1.3.1.jar` vào `plugins/`. Cần **PlaceholderAPI** để các plugin khác đọc được màu.
+1. Chép `build/libs/BoxColor-1.4.0.jar` vào `plugins/`. Cần **PlaceholderAPI** để các plugin khác đọc được màu.
 2. Khởi động server một lần để tạo `config.yml`, `colors.yml`, `tiers.yml`, `messages.yml`.
 3. Sửa `tiers.yml` cho đúng rank của server, rồi cấp quyền tier trong LuckPerms (xem phần dưới).
 4. Nối placeholder vào EzChat, TAB, UnlimitedNameTag (xem phần dưới).
@@ -16,13 +16,13 @@ Màu chat, màu tên và nick cho BoxPvP (Paper 1.21.1). Mở khóa theo tier: m
 |---|---|
 | `/chatcolor`, `/namecolor` (`/mauchat`, `/mauten`) | Mở trang chính (cả hai lệnh cùng một trang) |
 | `/chatcolor reset`, `/namecolor reset` | Bỏ màu |
-| `/chatcolor custom #FFB3C6 #A0E7E5` | Tự chỉnh mã màu (cần tính năng `custom-chat` / `custom-name`) |
-| `/nick <tên>`, `/nick reset` | Đặt / bỏ nick (cần tính năng `nick`) |
-| `/nick #FFD166Đức #FF8FABAnh` | Nick kèm màu: mã `&#RRGGBB`, `#RRGGBB` hoặc `&a`... ở đâu cũng được, 1 mã = màu đơn, nhiều mã = chuyển màu cả nick. Cần thêm `custom-name`. Gõ lại nick cũ kèm mã chỉ đổi màu, không tính thời gian chờ |
+| `/chatcolor custom #FFB3C6 #A0E7E5` | Tự chỉnh mã màu chat (cần tính năng `custom-chat`) |
+| `/nick <tên>`, `/nick reset` | Màu tùy chỉnh: đặt / bỏ tên hiển thị (cần tính năng `nick`) |
+| `/nick &x&6&7&D&A&F&8D&x&6&A&D&9&F&5e...` | Tên kèm màu từng chữ: mỗi mã (`&x&R&R&G&G&B&B`, `&#RRGGBB`, `#RRGGBB`, `&0`-`&f`, `&r`) tô các chữ phía sau nó. Không gõ mã: chỉ đổi chữ, giữ màu đang dùng (kể cả màu động). Gõ lại đúng tên cũ kèm mã: chỉ đổi màu |
 | `/realname <nick>` (`/tenthat`) | Xem nick là của ai |
 | `/boxcolor reload` | Nạp lại mọi file |
 | `/boxcolor reset <người chơi> <chat\|name\|nick\|all>` | Xóa màu/nick (offline: chỉ xóa được nick) |
-| `/boxcolor nick <người chơi> <tên\|reset>` | Admin đặt nick, bỏ qua độ dài, từ cấm và thời gian chờ |
+| `/boxcolor nick <người chơi> <tên\|reset>` | Admin đặt tên (nhận mã màu), bỏ qua độ dài, từ cấm và thời gian chờ |
 
 ## Phân quyền
 
@@ -46,12 +46,21 @@ lp group overlord permission set boxcolor.tier.9 true
 | `boxcolor.realname` | mọi người | `/realname` |
 | `boxcolor.tier.<n>` | không | Tier của rank |
 | `boxcolor.color.<chat\|name>.<mã>` | không | Tặng lẻ một màu (quà sự kiện), không cần lên rank |
-| `boxcolor.feature.<custom-chat\|custom-name\|nick>` | không | Tặng lẻ một tính năng |
+| `boxcolor.feature.<custom-chat\|nick\|animated-name>` | không | Tặng lẻ một tính năng |
 | `boxcolor.nick.bypass-cooldown` | op | Đổi nick không cần chờ |
 | `boxcolor.admin` | op | Mọi màu, mọi tính năng, lệnh admin |
 
 Mất rank thì màu và nick **tạm ẩn** (kiểm tra lại mỗi `access-check-seconds`), dữ liệu vẫn giữ. Lên lại rank là hiện lại.
 Nick do admin đặt cũng chỉ hiện khi người đó có tính năng `nick`.
+
+## GUI màu tên
+
+`/namecolor` (hoặc ô Màu tên ở trang chính) mở menu chọn loại:
+- **Màu tĩnh:** màu có sẵn theo rank, và ô **Màu tùy chỉnh** (tính năng `nick`): bấm vào, gõ tên kèm mã màu vào chat.
+- **Màu động:** cần tính năng `animated-name` (mặc định Ultimate). Chỉ chọn màu có sẵn trong `colors.yml`
+  (màu có `animated: true`). Ô **Đổi chữ của tên** đặt tên hiển thị, màu động chạy theo đúng chữ đó.
+
+Chọn một màu trong GUI thì giữ chữ của tên, chỉ tô lại bằng màu mới.
 
 ## Placeholder
 
@@ -124,7 +133,7 @@ bỏ dấu cách và `_`. Vì vậy "Ádm1n", "St3ve" bị coi là trùng "admin
 - Không được trùng nick của người khác (kể cả đang offline).
 - Không được trùng tên thật của bất kỳ ai từng vào server (`nick.check-real-names`).
 - Nếu ai đó đặt nick trùng tên một người chưa từng vào server, khi người đó vào lần đầu thì nick kia bị gỡ.
-- `nick.blocked-words`: chặn nick chứa từ như admin, staff...
+- `nick.blocked-words` (mặc định trống) và `nick.cooldown-seconds` (mặc định 0): bật lại nếu cần.
 
 ## File dữ liệu
 
