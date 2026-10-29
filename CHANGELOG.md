@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.9.0 (2026-10-29)
+
+- Màu chat theo rank chỉ còn màu đơn (18 màu, mỗi rank 2); màu trộn từ 2 màu trở lên chỉ có ở crate. 10 màu
+  gradient từng thuộc rank chuyển sang crate (bỏ Mật Ong vì trùng tông Hổ Phách/Cam Lửa).
+- Hiệu ứng tên động theo rank chỉ còn 2: Ultimate Cầu Vồng Động, Overlord Bá Chủ. 7 hiệu ứng còn lại chuyển sang crate.
+- Thêm 13 hiệu ứng động crate, lọc tự động để khác mọi hiệu ứng và màu tên tĩnh đã có: Điện Tím, Bình Minh Động,
+  Lục Bảo Vàng, San Hô Động, Lửa Băng Động, Giáng Sinh, Đào Tiên Động, Ma Trận, Tử Đằng Động, Sóng Neon,
+  Thiên Hà Động, Mùa Xuân Động, Cực Tím.
+- Tổng: chat 50 (18 rank + 32 crate), tên tĩnh 36 (27 + 9), hiệu ứng động 25 (2 + 23).
+
 ## 1.8.2 (2026-10-29)
 
 - Thiết kế lại bảng màu để không màu nào trùng tông: đo bằng khoảng cách CIELAB trên 16 điểm mẫu (màu động so cả

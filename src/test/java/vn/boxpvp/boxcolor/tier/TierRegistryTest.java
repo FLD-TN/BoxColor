@@ -37,8 +37,8 @@ class TierRegistryTest {
     @Test
     void defaultsLoadWithoutWarnings() {
         assertEquals(List.of(), warnings);
-        assertEquals(41, styles.count(Channel.CHAT));
-        assertEquals(48, styles.count(Channel.NAME));
+        assertEquals(50, styles.count(Channel.CHAT));
+        assertEquals(61, styles.count(Channel.NAME));
         assertEquals(9, tiers.all().size());
         assertEquals(StyleKind.RAINBOW, styles.get(Channel.NAME, "cau_vong_dong").kind());
         assertTrue(styles.get(Channel.NAME, "cau_vong_dong").animated());
@@ -78,7 +78,8 @@ class TierRegistryTest {
         }
         assertNull(tiers.unlockTier(Channel.NAME, "neon_dong"));
         assertFalse(tiers.allows(9, Channel.NAME, "neon_dong"));
-        assertEquals(8, tiers.unlockTier(Channel.NAME, "cuc_quang").level());
+        assertEquals(8, tiers.unlockTier(Channel.NAME, "cau_vong_dong").level());
+        assertNull(tiers.unlockTier(Channel.NAME, "cuc_quang"));
         assertEquals(9, tiers.unlockTier(Channel.NAME, "ba_chu").level());
     }
 
@@ -93,6 +94,27 @@ class TierRegistryTest {
         // Màu crate chỉ mở bằng permission lẻ, kể cả rank cao nhất
         assertFalse(tiers.allows(9, Channel.CHAT, "vu_tru"));
         assertFalse(tiers.allows(9, Channel.CHAT, "cuc_quang"));
+        // Màu chat theo rank chỉ là màu đơn; màu trộn chỉ có ở crate
+        for (var style : styles.list(Channel.CHAT)) {
+            boolean inTier = tiers.unlockTier(Channel.CHAT, style.id()) != null;
+            assertEquals(inTier, style.kind() == vn.boxpvp.boxcolor.style.StyleKind.SOLID, style.id());
+        }
+    }
+
+    @Test
+    void oneAnimatedEffectPerTopRank() {
+        int ultimate = 0;
+        int overlord = 0;
+        for (var style : styles.list(Channel.NAME)) {
+            if (!style.animated()) continue;
+            var tier = tiers.unlockTier(Channel.NAME, style.id());
+            if (tier == null) continue;
+            if (tier.level() == 8) ultimate++;
+            else if (tier.level() == 9) overlord++;
+            else throw new AssertionError("hiệu ứng động ở rank thấp: " + style.id());
+        }
+        assertEquals(1, ultimate);
+        assertEquals(1, overlord);
     }
 
     @Test

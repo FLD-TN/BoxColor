@@ -16,7 +16,7 @@
 # Màu tên có animated: true nằm ở trang Màu động, cần thêm tính năng animated-name (tiers.yml)
 
 chat:
-  # ---------- Màu theo rank: mỗi rank 2 màu (xem tiers.yml) ----------
+  # ---------- Màu theo rank: mỗi rank 2 màu đơn (xem tiers.yml) ----------
   # Elite
   bac_ha:
     display: 'Bạc Hà'
@@ -52,8 +52,55 @@ chat:
   hong_phan:
     display: 'San Hô'
     type: solid
-    colors: ['#FF5F6D']
+    colors: ['#FF6B6B']
   # Legend
+  do_ruc:
+    display: 'Đỏ Rực'
+    type: solid
+    colors: ['#FF2E3D']
+  xanh_ngoc:
+    display: 'Xanh Ngọc'
+    type: solid
+    colors: ['#2EE6F0']
+  # Champion
+  xanh_luc_bao:
+    display: 'Lục Bảo'
+    type: solid
+    colors: ['#2EE66B']
+  tim_hoang_gia:
+    display: 'Tím Hoàng Gia'
+    type: solid
+    colors: ['#B44DFF']
+  # Zeus
+  vang_chanh:
+    display: 'Vàng Chanh'
+    type: solid
+    colors: ['#D4F52E']
+  xanh_lam:
+    display: 'Xanh Lam'
+    type: solid
+    colors: ['#5C7CFF']
+  # Ultimate
+  hong_dam:
+    display: 'Hồng Đậm'
+    type: solid
+    colors: ['#FF3D8B']
+  cam_lua:
+    display: 'Cam Lửa'
+    type: solid
+    colors: ['#FF7A1A']
+  # Overlord
+  hong_neon:
+    display: 'Hồng Neon'
+    type: solid
+    colors: ['#FF4FE8']
+  ho_phach:
+    display: 'Hổ Phách'
+    type: solid
+    colors: ['#FFB21A']
+
+  # ---------- Màu chat crate: màu trộn từ 2 màu trở lên ----------
+  # Chỉ mở bằng permission boxcolor.color.chat.<mã> (phiếu /boxcolor give, quay crate)
   bang_tuyet:
     display: 'Băng Tuyết'
     type: gradient
@@ -62,7 +109,6 @@ chat:
     display: 'Đào Hồng'
     type: gradient
     colors: ['#FFB37A', '#FF5EA8']
-  # Champion
   bien_lang:
     display: 'Biển Lặng'
     type: gradient
@@ -71,16 +117,10 @@ chat:
     display: 'Nắng Sớm'
     type: gradient
     colors: ['#FFF06A', '#6FE3FF']
-  # Zeus
-  mat_ong:
-    display: 'Mật Ong'
-    type: gradient
-    colors: ['#FFD54F', '#FF8A1C']
   chanh_day:
     display: 'Chanh Dây'
     type: gradient
     colors: ['#D4F53C', '#2EE6C8']
-  # Ultimate
   hoa_anh_dao:
     display: 'Hoa Anh Đào'
     type: gradient
@@ -89,7 +129,6 @@ chat:
     display: 'Ngọc Bích'
     type: gradient
     colors: ['#2EE6A8', '#1FB5E8', '#5C7CFF']
-  # Overlord
   sam_set:
     display: 'Sấm Sét'
     type: gradient
@@ -98,9 +137,6 @@ chat:
     display: 'Hoàng Gia'
     type: gradient
     colors: ['#FFD24D', '#C04BFF']
-
-  # ---------- Màu đặc sắc: không nằm trong tier nào ----------
-  # Chỉ mở bằng permission boxcolor.color.chat.<mã> (phiếu /boxcolor give, quay crate)
   hoang_hon:
     display: 'Hoàng Hôn'
     type: gradient
@@ -315,66 +351,7 @@ name:
     type: gradient
     colors: ['#6B7BFF', '#FF6BD5', '#FFE14D']
 
-  # ---------- Hiệu ứng tên động (TAB, scoreboard, nametag) ----------
-  # Ultimate (động)
-  lua_dong:
-    display: 'Lửa Động'
-    type: gradient
-    animated: true
-    speed: 2500
-    colors: ['#FFB800', '#FF3D00']
-  song_bien:
-    display: 'Sóng Biển'
-    type: gradient
-    animated: true
-    speed: 3500
-    colors: ['#00B4FF', '#3DFFD2', '#FFFFFF']
-  than_sam:
-    display: 'Thần Sấm'
-    type: gradient
-    animated: true
-    speed: 1800
-    colors: ['#FFF24D', '#3DCFFF']
-  cau_vong_dong:
-    display: 'Cầu Vồng Động'
-    type: rainbow
-    animated: true
-    speed: 3000
-    saturation: 0.6
-    brightness: 1.0
-  cuc_quang:
-    display: 'Cực Quang'
-    type: gradient
-    animated: true
-    speed: 4500
-    colors: ['#3DFFB0', '#3DB8FF', '#B07CFF']
-  # Overlord (động)
-  tinh_van_dong:
-    display: 'Tinh Vân Động'
-    type: gradient
-    animated: true
-    speed: 3500
-    colors: ['#FF4FA8', '#8B5CFF', '#3DA5FF']
-  ba_chu:
-    display: 'Bá Chủ'
-    type: gradient
-    animated: true
-    speed: 3000
-    colors: ['#FFD700', '#9B5CFF']
-  phuong_hoang_lua:
-    display: 'Phượng Hoàng Băng'
-    type: gradient
-    animated: true
-    speed: 2500
-    colors: ['#E0FBFF', '#3DC8FF', '#7A5CFF']
-  cau_vong_ruc:
-    display: 'Hoàng Hôn Động'
-    type: gradient
-    animated: true
-    speed: 3000
-    colors: ['#FFA94D', '#FF4F8B', '#6C63FF']
-
-  # ---------- Màu tên đặc sắc (crate) ----------
+  # ---------- Màu tên tĩnh crate ----------
   cam_hoang_kim:
     display: 'Cam Rực'
     type: solid
@@ -411,6 +388,66 @@ name:
     display: 'Hoa Hướng Dương'
     type: gradient
     colors: ['#FFE600', '#7CC242']
+
+  # ---------- Hiệu ứng tên động (TAB, scoreboard, nametag), cần animated-name ----------
+  # Ultimate
+  cau_vong_dong:
+    display: 'Cầu Vồng Động'
+    type: rainbow
+    animated: true
+    speed: 3000
+    saturation: 0.6
+    brightness: 1.0
+  # Overlord
+  ba_chu:
+    display: 'Bá Chủ'
+    type: gradient
+    animated: true
+    speed: 3000
+    colors: ['#FFD700', '#9B5CFF']
+  # Hiệu ứng động crate
+  lua_dong:
+    display: 'Lửa Động'
+    type: gradient
+    animated: true
+    speed: 2500
+    colors: ['#FFB800', '#FF3D00']
+  song_bien:
+    display: 'Sóng Biển'
+    type: gradient
+    animated: true
+    speed: 3500
+    colors: ['#00B4FF', '#3DFFD2', '#FFFFFF']
+  than_sam:
+    display: 'Thần Sấm'
+    type: gradient
+    animated: true
+    speed: 1800
+    colors: ['#FFF24D', '#3DCFFF']
+  cuc_quang:
+    display: 'Cực Quang'
+    type: gradient
+    animated: true
+    speed: 4500
+    colors: ['#3DFFB0', '#3DB8FF', '#B07CFF']
+  tinh_van_dong:
+    display: 'Tinh Vân Động'
+    type: gradient
+    animated: true
+    speed: 3500
+    colors: ['#FF4FA8', '#8B5CFF', '#3DA5FF']
+  phuong_hoang_lua:
+    display: 'Phượng Hoàng Băng'
+    type: gradient
+    animated: true
+    speed: 2500
+    colors: ['#E0FBFF', '#3DC8FF', '#7A5CFF']
+  cau_vong_ruc:
+    display: 'Hoàng Hôn Động'
+    type: gradient
+    animated: true
+    speed: 3000
+    colors: ['#FFA94D', '#FF4F8B', '#6C63FF']
   neon_dong:
     display: 'Neon Động'
     type: gradient
@@ -429,3 +466,81 @@ name:
     animated: true
     speed: 3500
     colors: ['#7CFF4D', '#1FA77A', '#D8F54D']
+  dien_tim_dong:
+    display: 'Điện Tím'
+    type: gradient
+    animated: true
+    speed: 2000
+    colors: ['#B24DFF', '#00F0FF']
+  binh_minh_dong:
+    display: 'Bình Minh Động'
+    type: gradient
+    animated: true
+    speed: 3500
+    colors: ['#FFD23F', '#FF5EA8']
+  luc_bao_vang_dong:
+    display: 'Lục Bảo Vàng'
+    type: gradient
+    animated: true
+    speed: 3000
+    colors: ['#2EE67A', '#FFD000']
+  san_ho_dong:
+    display: 'San Hô Động'
+    type: gradient
+    animated: true
+    speed: 3500
+    colors: ['#FF7A6B', '#3DDCC8']
+  lua_bang_dong:
+    display: 'Lửa Băng Động'
+    type: gradient
+    animated: true
+    speed: 2500
+    colors: ['#FF5A1F', '#3DC8FF']
+  giang_sinh_dong:
+    display: 'Giáng Sinh'
+    type: gradient
+    animated: true
+    speed: 2500
+    colors: ['#FF3D3D', '#2EE67A']
+  dao_tien_dong:
+    display: 'Đào Tiên Động'
+    type: gradient
+    animated: true
+    speed: 3500
+    colors: ['#FF8A5C', '#FFE14D', '#7CFF8A']
+  ma_tran_dong:
+    display: 'Ma Trận'
+    type: gradient
+    animated: true
+    speed: 1500
+    colors: ['#39FF14', '#00E5A0']
+  tu_dang_dong:
+    display: 'Tử Đằng Động'
+    type: gradient
+    animated: true
+    speed: 4000
+    colors: ['#C46BFF', '#6FB7FF']
+  song_neon_dong:
+    display: 'Sóng Neon'
+    type: gradient
+    animated: true
+    speed: 2500
+    colors: ['#FF3DD4', '#3DFFB0']
+  thien_ha_dong:
+    display: 'Thiên Hà Động'
+    type: gradient
+    animated: true
+    speed: 4000
+    colors: ['#6B7BFF', '#C26BFF', '#FF9F6B']
+  mua_xuan_dong:
+    display: 'Mùa Xuân Động'
+    type: gradient
+    animated: true
+    speed: 3000
+    colors: ['#FF5FA2', '#5CE65C']
+  cuc_tim_dong:
+    display: 'Cực Tím'
+    type: gradient
+    animated: true
+    speed: 3000
+    colors: ['#7B5CFF', '#FF2E9A', '#FFD23F']

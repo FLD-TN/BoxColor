@@ -40,24 +40,24 @@ tiers:
     name-colors: [lua_chay, bang_gia, rung_thong]
   5:
     name: '&f%img_wellsetups_ranks_legend%'
-    chat-colors: [bang_tuyet, dao_hong]
+    chat-colors: [do_ruc, xanh_ngoc]
     name-colors: [hoang_kim, hoa_sen, ho_phach]
   6:
     name: '&f%img_wellsetups_ranks_champion%'
-    chat-colors: [bien_lang, nang_som]
+    chat-colors: [xanh_luc_bao, tim_hoang_gia]
     name-colors: [cau_vong, doc_duoc, thach_anh]
   7:
     name: '&f%img_wellsetups_ranks_zeus%'
-    chat-colors: [mat_ong, chanh_day]
+    chat-colors: [vang_chanh, xanh_lam]
     name-colors: [vang_rong, sam_chop, bach_kim]
   8:
     name: '&f%img_wellsetups_ranks_ultimate%'
-    chat-colors: [hoa_anh_dao, ngoc_bich]
-    # Màu tĩnh + 5 màu động (trang Màu động mở từ đây)
-    name-colors: [hong_ngoc, mong_mo, lam_ngoc, lua_dong, song_bien, than_sam, cau_vong_dong, cuc_quang]
+    chat-colors: [hong_dam, cam_lua]
+    # 3 màu tĩnh + 1 hiệu ứng động (trang hiệu ứng động mở từ đây)
+    name-colors: [hong_ngoc, mong_mo, lam_ngoc, cau_vong_dong]
     features: [animated-name]
   9:
     name: '&f%img_wellsetups_ranks_overlord%'
-    chat-colors: [sam_set, hoang_gia]
-    # Màu tĩnh + 4 màu động
-    name-colors: [de_vuong, huyet_long, tinh_tu, tinh_van_dong, ba_chu, phuong_hoang_lua, cau_vong_ruc]
+    chat-colors: [hong_neon, ho_phach]
+    # 3 màu tĩnh + 1 hiệu ứng động
+    name-colors: [de_vuong, huyet_long, tinh_tu, ba_chu]
