@@ -1,8 +1,9 @@
 # BoxColor - rank nào được màu nào
 #
 # Mỗi rank chỉ cần MỘT permission trong LuckPerms: boxcolor.tier.<số>
-#   ví dụ: /lp group vip permission set boxcolor.tier.1
+#   ví dụ: /lp group elite permission set boxcolor.tier.1 true
 # Tier cao tự có hết màu và tính năng của các tier thấp hơn, không cần cho kế thừa trong LuckPerms
+# (menu /rank gỡ rank cũ khi mua rank mới cũng không sao)
 # Mỗi tier chỉ ghi những gì nó MỞ THÊM
 #
 #   name:        tên hiện trong GUI ở dòng "Mở khóa: ...", có mã màu '&'
@@ -17,23 +18,41 @@
 
 tiers:
   1:
-    name: '&#A0E7E5VIP'
-    chat-colors: [hong_pastel, bac_ha]
-    name-colors: [xanh_ngoc, hong_dao]
+    name: '&#5FE2C5Elite'
+    chat-colors: [bac_ha, hong_pastel, vang_kem]
+    name-colors: [ngoc_lam, hong_dao, vang_nang]
   2:
-    name: '&#FFD166VIP+'
-    chat-colors: [vang_kem, oai_huong]
-    name-colors: [vang_nang, tim_mong]
+    name: '&#CF2121Titan'
+    chat-colors: [oai_huong, cam_dao, xanh_troi]
+    name-colors: [do_ruby, tim_mong, xanh_duong]
   3:
-    name: '&#74C0FCMVP'
-    chat-colors: [dao_hong, bien_xanh]
-    name-colors: [lua_chay, dai_duong]
+    name: '&#6FB0E3Hero'
+    chat-colors: [la_non, hong_phan, bang_tuyet]
+    name-colors: [bien_xanh, keo_bong, chanh_bac_ha]
   4:
-    name: '&#FF8FABMVP+'
-    chat-colors: [hoang_hon, bang_tuyet]
-    name-colors: [keo_bong, cau_vong]
+    name: '&#41ABFFMaster'
+    chat-colors: [dao_hong, bien_lang, nang_som]
+    name-colors: [lua_chay, bang_gia, rung_thong]
   5:
-    name: '&#C77DFFLegend'
-    chat-colors: [ngan_ha, cau_vong]
-    name-colors: [cau_vong_dong, cuc_quang]
-    features: [custom-chat, custom-name, nick]
+    name: '&#FDA94BLegend'
+    chat-colors: [hoang_hon, mat_ong, hoa_anh_dao]
+    name-colors: [hoang_kim, hoa_sen, lua_dong]
+  6:
+    name: '&#D2FD8CChampion'
+    chat-colors: [ngoc_bich, chanh_day, ngan_ha]
+    name-colors: [cau_vong, doc_duoc, song_bien]
+  7:
+    name: '&#CCCC33Zeus'
+    chat-colors: [cau_vong, sam_set, hoang_gia]
+    name-colors: [vang_rong, than_sam, cau_vong_dong]
+    features: [custom-chat]
+  8:
+    name: '&#D64DCDUltimate'
+    chat-colors: [tinh_van, keo_ngot, anh_trang]
+    name-colors: [hong_ngoc, cuc_quang, tinh_van_dong]
+    features: [nick]
+  9:
+    name: '&#7560F5Overlord'
+    chat-colors: [vu_tru, kim_cuong, phuong_hoang]
+    name-colors: [ba_chu, phuong_hoang_lua, cau_vong_ruc]
+    features: [custom-name]

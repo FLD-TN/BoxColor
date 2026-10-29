@@ -28,11 +28,15 @@ Màu chat, màu tên và nick cho BoxPvP (Paper 1.21.1). Mở khóa theo tier: m
 Mỗi rank chỉ cần một dòng, tier cao tự có hết màu của tier thấp hơn:
 
 ```
-/lp group vip     permission set boxcolor.tier.1
-/lp group vipplus permission set boxcolor.tier.2
-/lp group mvp     permission set boxcolor.tier.3
-/lp group mvpplus permission set boxcolor.tier.4
-/lp group legend  permission set boxcolor.tier.5
+lp group elite permission set boxcolor.tier.1 true
+lp group titan permission set boxcolor.tier.2 true
+lp group hero permission set boxcolor.tier.3 true
+lp group master permission set boxcolor.tier.4 true
+lp group legend permission set boxcolor.tier.5 true
+lp group champion permission set boxcolor.tier.6 true
+lp group zeus permission set boxcolor.tier.7 true
+lp group ultimate permission set boxcolor.tier.8 true
+lp group overlord permission set boxcolor.tier.9 true
 ```
 
 | Permission | Mặc định | Việc |

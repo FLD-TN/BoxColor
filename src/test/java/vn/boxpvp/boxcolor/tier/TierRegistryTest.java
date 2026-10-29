@@ -37,9 +37,9 @@ class TierRegistryTest {
     @Test
     void defaultsLoadWithoutWarnings() {
         assertEquals(List.of(), warnings);
-        assertEquals(10, styles.count(Channel.CHAT));
-        assertEquals(10, styles.count(Channel.NAME));
-        assertEquals(5, tiers.all().size());
+        assertEquals(27, styles.count(Channel.CHAT));
+        assertEquals(27, styles.count(Channel.NAME));
+        assertEquals(9, tiers.all().size());
         assertEquals(StyleKind.RAINBOW, styles.get(Channel.NAME, "cau_vong_dong").kind());
         assertTrue(styles.get(Channel.NAME, "cau_vong_dong").animated());
     }
@@ -47,26 +47,29 @@ class TierRegistryTest {
     @Test
     void higherTierIncludesLowerTiers() {
         assertTrue(tiers.allows(1, Channel.CHAT, "hong_pastel"));
-        assertFalse(tiers.allows(1, Channel.CHAT, "vang_kem"));
+        assertFalse(tiers.allows(1, Channel.CHAT, "oai_huong"));
         assertTrue(tiers.allows(3, Channel.CHAT, "hong_pastel"));
-        assertTrue(tiers.allows(3, Channel.CHAT, "vang_kem"));
+        assertTrue(tiers.allows(3, Channel.CHAT, "oai_huong"));
+        assertFalse(tiers.allows(8, Channel.NAME, "ba_chu"));
+        assertTrue(tiers.allows(9, Channel.NAME, "ba_chu"));
         assertFalse(tiers.allows(0, Channel.CHAT, "hong_pastel"));
         assertTrue(tiers.allows(TierRegistry.ALL, Channel.NAME, "anything"));
     }
 
     @Test
     void featuresUnlockAtTheirTier() {
-        assertFalse(tiers.hasFeature(4, Feature.NICK));
-        assertTrue(tiers.hasFeature(5, Feature.NICK));
-        assertTrue(tiers.hasFeature(5, Feature.CUSTOM_CHAT));
-        assertEquals(5, tiers.featureTier(Feature.CUSTOM_NAME).level());
+        assertFalse(tiers.hasFeature(6, Feature.CUSTOM_CHAT));
+        assertTrue(tiers.hasFeature(7, Feature.CUSTOM_CHAT));
+        assertFalse(tiers.hasFeature(7, Feature.NICK));
+        assertTrue(tiers.hasFeature(8, Feature.NICK));
+        assertEquals(9, tiers.featureTier(Feature.CUSTOM_NAME).level());
     }
 
     @Test
     void currentTierIsHighestNotAbove() {
         assertNull(tiers.current(0));
         assertEquals(2, tiers.current(2).level());
-        assertEquals(5, tiers.current(99).level());
+        assertEquals(9, tiers.current(99).level());
     }
 
     @Test
