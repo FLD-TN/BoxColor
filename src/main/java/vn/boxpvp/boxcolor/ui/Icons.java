@@ -13,6 +13,7 @@ import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import vn.boxpvp.boxcolor.BoxColorPlugin;
 import vn.boxpvp.boxcolor.config.Messages;
+import vn.boxpvp.boxcolor.hook.PapiText;
 import vn.boxpvp.boxcolor.style.Channel;
 import vn.boxpvp.boxcolor.style.ColorRenderer;
 import vn.boxpvp.boxcolor.style.ColorRenderer.HexFormat;
@@ -111,14 +112,14 @@ public final class Icons {
      */
     public String unlock(Channel channel, ColorStyle style) {
         Tier tier = plugin.tiers().unlockTier(channel, style.id());
-        if (tier != null) return tier.name();
+        if (tier != null) return PapiText.apply(tier.name());
         String text = plugin.styles().unlockText(channel, style.id());
         return text != null ? text : messages.raw("menu.unlock-special");
     }
 
     public String featureUnlock(Feature feature) {
         Tier tier = plugin.tiers().featureTier(feature);
-        return tier != null ? tier.name() : messages.raw("menu.unlock-special");
+        return tier != null ? PapiText.apply(tier.name()) : messages.raw("menu.unlock-special");
     }
 
     public String channelName(Channel channel) {

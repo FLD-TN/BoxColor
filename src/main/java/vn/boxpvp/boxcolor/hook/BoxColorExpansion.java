@@ -92,7 +92,7 @@ public final class BoxColorExpansion extends PlaceholderExpansion {
             }
             case "tier": {
                 Tier tier = data == null ? null : plugin.tiers().current(data.tierLevel());
-                return tier == null ? plugin.messages().raw("placeholder.none") : tier.name();
+                return tier == null ? plugin.messages().raw("placeholder.none") : PapiText.apply(tier.name());
             }
             case "tier_level":
                 return data == null ? "0" : String.valueOf(Math.min(data.tierLevel(), 999));

@@ -6,7 +6,8 @@
 # (menu /rank gỡ rank cũ khi mua rank mới cũng không sao)
 # Mỗi tier chỉ ghi những gì nó MỞ THÊM
 #
-#   name:        tên hiện trong GUI ở dòng "Mở khóa: ...", có mã màu '&'
+#   name:        tên hiện trong GUI ở dòng "Mở khóa: ...", có mã màu '&' và placeholder PlaceholderAPI
+#                (ảnh rank của ItemsAdder: '&f%img_wellsetups_ranks_elite%', &f để ảnh giữ đúng màu)
 #   chat-colors: mã màu trong colors.yml (mục chat)
 #   name-colors: mã màu trong colors.yml (mục name)
 #   features:    custom-chat (tự chỉnh mã màu chat), nick (Màu tùy chỉnh: tự đặt tên, tô màu từng chữ, /nick),
@@ -20,43 +21,43 @@
 
 tiers:
   1:
-    name: '&#5FE2C5Elite'
+    name: '&f%img_wellsetups_ranks_elite%'
     chat-colors: [bac_ha, hong_pastel]
     name-colors: [ngoc_lam, hong_dao, vang_nang]
     # Màu tùy chỉnh: tự đặt tên, tô màu từng chữ (/nick)
     features: [nick]
   2:
-    name: '&#CF2121Titan'
+    name: '&f%img_wellsetups_ranks_titan%'
     chat-colors: [vang_kem, oai_huong]
     name-colors: [do_ruby, tim_mong, xanh_duong]
   3:
-    name: '&#6FB0E3Hero'
+    name: '&f%img_wellsetups_ranks_hero%'
     chat-colors: [cam_dao, xanh_troi]
     name-colors: [bien_xanh, keo_bong, chanh_bac_ha]
   4:
-    name: '&#41ABFFMaster'
+    name: '&f%img_wellsetups_ranks_master%'
     chat-colors: [la_non, hong_phan]
     name-colors: [lua_chay, bang_gia, rung_thong]
   5:
-    name: '&#FDA94BLegend'
+    name: '&f%img_wellsetups_ranks_legend%'
     chat-colors: [bang_tuyet, dao_hong]
     name-colors: [hoang_kim, hoa_sen, ho_phach]
   6:
-    name: '&#D2FD8CChampion'
+    name: '&f%img_wellsetups_ranks_champion%'
     chat-colors: [bien_lang, nang_som]
     name-colors: [cau_vong, doc_duoc, thach_anh]
   7:
-    name: '&#CCCC33Zeus'
+    name: '&f%img_wellsetups_ranks_zeus%'
     chat-colors: [mat_ong, chanh_day]
     name-colors: [vang_rong, sam_chop, bach_kim]
   8:
-    name: '&#D64DCDUltimate'
+    name: '&f%img_wellsetups_ranks_ultimate%'
     chat-colors: [hoa_anh_dao, ngoc_bich]
     # Màu tĩnh + 5 màu động (trang Màu động mở từ đây)
     name-colors: [hong_ngoc, mong_mo, lam_ngoc, lua_dong, song_bien, than_sam, cau_vong_dong, cuc_quang]
     features: [animated-name]
   9:
-    name: '&#7560F5Overlord'
+    name: '&f%img_wellsetups_ranks_overlord%'
     chat-colors: [sam_set, hoang_gia]
     # Màu tĩnh + 4 màu động
     name-colors: [de_vuong, huyet_long, tinh_tu, tinh_van_dong, ba_chu, phuong_hoang_lua, cau_vong_ruc]

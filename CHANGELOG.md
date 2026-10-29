@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.7.2 (2026-10-29)
+
+- Tên tier hỗ trợ placeholder PlaceholderAPI. tiers.yml mặc định dùng ảnh rank của ItemsAdder
+  (`&f%img_wellsetups_ranks_<rank>%`, như menu /rank), hiện ở dòng "Mở khóa", "cần ... trở lên", đầu người chơi
+  và `%boxcolor_tier%`.
+
 ## 1.7.1 (2026-10-29)
 
 - Menu chọn loại màu tên ghi rõ hơn: Màu tên động hiện ở danh sách người chơi (phím Tab) và trên đầu nhân vật,

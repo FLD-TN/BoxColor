@@ -8,6 +8,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import vn.boxpvp.boxcolor.BoxColorPlugin;
 import vn.boxpvp.boxcolor.config.Messages;
 import vn.boxpvp.boxcolor.data.PlayerData;
+import vn.boxpvp.boxcolor.hook.PapiText;
 import vn.boxpvp.boxcolor.service.ColorService;
 import vn.boxpvp.boxcolor.style.Channel;
 import vn.boxpvp.boxcolor.style.ColorStyle;
@@ -87,7 +88,7 @@ public final class MainMenu extends MenuView {
         else if (data.shownNick() == null) nick = m.raw("menu.main.nick-hidden", "nick", data.nick());
         else nick = "&f" + data.nick();
         Tier tier = plugin.tiers().current(data.tierLevel());
-        String tierName = tier != null ? tier.name() : m.raw("menu.main.tier-none");
+        String tierName = tier != null ? PapiText.apply(tier.name()) : m.raw("menu.main.tier-none");
         String[] ph = {
                 "name", Icons.styled(data.displayText(), plugin.colors().nameStyle(data), true),
                 "realname", data.realName(),
