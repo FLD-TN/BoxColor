@@ -84,8 +84,8 @@ Chọn một màu trong GUI thì giữ chữ của tên, chỉ tô lại bằng 
 
 | Nơi | Chữ | Màu |
 |---|---|---|
-| Chat, scoreboard | Nick nếu có | Màu tên tĩnh / Màu tùy chỉnh / màu rank |
-| TAB | **Luôn tên thật** | Hiệu ứng động nếu có, không thì màu rank |
+| Chat | Nick nếu có | Màu tên tĩnh / Màu tùy chỉnh / màu rank |
+| TAB, scoreboard | **Luôn tên thật** | Hiệu ứng động nếu có, không thì màu rank |
 | Nametag | **Luôn tên thật** | Hiệu ứng động nếu có, không thì vàng &e |
 
 Hiệu ứng động lưu riêng (trang "Hiệu ứng tên động"), chỉ tô màu lên tên thật, không đổi chữ. Người chơi bản cũ đang
@@ -95,8 +95,8 @@ chọn màu động làm màu tên được tự chuyển sang hiệu ứng khi 
 
 | Placeholder | Dùng cho |
 |---|---|
-| `%boxcolor_name%` (= `%boxcolor_name_static%`) | Nick nếu có, màu tên tĩnh / màu tùy chỉnh / màu rank. **Cho chat và scoreboard** |
-| `%boxcolor_tab%` | **Luôn là tên thật.** Có hiệu ứng động thì chạy màu, không thì màu rank. **Cho TAB** |
+| `%boxcolor_name%` (= `%boxcolor_name_static%`) | Nick nếu có, màu tên tĩnh / màu tùy chỉnh / màu rank. **Cho chat** |
+| `%boxcolor_tab%` | **Luôn là tên thật.** Có hiệu ứng động thì chạy màu, không thì màu rank. **Cho TAB và scoreboard** |
 | `%boxcolor_nametag%` | **Luôn là tên thật.** Có hiệu ứng động thì chạy màu, không thì `nametag-default-color` (&e). **Cho nametag** |
 | `%boxcolor_name_plain%` | Tên/nick không màu |
 | `%boxcolor_realname%` | Tên thật |
