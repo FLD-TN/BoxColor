@@ -171,13 +171,9 @@ public final class BoxColorPlugin extends JavaPlugin {
         return warnings;
     }
 
-    /** Tên thư mục content của ItemsAdder mà {@code /boxcolor shader} tạo ra. */
-    public static final String SHADER_CONTENT = "boxcolor";
-
     /**
-     * {@code /boxcolor shader}: ghi một thư mục content ItemsAdder hoàn chỉnh vào
-     * {@code plugins/BoxColor/shader-pack/boxcolor/} (xoá bản cũ trước), để chép nguyên vào {@code ItemsAdder/contents/}.
-     * Có cả {@code configs/}: ItemsAdder bỏ qua thư mục content không có config.
+     * {@code /boxcolor shader}: ghi shader vào {@code plugins/BoxColor/shader-pack/} (xoá bản cũ trước), để chép vào
+     * {@code contents/<tên>/resourcepack/} của ItemsAdder.
      *
      * @return số màu chạy bằng shader
      */
@@ -189,17 +185,12 @@ public final class BoxColorPlugin extends JavaPlugin {
                 for (Path p : walk.sorted(Comparator.reverseOrder()).toList()) Files.delete(p);
             }
         }
-        Path content = root.resolve(SHADER_CONTENT);
         for (Map.Entry<String, String> file
                 : ShaderGenerator.generate(effects, settings.shaderSpreadPixels()).entrySet()) {
-            Path target = content.resolve("resourcepack").resolve(file.getKey());
+            Path target = root.resolve(file.getKey());
             Files.createDirectories(target.getParent());
             Files.writeString(target, file.getValue(), StandardCharsets.UTF_8);
         }
-        Path config = content.resolve("configs").resolve(SHADER_CONTENT + ".yml");
-        Files.createDirectories(config.getParent());
-        Files.writeString(config, "# Tạo bởi /boxcolor shader. Chỉ để ItemsAdder nhận thư mục này, không có item nào\n"
-                + "info:\n  namespace: " + SHADER_CONTENT + "\n", StandardCharsets.UTF_8);
         return effects.size();
     }
 

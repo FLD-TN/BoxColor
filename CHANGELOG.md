@@ -1,10 +1,5 @@
 # Changelog
 
-## 1.5.1 (2026-10-29)
-
-- `/boxcolor shader` xuất nguyên thư mục content ItemsAdder `shader-pack/boxcolor/` (có `configs/boxcolor.yml`):
-  ItemsAdder bỏ qua thư mục content chỉ có `resourcepack/`, nên shader của 1.5.0 không vào được pack.
-
 ## 1.5.0 (2026-10-29)
 
 - Màu động bằng shader của resource pack: màu có `shader: <1-16>` trong colors.yml xuất một mã tín hiệu, resource
