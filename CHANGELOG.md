@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.7.1 (2026-10-29)
+
+- Menu chọn loại màu tên ghi rõ hơn: Màu tên động hiện ở danh sách người chơi (phím Tab) và trên đầu nhân vật,
+  trong chat đứng yên, yêu cầu Ultimate trở lên, chỉ chọn màu có sẵn. Màu tên tĩnh nhắc nút Màu tùy chỉnh (/nick).
+
 ## 1.7.0 (2026-10-29)
 
 - Bỏ toàn bộ phần shader / resource pack của 1.5.0 - 1.6.0 (đã revert). Màu động chạy ở TAB, scoreboard, nametag;
