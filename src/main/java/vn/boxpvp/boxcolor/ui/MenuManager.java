@@ -19,6 +19,8 @@ public final class MenuManager {
 
     private final BoxColorPlugin plugin;
     private final Map<UUID, MenuView> viewers = new HashMap<>();
+    /** Bộ lọc danh sách màu mỗi người dùng lần gần nhất (tới khi thoát server). */
+    private final Map<UUID, ColorMenu.Filter> filters = new HashMap<>();
     private BukkitTask refreshTask;
 
     public MenuManager(BoxColorPlugin plugin) {
@@ -63,8 +65,17 @@ public final class MenuManager {
         stopIfIdle();
     }
 
+    public ColorMenu.Filter filter(UUID uuid) {
+        return filters.getOrDefault(uuid, ColorMenu.Filter.ALL);
+    }
+
+    public void filter(UUID uuid, ColorMenu.Filter filter) {
+        filters.put(uuid, filter);
+    }
+
     public void forget(UUID uuid) {
         viewers.remove(uuid);
+        filters.remove(uuid);
         stopIfIdle();
     }
 

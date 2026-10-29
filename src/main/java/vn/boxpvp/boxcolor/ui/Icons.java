@@ -105,10 +105,15 @@ public final class Icons {
         return style.animated() ? base + messages.raw("menu.kind.animated-suffix") : base;
     }
 
-    /** "Rank Y" của tier mở màu này; không tier nào có thì {@code menu.unlock-special}. */
+    /**
+     * "Rank Y" của tier mở màu này. Không tier nào có thì {@code unlock-text} của màu trong colors.yml, không có nữa
+     * thì {@code menu.unlock-special} (quay crate hoặc mua).
+     */
     public String unlock(Channel channel, ColorStyle style) {
         Tier tier = plugin.tiers().unlockTier(channel, style.id());
-        return tier != null ? tier.name() : messages.raw("menu.unlock-special");
+        if (tier != null) return tier.name();
+        String text = plugin.styles().unlockText(channel, style.id());
+        return text != null ? text : messages.raw("menu.unlock-special");
     }
 
     public String featureUnlock(Feature feature) {

@@ -45,6 +45,8 @@ public final class Settings {
     private final Material border;
     private final Material filler;
     private final Material defaultIcon;
+    private final Material voucherMaterial;
+    private final String voucherGrantCommand;
 
     private Settings(FileConfiguration c, Consumer<String> warn) {
         placeholderFormat = parseFormat(c.getString("placeholder-format", "ampersand"), warn);
@@ -88,6 +90,8 @@ public final class Settings {
         border = material(c.getString("gui.border", "GRAY_STAINED_GLASS_PANE"), Material.GRAY_STAINED_GLASS_PANE, warn);
         filler = material(c.getString("gui.filler", "BLACK_STAINED_GLASS_PANE"), Material.BLACK_STAINED_GLASS_PANE, warn);
         defaultIcon = material(c.getString("gui.default-color-icon", "LEATHER_CHESTPLATE"), Material.LEATHER_CHESTPLATE, warn);
+        voucherMaterial = material(c.getString("voucher.material", "LEATHER_CHESTPLATE"), Material.LEATHER_CHESTPLATE, warn);
+        voucherGrantCommand = c.getString("voucher.grant-command", "lp user {player} permission set {permission} true");
     }
 
     /**
@@ -244,6 +248,16 @@ public final class Settings {
 
     public Material filler() {
         return filler;
+    }
+
+    /** Item của phiếu màu (giáp da thì được nhuộm theo màu). */
+    public Material voucherMaterial() {
+        return voucherMaterial;
+    }
+
+    /** Lệnh console cấp quyền khi dùng phiếu. {@code {player}} {@code {uuid}} {@code {permission}}. */
+    public String voucherGrantCommand() {
+        return voucherGrantCommand;
     }
 
     public Material defaultIcon() {

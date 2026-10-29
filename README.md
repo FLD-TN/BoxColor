@@ -4,7 +4,7 @@ Màu chat, màu tên và nick cho BoxPvP (Paper 1.21.1). Mở khóa theo tier: m
 
 ## Cài đặt
 
-1. Chép `build/libs/BoxColor-1.4.0.jar` vào `plugins/`. Cần **PlaceholderAPI** để các plugin khác đọc được màu.
+1. Chép `build/libs/BoxColor-1.7.0.jar` vào `plugins/`. Cần **PlaceholderAPI** để các plugin khác đọc được màu.
 2. Khởi động server một lần để tạo `config.yml`, `colors.yml`, `tiers.yml`, `messages.yml`.
 3. Sửa `tiers.yml` cho đúng rank của server, rồi cấp quyền tier trong LuckPerms (xem phần dưới).
 4. Nối placeholder vào EzChat, TAB, UnlimitedNameTag (xem phần dưới).
@@ -16,11 +16,12 @@ Màu chat, màu tên và nick cho BoxPvP (Paper 1.21.1). Mở khóa theo tier: m
 |---|---|
 | `/chatcolor`, `/namecolor` (`/mauchat`, `/mauten`) | Mở trang chính (cả hai lệnh cùng một trang) |
 | `/chatcolor reset`, `/namecolor reset` | Bỏ màu |
-| `/chatcolor custom #FFB3C6 #A0E7E5` | Tự chỉnh mã màu chat (cần tính năng `custom-chat`) |
+| `/chatcolor custom #FFB3C6 #A0E7E5` | Tự chỉnh mã màu chat: không rank nào có, chỉ khi được cấp lẻ `boxcolor.feature.custom-chat` |
 | `/nick <tên>`, `/nick reset` | Màu tùy chỉnh: đặt / bỏ tên hiển thị (cần tính năng `nick`) |
 | `/nick &x&6&7&D&A&F&8D&x&6&A&D&9&F&5e...` | Tên kèm màu từng chữ: mỗi mã (`&x&R&R&G&G&B&B`, `&#RRGGBB`, `#RRGGBB`, `&0`-`&f`, `&r`) tô các chữ phía sau nó. Không gõ mã: chỉ đổi chữ, giữ màu đang dùng (kể cả màu động). Gõ lại đúng tên cũ kèm mã: chỉ đổi màu |
 | `/realname <nick>` (`/tenthat`) | Xem nick là của ai |
 | `/boxcolor reload` | Nạp lại mọi file |
+| `/boxcolor give <người chơi> <chat\|name> <mã màu> [số lượng]` | Phiếu màu để bỏ vào crate (xem dưới) |
 | `/boxcolor reset <người chơi> <chat\|name\|nick\|all>` | Xóa màu/nick (offline: chỉ xóa được nick) |
 | `/boxcolor nick <người chơi> <tên\|reset>` | Admin đặt tên (nhận mã màu), bỏ qua độ dài, từ cấm và thời gian chờ |
 
@@ -61,6 +62,23 @@ Nick do admin đặt cũng chỉ hiện khi người đó có tính năng `nick`
   (màu có `animated: true`). Ô **Đổi chữ của tên** đặt tên hiển thị, màu động chạy theo đúng chữ đó.
 
 Chọn một màu trong GUI thì giữ chữ của tên, chỉ tô lại bằng màu mới.
+
+## Màu chat: rank và crate
+
+- Mỗi rank donate mở **2 màu chat** (`tiers.yml`). Không rank nào được tự chỉnh mã màu chat.
+- Các màu chat **không nằm trong tier nào** (màu đặc sắc) chỉ mở bằng permission `boxcolor.color.chat.<mã>`.
+  Dòng "Mở khóa" trong GUI lấy từ `unlock-text` của màu trong `colors.yml`, không có thì `menu.unlock-special`.
+- GUI ghi **Đã sở hữu / Chưa sở hữu** ở từng màu, và có **bộ lọc** (ô góc phải dưới): Tất cả / Đã sở hữu /
+  Chưa sở hữu. Bộ lọc nhớ theo người chơi cho tới khi thoát.
+
+### Phiếu màu cho crate
+1. `/boxcolor give <tên bạn> chat cuc_quang` để lấy phiếu (giáp da nhuộm màu, lore có mã màu và cách dùng).
+2. Bỏ phiếu vào crate như một vật phẩm thường (ExcellentCrates: thêm phần thưởng, đặt item là phiếu).
+   Nên điền `Ignored_For_Permissions: [boxcolor.color.chat.cuc_quang]` cho phần thưởng đó, để ai đã có màu thì
+   không quay trúng lại.
+3. Người chơi chuột phải vào phiếu: BoxColor chạy `voucher.grant-command` (mặc định
+   `lp user {player} permission set {permission} true`) và trừ 1 phiếu. Đã sở hữu màu đó thì không trừ phiếu.
+   Chuột phải không mặc giáp lên người. Phiếu nhận ra bằng dữ liệu ẩn, sửa chữ trong messages.yml không hỏng phiếu cũ.
 
 ## Placeholder
 

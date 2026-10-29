@@ -68,7 +68,7 @@ nick:
   realname-usage: '&#FFD166(!) &7Dùng: &f/{label} <nick>'
 
 admin:
-  usage: '&#FFD166(!) &7Dùng: &f/{label} reload&7, &f/{label} reset <người chơi> <chat|name|nick|all>&7, &f/{label} nick <người chơi> <tên|reset>'
+  usage: '&#FFD166(!) &7Dùng: &f/{label} reload&7, &f/{label} give <người chơi> <chat|name> <mã> [số lượng]&7, &f/{label} reset <người chơi> <chat|name|nick|all>&7, &f/{label} nick <người chơi> <tên|reset>'
   not-loaded: '&#FF6B6B✘ Dữ liệu của &f{player} &#FF6B6Bchưa tải xong'
   offline-nick-only: '&#FF6B6B✘ &f{player} &#FF6B6Bđang offline, chỉ xóa được nick'
   # {what}: một trong các dòng what-* bên dưới
@@ -78,6 +78,38 @@ admin:
   what-name: '&fmàu tên'
   what-nick: '&fnick'
   what-all: '&fmàu chat, màu tên và nick'
+  usage-give: '&#FFD166(!) &7Dùng: &f/boxcolor give <người chơi> <chat|name> <mã màu> [số lượng]'
+  unknown-color: '&#FF6B6B✘ Không có màu &f{id} &#FF6B6Btrong mục &f{channel} &#FF6B6Bcủa colors.yml'
+  # {amount} {style} {player}
+  give-done: '&#7CFC9A✔ Đã đưa &fx{amount} &#7CFC9Aphiếu {style} &#7CFC9Acho &f{player}'
+
+# Phiếu màu (/boxcolor give). Tên và lore chỉ để hiển thị, plugin không đọc lại
+# {style} tên màu đã tô, {channel} màu chat/màu tên, {kind} kiểu màu, {preview} câu mẫu tô màu,
+# {code} mỗi mã màu một dòng (cầu vồng thì là dòng rainbow)
+voucher:
+  item:
+    name: '{style} &8[&7Phiếu màu&8]'
+    lore:
+      - '&#BFC7D5Mở khóa vĩnh viễn {channel} này'
+      - '&#BFC7D5Xem trước: {preview}'
+      - ''
+      - '&#FFD166Thông tin:'
+      - '&7• Loại: &f{channel}'
+      - '&7• Kiểu: &f{kind}'
+      - '&7• Mã màu:'
+      - '&7  {code}'
+      - ''
+      - '&#FFD166Lưu ý:'
+      - '&7• Dùng một lần'
+      - '&7• Đã sở hữu thì không dùng được'
+      - ''
+      - '&8[&#7CFC9AChuột phải để mở khóa&8]'
+    rainbow: '&fCầu vồng &8(tự đổi màu theo chữ)'
+    # Câu mẫu của phiếu màu tên (phiếu không biết trước ai sẽ dùng)
+    sample-name: 'Tên Của Bạn'
+  redeemed: '&#7CFC9A✔ Đã mở khóa {channel} {style}&#7CFC9A, chọn trong &f{command}'
+  already: '&#FF6B6B✘ Bạn đã sở hữu {channel} {style} &#FF6B6Brồi, phiếu chưa bị dùng'
+  invalid: '&#FF6B6B✘ Màu của phiếu này không còn tồn tại, hãy báo quản trị viên'
 
 placeholder:
   # %boxcolor_chatcolor%, %boxcolor_namecolor%, %boxcolor_tier% khi chưa có
@@ -93,7 +125,8 @@ menu:
   unlocked: '&#7CFC9A✔'
   locked: '&#FF6B6B✘'
   # Màu không nằm trong tier nào (chỉ có qua permission lẻ)
-  unlock-special: '&#FFD166Sự kiện'
+  # Màu không nằm trong tier nào và không đặt unlock-text trong colors.yml
+  unlock-special: '&#FFD166Quay crate hoặc mua'
   kind:
     solid: 'Màu đơn'
     gradient: 'Chuyển màu'
@@ -206,13 +239,13 @@ menu:
         - '{state}'
     note-animated-chat: '&7• Trong chat hiện màu đứng yên'
     state-selected:
-      - '&#7CFC9A✔ Đang sử dụng'
+      - '&#7CFC9A✔ Đã sở hữu &8- &#7CFC9Ađang sử dụng'
       - '&8[&#FF8A8AChuột trái để bỏ chọn&8]'
     state-unlocked:
-      - '&#7CFC9A✔ Đã mở khóa'
+      - '&#7CFC9A✔ Đã sở hữu'
       - '&8[&#7CFC9AChuột trái để chọn&8]'
     state-locked:
-      - '&#FF6B6B✘ Chưa mở khóa'
+      - '&#FF6B6B✘ Chưa sở hữu'
     # Ô trên cùng. {channel} {current} {preview}
     info:
       name: '&fĐang dùng'
@@ -224,6 +257,21 @@ menu:
       name: '&fQuay lại'
       lore:
         - '&8[&#7FDBFFChuột trái để về trang chính&8]'
+    # Bộ lọc (ô góc phải dưới). {all} {owned} {not-owned}: số màu. {options}: mỗi lựa chọn một dòng,
+    # tô theo option-active (đang chọn) hoặc option-inactive
+    filter:
+      name: '&#7FDBFFBộ lọc'
+      lore:
+        - '&#BFC7D5Chọn màu muốn hiện trong danh sách'
+        - ''
+        - '{options}'
+        - ''
+        - '&8[&#7FDBFFChuột trái để đổi bộ lọc&8]'
+      option-active: '&#7CFC9A› {option}'
+      option-inactive: '&7  {option}'
+      all: 'Tất cả &8({all})'
+      owned: 'Đã sở hữu &8({owned})'
+      not-owned: 'Chưa sở hữu &8({not-owned})'
     # Nút quay lại ở trang màu tên tĩnh/động
     back-name:
       name: '&fQuay lại'

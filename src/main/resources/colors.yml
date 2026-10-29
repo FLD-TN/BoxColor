@@ -9,12 +9,14 @@
 #   speed:    thời gian chạy hết một vòng màu, tính bằng mili giây (mặc định 3000)
 #   saturation, brightness: độ đậm và độ sáng của cầu vồng, từ 0 đến 1 (mặc định 0.6 và 1)
 #   icon:     item trong GUI (không bắt buộc, mặc định gui.default-color-icon trong config.yml)
+#   unlock-text: dòng "Mở khóa" trong GUI cho màu không nằm trong tier nào, ví dụ '&#FFD166Crate Màu Chat'
 #
 # Đổi mã (tên khoá như hong_pastel) của màu đang có người dùng thì họ sẽ mất màu đó
 # Màu chat để sáng, dễ đọc trên nền chat tối. Màu chuyển động chỉ dùng cho tên
 # Màu tên có animated: true nằm ở trang Màu động, cần thêm tính năng animated-name (tiers.yml)
 
 chat:
+  # ---------- Màu theo rank: mỗi rank 2 màu (xem tiers.yml) ----------
   # Elite
   bac_ha:
     display: 'Bạc Hà'
@@ -24,15 +26,16 @@ chat:
     display: 'Hồng Pastel'
     type: solid
     colors: ['#FFB3C6']
+  # Titan
   vang_kem:
     display: 'Vàng Kem'
     type: solid
     colors: ['#FFE5A0']
-  # Titan
   oai_huong:
     display: 'Oải Hương'
     type: solid
     colors: ['#C3B1E1']
+  # Hero
   cam_dao:
     display: 'Cam Đào'
     type: solid
@@ -41,7 +44,7 @@ chat:
     display: 'Xanh Trời'
     type: solid
     colors: ['#A5D8FF']
-  # Hero
+  # Master
   la_non:
     display: 'Lá Non'
     type: solid
@@ -50,15 +53,16 @@ chat:
     display: 'Hồng Phấn'
     type: solid
     colors: ['#F8C8DC']
+  # Legend
   bang_tuyet:
     display: 'Băng Tuyết'
     type: gradient
     colors: ['#E0F7FF', '#A5D8FF']
-  # Master
   dao_hong:
     display: 'Đào Hồng'
     type: gradient
     colors: ['#FFB38A', '#FF8FAB']
+  # Champion
   bien_lang:
     display: 'Biển Lặng'
     type: gradient
@@ -67,38 +71,25 @@ chat:
     display: 'Nắng Sớm'
     type: gradient
     colors: ['#FFE5A0', '#FFC09F']
-  # Legend
-  hoang_hon:
-    display: 'Hoàng Hôn'
-    type: gradient
-    colors: ['#FFD166', '#FF8A8A', '#C77DFF']
+  # Zeus
   mat_ong:
     display: 'Mật Ong'
     type: gradient
     colors: ['#FFE066', '#FFA94D']
-  hoa_anh_dao:
-    display: 'Hoa Anh Đào'
-    type: gradient
-    colors: ['#FFD1DC', '#FFA8C5', '#FFC6FF']
-  # Champion
-  ngoc_bich:
-    display: 'Ngọc Bích'
-    type: gradient
-    colors: ['#B2F2BB', '#63E6BE', '#3BC9DB']
   chanh_day:
     display: 'Chanh Dây'
     type: gradient
     colors: ['#D8F5A2', '#FFE066']
-  ngan_ha:
-    display: 'Ngân Hà'
+  # Ultimate
+  hoa_anh_dao:
+    display: 'Hoa Anh Đào'
     type: gradient
-    colors: ['#9D8CFF', '#FF9DE2', '#8CE0FF']
-  # Zeus
-  cau_vong:
-    display: 'Cầu Vồng Pastel'
-    type: rainbow
-    saturation: 0.5
-    brightness: 1.0
+    colors: ['#FFD1DC', '#FFA8C5', '#FFC6FF']
+  ngoc_bich:
+    display: 'Ngọc Bích'
+    type: gradient
+    colors: ['#B2F2BB', '#63E6BE', '#3BC9DB']
+  # Overlord
   sam_set:
     display: 'Sấm Sét'
     type: gradient
@@ -107,7 +98,23 @@ chat:
     display: 'Hoàng Gia'
     type: gradient
     colors: ['#FFE066', '#B197FC']
-  # Ultimate
+
+  # ---------- Màu đặc sắc: không nằm trong tier nào ----------
+  # Chỉ mở bằng permission boxcolor.color.chat.<mã> (quay crate, mua, sự kiện)
+  # unlock-text: dòng "Mở khóa" trong GUI, bỏ trống thì dùng menu.unlock-special trong messages.yml
+  hoang_hon:
+    display: 'Hoàng Hôn'
+    type: gradient
+    colors: ['#FFD166', '#FF8A8A', '#C77DFF']
+  ngan_ha:
+    display: 'Ngân Hà'
+    type: gradient
+    colors: ['#9D8CFF', '#FF9DE2', '#8CE0FF']
+  cau_vong:
+    display: 'Cầu Vồng Pastel'
+    type: rainbow
+    saturation: 0.5
+    brightness: 1.0
   tinh_van:
     display: 'Tinh Vân'
     type: gradient
@@ -120,7 +127,6 @@ chat:
     display: 'Ánh Trăng'
     type: gradient
     colors: ['#E7F5FF', '#D0BFFF']
-  # Overlord
   vu_tru:
     display: 'Vũ Trụ'
     type: gradient
@@ -133,6 +139,80 @@ chat:
     display: 'Phượng Hoàng'
     type: gradient
     colors: ['#FFE066', '#FF922B', '#F783AC']
+  thuy_tinh:
+    display: 'Thủy Tinh'
+    type: gradient
+    colors: ['#E3FAFC', '#C5F6FA', '#99E9F2', '#D0EBFF']
+  binh_minh:
+    display: 'Bình Minh'
+    type: gradient
+    colors: ['#FFF3BF', '#FFD8A8', '#FFC9C9']
+  hoa_oai_huong:
+    display: 'Hoa Oải Hương'
+    type: gradient
+    colors: ['#E5DBFF', '#D0BFFF', '#F3D9FA']
+  keo_deo:
+    display: 'Kẹo Dẻo'
+    type: gradient
+    colors: ['#FFDEEB', '#E3FAFC', '#FFF3BF']
+  luc_bao:
+    display: 'Lục Bảo'
+    type: gradient
+    colors: ['#B2F2BB', '#96F2D7', '#99E9F2']
+  rang_chieu:
+    display: 'Ráng Chiều'
+    type: gradient
+    colors: ['#FFC078', '#FF8787', '#F783AC']
+  bang_hong:
+    display: 'Băng Hồng'
+    type: gradient
+    colors: ['#FFDEEB', '#D0EBFF']
+  nang_ha:
+    display: 'Nắng Hạ'
+    type: gradient
+    colors: ['#FFE066', '#FFC078', '#FFA8A8']
+  suong_mai:
+    display: 'Sương Mai'
+    type: gradient
+    colors: ['#F8F9FA', '#D0EBFF', '#E5DBFF']
+  cuc_quang:
+    display: 'Cực Quang'
+    type: gradient
+    colors: ['#96F2D7', '#99E9F2', '#B197FC', '#FCC2D7']
+  thien_ha:
+    display: 'Thiên Hà'
+    type: gradient
+    colors: ['#91A7FF', '#B197FC', '#F783AC', '#FFD8A8']
+  hoang_kim:
+    display: 'Hoàng Kim'
+    type: gradient
+    colors: ['#FFF3BF', '#FFE066', '#FFD43B', '#FFF9DB']
+  ngoc_trai:
+    display: 'Ngọc Trai'
+    type: gradient
+    colors: ['#FFF5F5', '#F3D9FA', '#E7F5FF', '#FFF9DB']
+  cau_vong_ruc:
+    display: 'Cầu Vồng Rực'
+    type: rainbow
+    saturation: 0.8
+    brightness: 1.0
+  cau_vong_nhat:
+    display: 'Cầu Vồng Nhạt'
+    type: rainbow
+    saturation: 0.3
+    brightness: 1.0
+  hong_ngoc:
+    display: 'Hồng Ngọc'
+    type: gradient
+    colors: ['#FFA8A8', '#F783AC', '#E599F7']
+  bac_ha_chanh:
+    display: 'Bạc Hà Chanh'
+    type: gradient
+    colors: ['#D8F5A2', '#96F2D7', '#99E9F2']
+  lam_ngoc:
+    display: 'Lam Ngọc'
+    type: gradient
+    colors: ['#74C0FC', '#91A7FF', '#B197FC']
 
 name:
   # Elite

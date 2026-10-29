@@ -1,5 +1,16 @@
 # Changelog
 
+## 1.7.0 (2026-10-29)
+
+- Bỏ toàn bộ phần shader / resource pack của 1.5.0 - 1.6.0 (đã revert). Màu động chạy ở TAB, scoreboard, nametag;
+  chat là màu tĩnh, như 1.4.0.
+- Màu chat: mỗi rank 2 màu; 27 màu đặc sắc (9 màu cũ + 18 màu mới) không thuộc tier nào, chỉ mở bằng permission
+  `boxcolor.color.chat.<mã>`. Bỏ tự chỉnh mã màu chat ở mọi rank (chỉ còn với quyền lẻ `boxcolor.feature.custom-chat`).
+- Phiếu màu: `/boxcolor give <người chơi> <chat|name> <mã> [số lượng]`, chuột phải để nhận permission
+  (`voucher.grant-command`), không trừ phiếu khi đã sở hữu.
+- GUI: lore "Đã sở hữu / Chưa sở hữu", bộ lọc Tất cả / Đã sở hữu / Chưa sở hữu; `unlock-text` riêng từng màu trong
+  colors.yml.
+
 ## 1.4.0 (2026-10-29)
 
 - Màu tên tách hai trang: **Màu tĩnh** và **Màu động**, chọn từ menu mới sau ô Màu tên. Lore mỗi loại có tên mẫu.

@@ -11,6 +11,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import vn.boxpvp.boxcolor.BoxColorPlugin;
 import vn.boxpvp.boxcolor.data.PlayerData;
@@ -18,10 +19,11 @@ import vn.boxpvp.boxcolor.nick.NickInput;
 import vn.boxpvp.boxcolor.nick.NickRules;
 import vn.boxpvp.boxcolor.style.Channel;
 import vn.boxpvp.boxcolor.style.ColorStyle;
+import vn.boxpvp.boxcolor.ui.Icons;
 
 /**
  * {@code /boxcolor reload}, {@code /boxcolor reset <người chơi> <chat|name|nick|all>},
- * {@code /boxcolor nick <người chơi> <tên|reset>}.
+ * {@code /boxcolor nick <người chơi> <tên|reset>}, {@code /boxcolor give <người chơi> <chat|name> <mã> [số lượng]}.
  */
 public final class AdminCommand implements TabExecutor {
 
@@ -52,6 +54,7 @@ public final class AdminCommand implements TabExecutor {
             }
             case "reset" -> reset(sender, args);
             case "nick" -> nick(sender, args);
+            case "give" -> give(sender, args);
             default -> plugin.messages().send(sender, "admin.usage", "label", label);
         }
         return true;
@@ -141,11 +144,53 @@ public final class AdminCommand implements TabExecutor {
         plugin.messages().send(sender, "admin.nick-done", "player", target.getName(), "nick", nick);
     }
 
+    /** {@code /boxcolor give <người chơi> <chat|name> <mã màu> [số lượng]}: phiếu màu để bỏ vào crate. */
+    private void give(CommandSender sender, String[] args) {
+        if (args.length < 4) {
+            plugin.messages().send(sender, "admin.usage-give");
+            return;
+        }
+        Player target = Bukkit.getPlayerExact(args[1]);
+        if (target == null) {
+            plugin.messages().send(sender, "command.player-not-found", "player", args[1]);
+            return;
+        }
+        Channel channel = parseChannel(args[2]);
+        ColorStyle style = channel == null ? null : plugin.styles().get(channel, args[3]);
+        if (style == null) {
+            plugin.messages().send(sender, "admin.unknown-color", "channel", args[2], "id", args[3]);
+            return;
+        }
+        int amount = 1;
+        if (args.length >= 5) {
+            try {
+                amount = Math.max(1, Math.min(64, Integer.parseInt(args[4])));
+            } catch (NumberFormatException e) {
+                plugin.messages().send(sender, "admin.usage-give");
+                return;
+            }
+        }
+        ItemStack item = plugin.vouchers().create(channel, style, amount);
+        // Túi đầy thì rơi xuống chân
+        for (ItemStack left : target.getInventory().addItem(item).values()) {
+            target.getWorld().dropItemNaturally(target.getLocation(), left);
+        }
+        plugin.messages().send(sender, "admin.give-done", "amount", String.valueOf(amount),
+                "style", new Icons(plugin).styleName(style, false), "player", target.getName());
+    }
+
+    private static Channel parseChannel(String s) {
+        for (Channel channel : Channel.values()) {
+            if (channel.key().equalsIgnoreCase(s)) return channel;
+        }
+        return null;
+    }
+
     @Override
     public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias,
             @NotNull String[] args) {
         if (!sender.hasPermission("boxcolor.admin")) return List.of();
-        if (args.length == 1) return filter(List.of("reload", "reset", "nick"), args[0]);
+        if (args.length == 1) return filter(List.of("reload", "give", "reset", "nick"), args[0]);
         if (args.length == 2 && !args[0].equalsIgnoreCase("reload")) {
             List<String> names = new ArrayList<>();
             for (Player p : Bukkit.getOnlinePlayers()) names.add(p.getName());
@@ -153,6 +198,14 @@ public final class AdminCommand implements TabExecutor {
         }
         if (args.length == 3 && args[0].equalsIgnoreCase("reset")) return filter(RESET_WHAT, args[2]);
         if (args.length == 3 && args[0].equalsIgnoreCase("nick")) return filter(List.of("reset"), args[2]);
+        if (args.length == 3 && args[0].equalsIgnoreCase("give")) return filter(List.of("chat", "name"), args[2]);
+        if (args.length == 4 && args[0].equalsIgnoreCase("give")) {
+            Channel channel = parseChannel(args[2]);
+            if (channel == null) return List.of();
+            List<String> ids = new ArrayList<>();
+            for (ColorStyle style : plugin.styles().list(channel)) ids.add(style.id());
+            return filter(ids, args[3]);
+        }
         return List.of();
     }
 

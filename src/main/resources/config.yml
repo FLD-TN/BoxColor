@@ -89,6 +89,14 @@ custom:
   # Thời gian chờ người chơi nhập mã màu/nick vào chat sau khi bấm trong GUI (giây)
   input-timeout-seconds: 45
 
+# Phiếu màu: /boxcolor give <người chơi> <chat|name> <mã màu> [số lượng], bỏ phiếu vào crate
+# Người chơi chuột phải vào phiếu để nhận permission boxcolor.color.<chat|name>.<mã>
+voucher:
+  # Item của phiếu (giáp da sẽ được nhuộm theo màu)
+  material: LEATHER_CHESTPLATE
+  # Lệnh console cấp quyền. {player} tên, {uuid}, {permission} quyền của màu
+  grant-command: 'lp user {player} permission set {permission} true'
+
 gui:
   border: GRAY_STAINED_GLASS_PANE
   filler: BLACK_STAINED_GLASS_PANE

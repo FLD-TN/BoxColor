@@ -3,6 +3,7 @@ package vn.boxpvp.boxcolor.style;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.EnumMap;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
@@ -19,9 +20,12 @@ import org.bukkit.configuration.file.YamlConfiguration;
 public final class StyleRegistry {
 
     private final Map<Channel, Map<String, ColorStyle>> styles;
+    /** {@code kênh.mã} → {@code unlock-text} trong colors.yml (cách mở màu không nằm trong tier nào). */
+    private final Map<String, String> unlockTexts;
 
-    private StyleRegistry(Map<Channel, Map<String, ColorStyle>> styles) {
+    private StyleRegistry(Map<Channel, Map<String, ColorStyle>> styles, Map<String, String> unlockTexts) {
         this.styles = styles;
+        this.unlockTexts = unlockTexts;
     }
 
     /**
@@ -29,6 +33,7 @@ public final class StyleRegistry {
      */
     public static StyleRegistry load(YamlConfiguration yml, Consumer<String> warn) {
         Map<Channel, Map<String, ColorStyle>> all = new EnumMap<>(Channel.class);
+        Map<String, String> unlockTexts = new HashMap<>();
         for (Channel channel : Channel.values()) {
             Map<String, ColorStyle> map = new LinkedHashMap<>();
             ConfigurationSection section = yml.getConfigurationSection(channel.key());
@@ -42,12 +47,15 @@ public final class StyleRegistry {
                         continue;
                     }
                     ColorStyle style = parse(key, s, channel.key() + "." + id, warn);
-                    if (style != null) map.put(key, style);
+                    if (style == null) continue;
+                    map.put(key, style);
+                    String unlock = s.getString("unlock-text");
+                    if (unlock != null && !unlock.isBlank()) unlockTexts.put(channel.key() + "." + key, unlock);
                 }
             }
             all.put(channel, Collections.unmodifiableMap(map));
         }
-        return new StyleRegistry(all);
+        return new StyleRegistry(all, Map.copyOf(unlockTexts));
     }
 
     private static ColorStyle parse(String id, ConfigurationSection s, String path, Consumer<String> warn) {
@@ -88,6 +96,11 @@ public final class StyleRegistry {
                 (float) s.getDouble("saturation", 0.6),
                 (float) s.getDouble("brightness", 1.0),
                 icon);
+    }
+
+    /** {@code unlock-text} của màu, {@code null} nếu không đặt. */
+    public String unlockText(Channel channel, String id) {
+        return unlockTexts.get(channel.key() + "." + id);
     }
 
     public ColorStyle get(Channel channel, String id) {

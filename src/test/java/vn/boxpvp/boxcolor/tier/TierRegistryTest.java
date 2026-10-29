@@ -37,7 +37,7 @@ class TierRegistryTest {
     @Test
     void defaultsLoadWithoutWarnings() {
         assertEquals(List.of(), warnings);
-        assertEquals(27, styles.count(Channel.CHAT));
+        assertEquals(45, styles.count(Channel.CHAT));
         assertEquals(36, styles.count(Channel.NAME));
         assertEquals(9, tiers.all().size());
         assertEquals(StyleKind.RAINBOW, styles.get(Channel.NAME, "cau_vong_dong").kind());
@@ -60,8 +60,8 @@ class TierRegistryTest {
     void featuresUnlockAtTheirTier() {
         assertFalse(tiers.hasFeature(0, Feature.NICK));
         assertTrue(tiers.hasFeature(1, Feature.NICK));
-        assertFalse(tiers.hasFeature(6, Feature.CUSTOM_CHAT));
-        assertTrue(tiers.hasFeature(7, Feature.CUSTOM_CHAT));
+        // Không rank nào được tự chỉnh màu chat
+        assertFalse(tiers.hasFeature(9, Feature.CUSTOM_CHAT));
         assertFalse(tiers.hasFeature(7, Feature.ANIMATED_NAME));
         assertTrue(tiers.hasFeature(8, Feature.ANIMATED_NAME));
         // custom-name (1.3) đọc thành nick
@@ -76,6 +76,19 @@ class TierRegistryTest {
         }
         assertEquals(8, tiers.unlockTier(Channel.NAME, "cuc_quang").level());
         assertEquals(9, tiers.unlockTier(Channel.NAME, "ba_chu").level());
+    }
+
+    @Test
+    void chatColorsSplitBetweenRanksAndCrate() {
+        int ranked = 0;
+        for (var style : styles.list(Channel.CHAT)) {
+            if (tiers.unlockTier(Channel.CHAT, style.id()) != null) ranked++;
+        }
+        assertEquals(18, ranked);
+        for (var tier : tiers.all()) assertEquals(2, tier.chatColors().size(), "rank " + tier.level());
+        // Màu crate chỉ mở bằng permission lẻ, kể cả rank cao nhất
+        assertFalse(tiers.allows(9, Channel.CHAT, "vu_tru"));
+        assertFalse(tiers.allows(9, Channel.CHAT, "cuc_quang"));
     }
 
     @Test

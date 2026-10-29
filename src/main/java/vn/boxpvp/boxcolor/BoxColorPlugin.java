@@ -24,6 +24,7 @@ import vn.boxpvp.boxcolor.hook.BoxColorExpansion;
 import vn.boxpvp.boxcolor.listener.ChatListener;
 import vn.boxpvp.boxcolor.listener.MenuClickListener;
 import vn.boxpvp.boxcolor.listener.SessionListener;
+import vn.boxpvp.boxcolor.listener.VoucherListener;
 import vn.boxpvp.boxcolor.nick.NickService;
 import vn.boxpvp.boxcolor.service.ColorService;
 import vn.boxpvp.boxcolor.style.Channel;
@@ -31,6 +32,7 @@ import vn.boxpvp.boxcolor.style.StyleRegistry;
 import vn.boxpvp.boxcolor.tier.TierRegistry;
 import vn.boxpvp.boxcolor.ui.InputPrompts;
 import vn.boxpvp.boxcolor.ui.MenuManager;
+import vn.boxpvp.boxcolor.voucher.VoucherService;
 
 public final class BoxColorPlugin extends JavaPlugin {
 
@@ -45,6 +47,7 @@ public final class BoxColorPlugin extends JavaPlugin {
     private MenuManager menus;
     private InputPrompts prompts;
     private NickCommand nickCommand;
+    private VoucherService vouchers;
 
     @Override
     public void onEnable() {
@@ -76,11 +79,13 @@ public final class BoxColorPlugin extends JavaPlugin {
         menus = new MenuManager(this);
         prompts = new InputPrompts(this);
         nickCommand = new NickCommand(this);
+        vouchers = new VoucherService(this);
 
         PluginManager pm = getServer().getPluginManager();
         pm.registerEvents(new SessionListener(this), this);
         pm.registerEvents(new ChatListener(this), this);
         pm.registerEvents(new MenuClickListener(this), this);
+        pm.registerEvents(new VoucherListener(this), this);
 
         command("chatcolor", new ColorCommand(this, Channel.CHAT));
         command("namecolor", new ColorCommand(this, Channel.NAME));
@@ -194,6 +199,10 @@ public final class BoxColorPlugin extends JavaPlugin {
 
     public InputPrompts prompts() {
         return prompts;
+    }
+
+    public VoucherService vouchers() {
+        return vouchers;
     }
 
     public NickCommand nickCommand() {

@@ -25,9 +25,9 @@ import vn.boxpvp.boxcolor.ui.InputPrompts.Kind;
  *  B  .  .  .  .  .  .  .  B
  *  B  .  .  .  .  .  .  .  B
  *  B  .  .  .  .  .  .  .  B
- * [<] B [x][«][#][»][T] B  B      < quay lại (45), x bỏ màu (47), « » trang (48, 50), # số trang (49),
- *                                 T (51): chat = tự chỉnh mã màu, tên tĩnh = Màu tùy chỉnh,
- *                                 tên động = đổi chữ của tên
+ * [<] B [x][«][#][»][T] B [L]     < quay lại (45), x bỏ màu (47), « » trang (48, 50), # số trang (49),
+ *                                 T (51): chat = tự chỉnh mã màu (chỉ khi có quyền lẻ), tên tĩnh = Màu tùy chỉnh,
+ *                                 tên động = đổi chữ của tên; L (53) = bộ lọc tất cả / đã sở hữu / chưa sở hữu
  * </pre>
  */
 public final class ColorMenu extends MenuView {
@@ -79,11 +79,37 @@ public final class ColorMenu extends MenuView {
     private static final int SLOT_PAGE = 49;
     private static final int SLOT_NEXT = 50;
     private static final int SLOT_CUSTOM = 51;
+    private static final int SLOT_FILTER = 53;
+
+    /** Bộ lọc danh sách màu. {@link #key()} dùng trong messages.yml. */
+    public enum Filter {
+        ALL("all"),
+        OWNED("owned"),
+        NOT_OWNED("not-owned");
+
+        private final String key;
+
+        Filter(String key) {
+            this.key = key;
+        }
+
+        public String key() {
+            return key;
+        }
+
+        public Filter next() {
+            return values()[(ordinal() + 1) % values().length];
+        }
+    }
 
     private final BoxColorPlugin plugin;
     private final Player viewer;
     private final Section section;
     private final Channel channel;
+    private final Filter filter;
+    /** Số màu cả trang (chưa lọc) và số màu đã sở hữu, cho nút bộ lọc. */
+    private final int totalCount;
+    private final int ownedCount;
     private final Icons icons;
     private final List<ColorStyle> styles;
     private final int page;
@@ -91,11 +117,22 @@ public final class ColorMenu extends MenuView {
     /** Ô → màu trên trang này. */
     private final Map<Integer, ColorStyle> slotStyles = new LinkedHashMap<>();
 
+    /** Mở trang với bộ lọc người chơi dùng lần gần nhất. */
     public ColorMenu(BoxColorPlugin plugin, Player viewer, Section section, int page) {
-        this(plugin, viewer, section, page, section.styles(plugin));
+        this(plugin, viewer, section, page, plugin.menus().filter(viewer.getUniqueId()));
     }
 
-    private ColorMenu(BoxColorPlugin plugin, Player viewer, Section section, int page, List<ColorStyle> styles) {
+    public ColorMenu(BoxColorPlugin plugin, Player viewer, Section section, int page, Filter filter) {
+        this(plugin, viewer, section, page, filter, section.styles(plugin));
+    }
+
+    private ColorMenu(BoxColorPlugin plugin, Player viewer, Section section, int page, Filter filter,
+            List<ColorStyle> all) {
+        this(plugin, viewer, section, page, filter, all, filtered(plugin, viewer, section, all, filter));
+    }
+
+    private ColorMenu(BoxColorPlugin plugin, Player viewer, Section section, int page, Filter filter,
+            List<ColorStyle> all, List<ColorStyle> styles) {
         super(54, plugin.messages().text("menu.color.title-" + section.key(),
                 "page", String.valueOf(clampPage(page, styles.size()) + 1),
                 "pages", String.valueOf(pageCount(styles.size()))));
@@ -103,10 +140,24 @@ public final class ColorMenu extends MenuView {
         this.viewer = viewer;
         this.section = section;
         this.channel = section.channel();
+        this.filter = filter;
         this.icons = new Icons(plugin);
         this.styles = styles;
         this.pages = pageCount(styles.size());
         this.page = clampPage(page, styles.size());
+        this.totalCount = all.size();
+        this.ownedCount = filtered(plugin, viewer, section, all, Filter.OWNED).size();
+    }
+
+    private static List<ColorStyle> filtered(BoxColorPlugin plugin, Player viewer, Section section,
+            List<ColorStyle> all, Filter filter) {
+        if (filter == Filter.ALL) return all;
+        List<ColorStyle> out = new ArrayList<>();
+        for (ColorStyle style : all) {
+            boolean owned = plugin.colors().canUse(viewer, section.channel(), style);
+            if (owned == (filter == Filter.OWNED)) out.add(style);
+        }
+        return out;
     }
 
     private static int pageCount(int size) {
@@ -143,7 +194,12 @@ public final class ColorMenu extends MenuView {
         inventory.setItem(SLOT_PAGE, Icons.item(Material.PAPER,
                 m.line("menu.color.page-info.name", "page", String.valueOf(page + 1), "pages", String.valueOf(pages)),
                 m.lines("menu.color.page-info.lore", "total", String.valueOf(styles.size())), false));
-        inventory.setItem(SLOT_CUSTOM, section == Section.CHAT ? chatCustomItem() : nameCustomItem());
+        // Tự chỉnh màu chat không mở theo rank; chỉ hiện với người có quyền lẻ (boxcolor.feature.custom-chat)
+        if (section != Section.CHAT) inventory.setItem(SLOT_CUSTOM, nameCustomItem());
+        else if (plugin.colors().hasFeature(viewer, ColorService.customFeature(Channel.CHAT))) {
+            inventory.setItem(SLOT_CUSTOM, chatCustomItem());
+        }
+        inventory.setItem(SLOT_FILTER, filterItem());
     }
 
     /** Màu chuyển động chạy cả trong GUI. */
@@ -196,6 +252,23 @@ public final class ColorMenu extends MenuView {
         String[] ph = {"channel", icons.channelName(channel), "current", current, "preview", preview};
         inventory.setItem(SLOT_INFO, Icons.item(channel == Channel.CHAT ? Material.WRITABLE_BOOK : Material.NAME_TAG,
                 m.line("menu.color.info.name", ph), m.lines("menu.color.info.lore", ph), false));
+    }
+
+    /** Nút bộ lọc: dòng của bộ lọc đang chọn được tô sáng. */
+    private ItemStack filterItem() {
+        Messages m = plugin.messages();
+        String[] ph = {
+                "all", String.valueOf(totalCount),
+                "owned", String.valueOf(ownedCount),
+                "not-owned", String.valueOf(totalCount - ownedCount)
+        };
+        List<String> options = new ArrayList<>();
+        for (Filter f : Filter.values()) {
+            options.add(m.raw("menu.color.filter.option-" + (f == filter ? "active" : "inactive"),
+                    "option", m.raw("menu.color.filter." + f.key(), ph)));
+        }
+        return Icons.item(Material.HOPPER, m.line("menu.color.filter.name", ph),
+                m.lines("menu.color.filter.lore", "options", options, ph), false);
     }
 
     /** Tự chỉnh màu chat bằng danh sách mã hex. */
@@ -254,16 +327,23 @@ public final class ColorMenu extends MenuView {
                 render();
             }
             case SLOT_PREVIOUS -> {
-                if (page > 0) plugin.menus().open(player, new ColorMenu(plugin, player, section, page - 1, styles));
+                if (page > 0) plugin.menus().open(player, new ColorMenu(plugin, player, section, page - 1, filter));
             }
             case SLOT_NEXT -> {
                 if (page < pages - 1) {
-                    plugin.menus().open(player, new ColorMenu(plugin, player, section, page + 1, styles));
+                    plugin.menus().open(player, new ColorMenu(plugin, player, section, page + 1, filter));
                 }
             }
             case SLOT_CUSTOM -> {
-                if (section == Section.CHAT) clickChatCustom(player);
-                else clickNameCustom(player, click);
+                if (section != Section.CHAT) clickNameCustom(player, click);
+                else if (plugin.colors().hasFeature(player, ColorService.customFeature(Channel.CHAT))) {
+                    clickChatCustom(player);
+                }
+            }
+            case SLOT_FILTER -> {
+                Filter next = filter.next();
+                plugin.menus().filter(player.getUniqueId(), next);
+                plugin.menus().open(player, new ColorMenu(plugin, player, section, 0, next));
             }
             default -> {
             }
