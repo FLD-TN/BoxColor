@@ -27,6 +27,8 @@ public final class PlayerData {
     private volatile ColorStyle shownName;
     private volatile String shownNick;
     private volatile int tierLevel;
+    /** Màu tên theo rank (config.yml rank-name-colors), dùng khi chưa chọn màu tên; {@code null} nếu không có. */
+    private volatile ColorStyle rankName;
 
     public PlayerData(UUID uuid, String realName) {
         this.uuid = uuid;
@@ -99,6 +101,14 @@ public final class PlayerData {
 
     public void tierLevel(int level) {
         this.tierLevel = level;
+    }
+
+    public ColorStyle rankName() {
+        return rankName;
+    }
+
+    public void rankName(ColorStyle style) {
+        this.rankName = style;
     }
 
     /** Kiểu màu của một lựa chọn đã lưu; {@code null} nếu chưa chọn hoặc màu đã bị xoá khỏi colors.yml. */

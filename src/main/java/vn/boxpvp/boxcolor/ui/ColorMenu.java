@@ -153,7 +153,7 @@ public final class ColorMenu extends MenuView {
         Messages m = plugin.messages();
         String current = shown != null ? icons.styleName(shown, true) : m.raw("menu.main.current-none");
         ColorStyle previewStyle = shown != null ? shown
-                : channel == Channel.NAME ? plugin.settings().defaultName() : null;
+                : channel == Channel.NAME ? plugin.colors().nameStyle(data) : null;
         String text = icons.previewText(channel, data.displayText());
         String preview = previewStyle != null ? Icons.styled(text, previewStyle, true) : "&f" + text;
         String[] ph = {"channel", icons.channelName(channel), "current", current, "preview", preview};

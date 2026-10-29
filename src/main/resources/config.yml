@@ -8,7 +8,27 @@
 # Thêm đuôi _mm vào placeholder để lấy MiniMessage bất kể dòng này
 placeholder-format: ampersand
 
-# Màu tên khi người chơi chưa chọn màu
+# Màu tên theo rank, dùng khi người chơi chưa chọn màu tên nào (chọn màu trong GUI sẽ đè lên)
+# Khoá là tên group LuckPerms (kiểm tra bằng permission group.<tên>). Xét từ trên xuống, gặp group đầu tiên
+# người chơi có thì dùng, nên xếp rank cao lên trước. 1 mã = màu đơn, nhiều mã = chuyển màu
+# Không muốn dùng: rank-name-colors: {}
+rank-name-colors:
+  admin: ['#FD4747', '#F36767']
+  moderator: ['#3399FF']
+  helper: ['#FF99FF']
+  youtube: ['#FF5555']
+  overlord: ['#CD6BC6']
+  ultimate: ['#FD84B5']
+  zeus: ['#86B851']
+  champion: ['#D3F66E']
+  legend: ['#FF7C12', '#F3C890']
+  master: ['#4956FF', '#A5ABFF']
+  hero: ['#55C1FD']
+  titan: ['#FA340C']
+  elite: ['#82F1D9']
+  default: ['#AAAAAA']
+
+# Màu tên khi không có màu nào ở trên
 default-name-color: '#FFFFFF'
 
 # Đặt display name của người chơi theo nick + màu tên (tin nhắn chết, vào/thoát server...)

@@ -6,6 +6,8 @@ import java.util.Locale;
 import java.util.function.Consumer;
 import java.util.regex.Pattern;
 import org.bukkit.Material;
+import org.bukkit.configuration.Configuration;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import vn.boxpvp.boxcolor.nick.NickRules;
 import vn.boxpvp.boxcolor.style.ColorRenderer.HexFormat;
@@ -17,8 +19,13 @@ import vn.boxpvp.boxcolor.style.Hex;
  */
 public final class Settings {
 
+    /** Màu tên mặc định của một rank: người có {@code permission} mà chưa chọn màu thì dùng {@code style}. */
+    public record RankColor(String permission, ColorStyle style) {
+    }
+
     private final HexFormat placeholderFormat;
     private final ColorStyle defaultName;
+    private final List<RankColor> rankNameColors;
     private final boolean setDisplayName;
     private final int accessCheckSeconds;
     private final boolean chatEnabled;
@@ -42,6 +49,7 @@ public final class Settings {
             rgb = 0xFFFFFF;
         }
         defaultName = ColorStyle.custom(List.of(rgb));
+        rankNameColors = rankColors(c, warn);
         setDisplayName = c.getBoolean("set-display-name", true);
         accessCheckSeconds = Math.max(5, c.getInt("access-check-seconds", 30));
 
@@ -71,6 +79,25 @@ public final class Settings {
         border = material(c.getString("gui.border", "GRAY_STAINED_GLASS_PANE"), Material.GRAY_STAINED_GLASS_PANE, warn);
         filler = material(c.getString("gui.filler", "BLACK_STAINED_GLASS_PANE"), Material.BLACK_STAINED_GLASS_PANE, warn);
         defaultIcon = material(c.getString("gui.default-color-icon", "LEATHER_CHESTPLATE"), Material.LEATHER_CHESTPLATE, warn);
+    }
+
+    /** Theo thứ tự trong file; khoá là tên group LuckPerms (kiểm tra bằng permission {@code group.<tên>}). */
+    static List<RankColor> rankColors(Configuration c, Consumer<String> warn) {
+        // File cũ chưa có khoá này: lấy bảng trong jar (getConfigurationSection chỉ trả mục rỗng)
+        ConfigurationSection section = c.contains("rank-name-colors", true) || c.getDefaults() == null
+                ? c.getConfigurationSection("rank-name-colors")
+                : c.getDefaults().getConfigurationSection("rank-name-colors");
+        if (section == null) return List.of();
+        List<RankColor> out = new ArrayList<>();
+        for (String group : section.getKeys(false)) {
+            List<Integer> rgb = Hex.parseList(String.join(" ", section.getStringList(group)));
+            if (rgb == null) {
+                warn.accept("rank-name-colors." + group + ": mã màu sai, ví dụ ['#FF7C12', '#F3C890']");
+                continue;
+            }
+            out.add(new RankColor("group." + group.toLowerCase(Locale.ROOT), ColorStyle.custom(rgb)));
+        }
+        return List.copyOf(out);
     }
 
     public static Settings load(FileConfiguration config, Consumer<String> warn) {
@@ -104,9 +131,13 @@ public final class Settings {
         return placeholderFormat;
     }
 
-    /** Màu tên khi người chơi chưa chọn màu nào. */
+    /** Màu tên khi người chơi chưa chọn màu nào và không có màu rank. */
     public ColorStyle defaultName() {
         return defaultName;
+    }
+
+    public List<RankColor> rankNameColors() {
+        return rankNameColors;
     }
 
     public boolean setDisplayName() {

@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.2.0 (2026-10-29)
+
+- `rank-name-colors` trong config.yml: màu tên theo group LuckPerms, dùng khi người chơi chưa chọn màu tên.
+  `%boxcolor_name%` hiện đúng màu rank ở TAB, nametag và chat; chọn màu trong GUI sẽ đè lên.
+  Server đang chạy bản cũ (config.yml chưa có khoá này) tự dùng bảng mặc định trong jar.
+
 ## 1.1.0 (2026-10-29)
 
 - `/nick` nhận mã màu ở bất kỳ đâu trong nick: `&#RRGGBB`, `#RRGGBB`, `&0`-`&f`. 1 mã = màu đơn, nhiều mã = chuyển màu.

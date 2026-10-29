@@ -4,7 +4,7 @@ Màu chat, màu tên và nick cho BoxPvP (Paper 1.21.1). Mở khóa theo tier: m
 
 ## Cài đặt
 
-1. Chép `build/libs/BoxColor-1.1.0.jar` vào `plugins/`. Cần **PlaceholderAPI** để các plugin khác đọc được màu.
+1. Chép `build/libs/BoxColor-1.2.0.jar` vào `plugins/`. Cần **PlaceholderAPI** để các plugin khác đọc được màu.
 2. Khởi động server một lần để tạo `config.yml`, `colors.yml`, `tiers.yml`, `messages.yml`.
 3. Sửa `tiers.yml` cho đúng rank của server, rồi cấp quyền tier trong LuckPerms (xem phần dưới).
 4. Nối placeholder vào EzChat, TAB, UnlimitedNameTag (xem phần dưới).
@@ -84,7 +84,9 @@ Nếu sau khi cài, nội dung chat **không** có màu (EzChat tự dựng lạ
 trong `config.yml` và dùng `%boxcolor_chat%{message}` trong format. Cách này chỉ ra màu đầu tiên, không có gradient.
 
 ### TAB
-Tên trong tablist, ở `plugins/TAB/groups.yml` (nhóm nào tự đặt `customtabname` riêng thì sửa cả nhóm đó):
+Màu tên theo rank nằm ở `rank-name-colors` trong `config.yml` của BoxColor, không để trong TAB nữa.
+Ở `plugins/TAB/groups.yml`, **xóa `customtabname` ở mọi group** (group nào còn giữ sẽ đè màu BoxColor),
+chỉ đặt một lần:
 ```yaml
 _DEFAULT_:
   customtabname: '%boxcolor_name%'

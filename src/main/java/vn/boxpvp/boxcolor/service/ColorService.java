@@ -4,6 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitTask;
 import vn.boxpvp.boxcolor.BoxColorPlugin;
+import vn.boxpvp.boxcolor.config.Settings;
 import vn.boxpvp.boxcolor.data.PlayerData;
 import vn.boxpvp.boxcolor.style.Channel;
 import vn.boxpvp.boxcolor.style.ColorRenderer;
@@ -59,6 +60,7 @@ public final class ColorService {
         }
         String nick = data.nick();
         data.shownNick(nick != null && hasFeature(player, level, Feature.NICK) ? nick : null);
+        data.rankName(rankNameStyle(player));
         applyDisplayName(player, data);
     }
 
@@ -104,10 +106,20 @@ public final class ColorService {
         return channel == Channel.CHAT ? Feature.CUSTOM_CHAT : Feature.CUSTOM_NAME;
     }
 
-    /** Màu tên đang hiện, hoặc màu mặc định của config.yml. */
+    /** Màu tên đang hiện; chưa chọn thì màu rank; không có màu rank thì {@code default-name-color}. */
     public ColorStyle nameStyle(PlayerData data) {
         ColorStyle style = data.shown(Channel.NAME);
-        return style != null ? style : plugin.settings().defaultName();
+        if (style != null) return style;
+        ColorStyle rank = data.rankName();
+        return rank != null ? rank : plugin.settings().defaultName();
+    }
+
+    /** Group đầu tiên trong rank-name-colors mà người chơi có. */
+    private ColorStyle rankNameStyle(Player player) {
+        for (Settings.RankColor rank : plugin.settings().rankNameColors()) {
+            if (player.hasPermission(rank.permission())) return rank.style();
+        }
+        return null;
     }
 
     /** Tên đã tô màu cho placeholder. {@code animated = false}: khung đầu, dùng cho chat. */
