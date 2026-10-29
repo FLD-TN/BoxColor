@@ -54,10 +54,19 @@ public final class ColorService {
         data.realName(player.getName());
         int level = plugin.tiers().levelOf(player);
         data.tierLevel(level);
+        // Bản cũ lưu màu động chung với màu tên: chuyển sang hiệu ứng động (chỉ TAB và nametag)
+        ColorStyle legacy = PlayerData.resolve(data.selection(Channel.NAME), Channel.NAME, plugin.styles());
+        if (legacy != null && legacy.animated()) {
+            if (data.decor() == null) data.decor(legacy.id());
+            data.selection(Channel.NAME, null);
+            plugin.cache().save(data);
+        }
         for (Channel channel : Channel.values()) {
             ColorStyle style = PlayerData.resolve(data.selection(channel), channel, plugin.styles());
             data.shown(channel, style != null && canUse(player, level, channel, style) ? style : null);
         }
+        ColorStyle decor = plugin.styles().get(Channel.NAME, data.decor());
+        data.shownDecor(decor != null && decor.animated() && canUse(player, level, Channel.NAME, decor) ? decor : null);
         String nick = data.nick();
         data.shownNick(nick != null && hasFeature(player, level, Feature.NICK) ? nick : null);
         data.rankName(rankNameStyle(player));
@@ -82,6 +91,24 @@ public final class ColorService {
         String display = style.isCustom() ? plugin.messages().raw("menu.custom-display") : style.display();
         plugin.messages().send(player, "color.selected", "channel", channelName,
                 "style", ColorRenderer.legacy(display, style, 0, HexFormat.AMPERSAND));
+    }
+
+    /**
+     * Lưu hiệu ứng tên động cho TAB và nametag ({@code null} = bỏ). Chỉ tô màu lên tên thật, không đổi chữ.
+     * Người gọi đã kiểm tra quyền.
+     */
+    public void selectDecor(Player player, ColorStyle style) {
+        PlayerData data = plugin.cache().get(player.getUniqueId());
+        if (data == null) return;
+        data.decor(style == null ? null : style.id());
+        plugin.cache().save(data);
+        refresh(player);
+        if (style == null) {
+            plugin.messages().send(player, "color.decor-reset");
+            return;
+        }
+        plugin.messages().send(player, "color.decor-selected",
+                "style", ColorRenderer.legacy(style.display(), style, 0, HexFormat.AMPERSAND));
     }
 
     public boolean canUse(Player player, Channel channel, ColorStyle style) {
@@ -119,6 +146,12 @@ public final class ColorService {
         return rank != null ? rank : plugin.settings().defaultName();
     }
 
+    /** Màu rank, không có thì {@code default-name-color} (màu tên ở TAB khi không có hiệu ứng động). */
+    public ColorStyle rankOrDefault(PlayerData data) {
+        ColorStyle rank = data.rankName();
+        return rank != null ? rank : plugin.settings().defaultName();
+    }
+
     /** Group đầu tiên trong rank-name-colors mà người chơi có. */
     private ColorStyle rankNameStyle(Player player) {
         for (Settings.RankColor rank : plugin.settings().rankNameColors()) {
@@ -127,16 +160,40 @@ public final class ColorService {
         return null;
     }
 
-    /** Tên đã tô màu cho placeholder. {@code animated = false}: khung đầu, dùng cho chat. */
-    public String name(PlayerData data, boolean animated, HexFormat format) {
-        ColorStyle style = nameStyle(data);
+    /**
+     * Tên cho chat và scoreboard: nick (nếu có) với màu tên tĩnh, màu tùy chỉnh hoặc màu rank. Luôn đứng yên.
+     */
+    public String name(PlayerData data, HexFormat format) {
+        return ColorRenderer.legacy(data.displayText(), nameStyle(data), 0, format);
+    }
+
+    /**
+     * Tên cho TAB: luôn là tên thật (chống giả danh), có hiệu ứng động thì chạy màu, không thì màu rank.
+     */
+    public String tabName(PlayerData data, HexFormat format) {
+        ColorStyle decor = data.shownDecor();
+        if (decor != null) return animated(data.realName(), decor, format);
+        return ColorRenderer.legacy(data.realName(), rankOrDefault(data), 0, format);
+    }
+
+    /**
+     * Tên cho nametag trên đầu: luôn là tên thật, có hiệu ứng động thì chạy màu, không thì
+     * {@code nametag-default-color} (mặc định vàng &e).
+     */
+    public String nametagName(PlayerData data, HexFormat format) {
+        ColorStyle decor = data.shownDecor();
+        if (decor != null) return animated(data.realName(), decor, format);
+        return ColorRenderer.legacy(data.realName(), plugin.settings().nametagDefault(), 0, format);
+    }
+
+    private String animated(String text, ColorStyle style, HexFormat format) {
         double phase = 0;
-        if (animated && plugin.settings().animationEnabled()) {
+        if (plugin.settings().animationEnabled()) {
             // Làm tròn theo khung hình: trong một khung chuỗi trả về không đổi, TAB/UNT không gửi lại gói tin
             long now = System.currentTimeMillis();
             phase = ColorRenderer.phase(style, now - now % plugin.settings().animationFrameMillis());
         }
-        return ColorRenderer.legacy(data.displayText(), style, phase, format);
+        return ColorRenderer.legacy(text, style, phase, format);
     }
 
     /** Tên thật tô màu mặc định, cho người chưa nạp dữ liệu hoặc đang offline. */

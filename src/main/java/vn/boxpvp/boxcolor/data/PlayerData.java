@@ -22,11 +22,14 @@ public final class PlayerData {
     private volatile String chatSelection;
     private volatile String nameSelection;
     private volatile String nick;
+    /** Hiệu ứng tên động (mã màu động trong colors.yml, mục name) cho TAB và nametag. */
+    private volatile String decor;
     private volatile long nickChangedAt;
 
     private volatile ColorStyle shownChat;
     private volatile ColorStyle shownName;
     private volatile String shownNick;
+    private volatile ColorStyle shownDecor;
     private volatile int tierLevel;
     /** Màu tên theo rank (config.yml rank-name-colors), dùng khi chưa chọn màu tên; {@code null} nếu không có. */
     private volatile ColorStyle rankName;
@@ -55,6 +58,23 @@ public final class PlayerData {
     public void selection(Channel channel, String value) {
         if (channel == Channel.CHAT) chatSelection = value;
         else nameSelection = value;
+    }
+
+    public String decor() {
+        return decor;
+    }
+
+    public void decor(String id) {
+        this.decor = id;
+    }
+
+    /** Hiệu ứng động đang hiện ở TAB và nametag (đã kiểm tra quyền), {@code null} nếu không có. */
+    public ColorStyle shownDecor() {
+        return shownDecor;
+    }
+
+    public void shownDecor(ColorStyle style) {
+        this.shownDecor = style;
     }
 
     public String nick() {

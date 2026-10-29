@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.8.0 (2026-10-29)
+
+Chống giả danh: nick chỉ hiện ở chat và scoreboard.
+- `%boxcolor_name%` (chat, scoreboard): nick + màu tên tĩnh / tùy chỉnh / màu rank, luôn đứng yên.
+- Mới `%boxcolor_tab%` (TAB) và `%boxcolor_nametag%` (nametag): **luôn là tên thật**; chỉ đổi màu theo hiệu ứng
+  động, không có thì màu rank (TAB) hoặc `nametag-default-color` (mặc định #FFFF55, &e).
+- Màu động thành **hiệu ứng trang trí** lưu riêng (cột `decor` trong data.db, tự thêm vào database cũ), chọn ở trang
+  "Hiệu ứng tên động"; bỏ nút đổi chữ ở trang đó. Lựa chọn màu động cũ tự chuyển sang hiệu ứng.
+- `/boxcolor reset <người chơi> decor`.
+
 ## 1.7.3 (2026-10-29)
 
 - Thêm màu rực (crate, không thuộc tier nào): 22 màu chat (7 đơn, 14 gradient, Cầu Vồng Neon) và 16 màu tên

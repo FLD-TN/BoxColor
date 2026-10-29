@@ -195,7 +195,7 @@ public final class ColorMenu extends MenuView {
                 m.line("menu.color.page-info.name", "page", String.valueOf(page + 1), "pages", String.valueOf(pages)),
                 m.lines("menu.color.page-info.lore", "total", String.valueOf(styles.size())), false));
         // Tự chỉnh màu chat không mở theo rank; chỉ hiện với người có quyền lẻ (boxcolor.feature.custom-chat)
-        if (section != Section.CHAT) inventory.setItem(SLOT_CUSTOM, nameCustomItem());
+        if (section == Section.NAME_STATIC) inventory.setItem(SLOT_CUSTOM, nameCustomItem());
         else if (plugin.colors().hasFeature(viewer, ColorService.customFeature(Channel.CHAT))) {
             inventory.setItem(SLOT_CUSTOM, chatCustomItem());
         }
@@ -212,7 +212,7 @@ public final class ColorMenu extends MenuView {
     private void drawStyles(boolean animatedOnly) {
         PlayerData data = plugin.cache().get(viewer.getUniqueId());
         if (data == null) return;
-        String selected = data.selection(channel);
+        String selected = selectedId(data);
         for (Map.Entry<Integer, ColorStyle> e : slotStyles.entrySet()) {
             ColorStyle style = e.getValue();
             if (animatedOnly && !style.animated()) continue;
@@ -230,7 +230,7 @@ public final class ColorMenu extends MenuView {
         lists.put("state", m.rawList("menu.color.state-" + state));
         String[] ph = {
                 "style", icons.styleName(style, true),
-                "preview", Icons.styled(icons.previewText(channel, data.displayText()), style, true),
+                "preview", Icons.styled(previewText(data), style, true),
                 "kind", icons.kind(style),
                 "unlock", icons.unlock(channel, style)
         };
@@ -239,9 +239,23 @@ public final class ColorMenu extends MenuView {
                 m.lines("menu.color.item.lore", lists, ph), selected && unlocked);
     }
 
+    /** Trang hiệu ứng động lưu riêng ({@code decor}), các trang khác lưu màu của kênh. */
+    private String selectedId(PlayerData data) {
+        return section == Section.NAME_ANIMATED ? data.decor() : data.selection(channel);
+    }
+
+    /** Hiệu ứng động chỉ tô lên tên thật (TAB, nametag); các trang khác xem trước bằng nick/câu chat mẫu. */
+    private String previewText(PlayerData data) {
+        return section == Section.NAME_ANIMATED ? data.realName() : icons.previewText(channel, data.displayText());
+    }
+
     private void drawInfo() {
         PlayerData data = plugin.cache().get(viewer.getUniqueId());
         if (data == null) return;
+        if (section == Section.NAME_ANIMATED) {
+            drawDecorInfo(data);
+            return;
+        }
         ColorStyle shown = data.shown(channel);
         Messages m = plugin.messages();
         String current = shown != null ? icons.styleName(shown, true) : m.raw("menu.main.current-none");
@@ -252,6 +266,17 @@ public final class ColorMenu extends MenuView {
         String[] ph = {"channel", icons.channelName(channel), "current", current, "preview", preview};
         inventory.setItem(SLOT_INFO, Icons.item(channel == Channel.CHAT ? Material.WRITABLE_BOOK : Material.NAME_TAG,
                 m.line("menu.color.info.name", ph), m.lines("menu.color.info.lore", ph), false));
+    }
+
+    /** Ô trên cùng của trang hiệu ứng động: hiệu ứng đang dùng, xem trước trên tên thật. */
+    private void drawDecorInfo(PlayerData data) {
+        Messages m = plugin.messages();
+        ColorStyle decor = data.shownDecor();
+        String current = decor != null ? icons.styleName(decor, true) : m.raw("menu.main.decor-none");
+        String preview = Icons.styled(data.realName(), decor != null ? decor : plugin.colors().rankOrDefault(data), true);
+        String[] ph = {"current", current, "preview", preview};
+        inventory.setItem(SLOT_INFO, Icons.item(Material.NETHER_STAR,
+                m.line("menu.color.decor-info.name", ph), m.lines("menu.color.decor-info.lore", ph), false));
     }
 
     /** Nút bộ lọc: dòng của bộ lọc đang chọn được tô sáng. */
@@ -323,7 +348,8 @@ public final class ColorMenu extends MenuView {
             case SLOT_BACK -> plugin.menus().open(player, section == Section.CHAT
                     ? new MainMenu(plugin, player) : new NameTypeMenu(plugin, player));
             case SLOT_RESET -> {
-                plugin.colors().select(player, channel, null);
+                if (section == Section.NAME_ANIMATED) plugin.colors().selectDecor(player, null);
+                else plugin.colors().select(player, channel, null);
                 render();
             }
             case SLOT_PREVIOUS -> {
@@ -358,7 +384,9 @@ public final class ColorMenu extends MenuView {
             return;
         }
         // Bấm lại màu đang dùng: bỏ chọn
-        plugin.colors().select(player, channel, style.id().equals(data.selection(channel)) ? null : style);
+        boolean again = style.id().equals(selectedId(data));
+        if (section == Section.NAME_ANIMATED) plugin.colors().selectDecor(player, again ? null : style);
+        else plugin.colors().select(player, channel, again ? null : style);
         render();
     }
 

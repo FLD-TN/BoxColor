@@ -4,7 +4,7 @@ Màu chat, màu tên và nick cho BoxPvP (Paper 1.21.1). Mở khóa theo tier: m
 
 ## Cài đặt
 
-1. Chép `build/libs/BoxColor-1.7.3.jar` vào `plugins/`. Cần **PlaceholderAPI** để các plugin khác đọc được màu.
+1. Chép `build/libs/BoxColor-1.8.0.jar` vào `plugins/`. Cần **PlaceholderAPI** để các plugin khác đọc được màu.
 2. Khởi động server một lần để tạo `config.yml`, `colors.yml`, `tiers.yml`, `messages.yml`.
 3. Sửa `tiers.yml` cho đúng rank của server, rồi cấp quyền tier trong LuckPerms (xem phần dưới).
 4. Nối placeholder vào EzChat, TAB, UnlimitedNameTag (xem phần dưới).
@@ -80,12 +80,24 @@ Chọn một màu trong GUI thì giữ chữ của tên, chỉ tô lại bằng 
    `lp user {player} permission set {permission} true`) và trừ 1 phiếu. Đã sở hữu màu đó thì không trừ phiếu.
    Chuột phải không mặc giáp lên người. Phiếu nhận ra bằng dữ liệu ẩn, sửa chữ trong messages.yml không hỏng phiếu cũ.
 
+## Nick và hiệu ứng động (chống giả danh)
+
+| Nơi | Chữ | Màu |
+|---|---|---|
+| Chat, scoreboard | Nick nếu có | Màu tên tĩnh / Màu tùy chỉnh / màu rank |
+| TAB | **Luôn tên thật** | Hiệu ứng động nếu có, không thì màu rank |
+| Nametag | **Luôn tên thật** | Hiệu ứng động nếu có, không thì vàng &e |
+
+Hiệu ứng động lưu riêng (trang "Hiệu ứng tên động"), chỉ tô màu lên tên thật, không đổi chữ. Người chơi bản cũ đang
+chọn màu động làm màu tên được tự chuyển sang hiệu ứng khi vào server.
+
 ## Placeholder
 
 | Placeholder | Dùng cho |
 |---|---|
-| `%boxcolor_name%` | Tên (nick nếu có) đã tô màu, **có chuyển động**. Cho TAB và nametag |
-| `%boxcolor_name_static%` | Như trên nhưng đứng yên. **Cho chat** |
+| `%boxcolor_name%` (= `%boxcolor_name_static%`) | Nick nếu có, màu tên tĩnh / màu tùy chỉnh / màu rank. **Cho chat và scoreboard** |
+| `%boxcolor_tab%` | **Luôn là tên thật.** Có hiệu ứng động thì chạy màu, không thì màu rank. **Cho TAB** |
+| `%boxcolor_nametag%` | **Luôn là tên thật.** Có hiệu ứng động thì chạy màu, không thì `nametag-default-color` (&e). **Cho nametag** |
 | `%boxcolor_name_plain%` | Tên/nick không màu |
 | `%boxcolor_realname%` | Tên thật |
 | `%boxcolor_has_nick%` | `true` / `false` |
@@ -116,22 +128,22 @@ Màu tên theo rank nằm ở `rank-name-colors` trong `config.yml` của BoxCol
 chỉ đặt một lần:
 ```yaml
 _DEFAULT_:
-  customtabname: '%boxcolor_name%'
+  customtabname: '%boxcolor_tab%'
 ```
 Màu chuyển động cần tốc độ làm mới nhanh, ở `plugins/TAB/config.yml`:
 ```yaml
 placeholder-refresh-intervals:
-  '%boxcolor_name%': 100
+  '%boxcolor_tab%': 100
 ```
 Nếu tablist nặng khi đông người, đổi thành 200.
 
 ### UnlimitedNameTag (`settings.yml`)
 ```yaml
-- text: '%boxcolor_name% &8[%boxclans_icon%&f%boxclans_name%&8]'
+- text: '%boxcolor_nametag% &8[%boxclans_icon%&f%boxclans_name%&8]'
 ```
 ```yaml
 placeholderUpdateRates:
-  '%boxcolor_name%': 2
+  '%boxcolor_nametag%': 2
 ```
 
 ### InteractiveChat

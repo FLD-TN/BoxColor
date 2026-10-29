@@ -22,12 +22,12 @@ import vn.boxpvp.boxcolor.style.ColorStyle;
 import vn.boxpvp.boxcolor.ui.Icons;
 
 /**
- * {@code /boxcolor reload}, {@code /boxcolor reset <người chơi> <chat|name|nick|all>},
+ * {@code /boxcolor reload}, {@code /boxcolor reset <người chơi> <chat|name|decor|nick|all>},
  * {@code /boxcolor nick <người chơi> <tên|reset>}, {@code /boxcolor give <người chơi> <chat|name> <mã> [số lượng]}.
  */
 public final class AdminCommand implements TabExecutor {
 
-    private static final List<String> RESET_WHAT = List.of("chat", "name", "nick", "all");
+    private static final List<String> RESET_WHAT = List.of("chat", "name", "decor", "nick", "all");
 
     private final BoxColorPlugin plugin;
 
@@ -78,6 +78,7 @@ public final class AdminCommand implements TabExecutor {
         }
         if (what.equals("chat") || what.equals("all")) data.selection(Channel.CHAT, null);
         if (what.equals("name") || what.equals("all")) data.selection(Channel.NAME, null);
+        if (what.equals("decor") || what.equals("all")) data.decor(null);
         if (what.equals("nick") || what.equals("all")) plugin.nicks().set(data, null);
         plugin.cache().save(data);
         plugin.colors().refresh(target);

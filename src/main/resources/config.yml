@@ -28,6 +28,9 @@ rank-name-colors:
   elite: ['#82F1D9']
   default: ['#AAAAAA']
 
+# Màu tên trên đầu nhân vật (%boxcolor_nametag%) khi người chơi không chọn hiệu ứng động. Mặc định vàng &e
+nametag-default-color: '#FFFF55'
+
 # Màu tên khi không có màu nào ở trên
 default-name-color: '#FFFFFF'
 

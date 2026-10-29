@@ -62,8 +62,9 @@ public final class NameTypeMenu extends MenuView {
         Messages m = plugin.messages();
         List<ColorStyle> styles = section.styles(plugin);
         ColorStyle sample = sample(styles);
-        String example = sample == null ? m.raw("menu.name-type.no-sample")
-                : Icons.styled(data.displayText(), sample, true);
+        // Hiệu ứng động chỉ tô lên tên thật (TAB, nametag); màu tĩnh hiện nick (chat, scoreboard)
+        String text = section == Section.NAME_ANIMATED ? data.realName() : data.displayText();
+        String example = sample == null ? m.raw("menu.name-type.no-sample") : Icons.styled(text, sample, true);
         boolean locked = section == Section.NAME_ANIMATED
                 && !plugin.colors().hasFeature(viewer, Feature.ANIMATED_NAME);
         int unlocked = 0;

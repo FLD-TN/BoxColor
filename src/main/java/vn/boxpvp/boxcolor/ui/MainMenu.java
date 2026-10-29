@@ -76,7 +76,9 @@ public final class MainMenu extends MenuView {
                 "total", String.valueOf(plugin.styles().count(channel)),
                 "custom", icons.yesNo(plugin.colors().hasFeature(viewer, ColorService.customFeature(channel))),
                 "nick", icons.yesNo(plugin.colors().hasFeature(viewer, Feature.NICK)),
-                "animated", icons.yesNo(plugin.colors().hasFeature(viewer, Feature.ANIMATED_NAME))
+                "animated", icons.yesNo(plugin.colors().hasFeature(viewer, Feature.ANIMATED_NAME)),
+                "decor", data.shownDecor() != null ? icons.styleName(data.shownDecor(), true)
+                        : m.raw("menu.main.decor-none")
         };
         return Icons.item(material, m.line(path + ".name", ph), m.lines(path + ".lore", ph), false);
     }

@@ -26,6 +26,7 @@ public final class Settings {
 
     private final HexFormat placeholderFormat;
     private final ColorStyle defaultName;
+    private final ColorStyle nametagDefault;
     private final List<RankColor> rankNameColors;
     private final boolean setDisplayName;
     private final int accessCheckSeconds;
@@ -56,6 +57,12 @@ public final class Settings {
             rgb = 0xFFFFFF;
         }
         defaultName = ColorStyle.custom(List.of(rgb));
+        int tag = Hex.parse(c.getString("nametag-default-color", "#FFFF55"));
+        if (tag < 0) {
+            warn.accept("nametag-default-color sai, dùng #FFFF55");
+            tag = 0xFFFF55;
+        }
+        nametagDefault = ColorStyle.custom(List.of(tag));
         rankNameColors = rankColors(c, warn);
         setDisplayName = c.getBoolean("set-display-name", true);
         accessCheckSeconds = Math.max(5, c.getInt("access-check-seconds", 30));
@@ -168,6 +175,11 @@ public final class Settings {
     }
 
     /** Màu tên khi người chơi chưa chọn màu nào và không có màu rank. */
+    /** Màu tên trên đầu (nametag) khi không có hiệu ứng động. */
+    public ColorStyle nametagDefault() {
+        return nametagDefault;
+    }
+
     public ColorStyle defaultName() {
         return defaultName;
     }
