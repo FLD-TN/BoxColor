@@ -13,7 +13,7 @@
 #
 # Đổi mã (tên khoá như hong_pastel) của màu đang có người dùng thì họ sẽ mất màu đó
 # Màu chat để sáng, dễ đọc trên nền chat tối. Màu chuyển động chỉ dùng cho tên
-# Màu tên có animated: true nằm ở trang Màu động, cần thêm tính năng animated-name (tiers.yml)
+# Màu tên có animated: true là hiệu ứng tên động (TAB, scoreboard, nametag), ai cũng vào được trang này
 
 chat:
   # ---------- Màu theo rank: mỗi rank 2 màu đơn (xem tiers.yml) ----------
@@ -389,7 +389,8 @@ name:
     type: gradient
     colors: ['#FFE600', '#7CC242']
 
-  # ---------- Hiệu ứng tên động (TAB, scoreboard, nametag), cần animated-name ----------
+  # ---------- Hiệu ứng tên động (TAB, scoreboard, nametag) ----------
+  # Rank tặng (tiers.yml): Ultimate Cầu Vồng Động, Overlord Bá Chủ
   # Ultimate
   cau_vong_dong:
     display: 'Cầu Vồng Động'

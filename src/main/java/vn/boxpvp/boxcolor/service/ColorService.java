@@ -117,10 +117,6 @@ public final class ColorService {
 
     private boolean canUse(Player player, int level, Channel channel, ColorStyle style) {
         if (style.isCustom()) return hasFeature(player, level, customFeature(channel));
-        // Màu tên động cần thêm quyền vào GUI màu động
-        if (channel == Channel.NAME && style.animated() && !hasFeature(player, level, Feature.ANIMATED_NAME)) {
-            return false;
-        }
         return plugin.tiers().allows(level, channel, style.id())
                 || player.hasPermission(COLOR_PERMISSION + channel.key() + "." + style.id());
     }

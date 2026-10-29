@@ -1,6 +1,9 @@
 package vn.boxpvp.boxcolor.ui;
 
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
@@ -10,7 +13,6 @@ import vn.boxpvp.boxcolor.config.Messages;
 import vn.boxpvp.boxcolor.data.PlayerData;
 import vn.boxpvp.boxcolor.style.Channel;
 import vn.boxpvp.boxcolor.style.ColorStyle;
-import vn.boxpvp.boxcolor.tier.Feature;
 import vn.boxpvp.boxcolor.ui.ColorMenu.Section;
 
 /**
@@ -65,8 +67,6 @@ public final class NameTypeMenu extends MenuView {
         // Hiệu ứng động chỉ tô lên tên thật (TAB, nametag); màu tĩnh hiện nick (chat, scoreboard)
         String text = section == Section.NAME_ANIMATED ? data.realName() : data.displayText();
         String example = sample == null ? m.raw("menu.name-type.no-sample") : Icons.styled(text, sample, true);
-        boolean locked = section == Section.NAME_ANIMATED
-                && !plugin.colors().hasFeature(viewer, Feature.ANIMATED_NAME);
         int unlocked = 0;
         for (ColorStyle style : styles) {
             if (plugin.colors().canUse(viewer, Channel.NAME, style)) unlocked++;
@@ -76,12 +76,23 @@ public final class NameTypeMenu extends MenuView {
                 "example", example,
                 "sample", sample == null ? "" : icons.styleName(sample, true),
                 "unlocked", String.valueOf(unlocked),
-                "total", String.valueOf(styles.size()),
-                "tier", icons.featureUnlock(Feature.ANIMATED_NAME)
+                "total", String.valueOf(styles.size())
         };
-        return Icons.item(material, m.line(path + ".name", ph),
-                m.lines(path + ".lore", "state", m.rawList(path + ".state-" + (locked ? "locked" : "unlocked"), ph), ph),
-                false);
+        Map<String, List<String>> lists = new LinkedHashMap<>();
+        lists.put("gift", section == Section.NAME_ANIMATED ? rankGifts(styles) : List.of());
+        lists.put("state", m.rawList(path + ".state-unlocked", ph));
+        return Icons.item(material, m.line(path + ".name", ph), m.lines(path + ".lore", lists, ph), false);
+    }
+
+    /** Hiệu ứng động rank tặng sẵn: một dòng "ảnh rank - tên hiệu ứng" cho mỗi hiệu ứng nằm trong tiers.yml. */
+    private List<String> rankGifts(List<ColorStyle> styles) {
+        List<String> out = new ArrayList<>();
+        for (ColorStyle style : styles) {
+            if (plugin.tiers().unlockTier(Channel.NAME, style.id()) == null) continue;
+            out.add(plugin.messages().raw("menu.name-type.gift-line",
+                    "tier", icons.unlock(Channel.NAME, style), "style", icons.styleName(style, true)));
+        }
+        return out;
     }
 
     /** Màu đầu tiên người chơi dùng được, không có thì màu đầu tiên của loại đó. */
@@ -96,14 +107,7 @@ public final class NameTypeMenu extends MenuView {
     public void onClick(Player player, int slot, ClickType click) {
         switch (slot) {
             case SLOT_STATIC -> plugin.menus().open(player, new ColorMenu(plugin, player, Section.NAME_STATIC, 0));
-            case SLOT_ANIMATED -> {
-                if (!plugin.colors().hasFeature(player, Feature.ANIMATED_NAME)) {
-                    plugin.messages().send(player, "color.animated-locked",
-                            "tier", icons.featureUnlock(Feature.ANIMATED_NAME));
-                    return;
-                }
-                plugin.menus().open(player, new ColorMenu(plugin, player, Section.NAME_ANIMATED, 0));
-            }
+            case SLOT_ANIMATED -> plugin.menus().open(player, new ColorMenu(plugin, player, Section.NAME_ANIMATED, 0));
             case SLOT_BACK -> plugin.menus().open(player, new MainMenu(plugin, player));
             default -> {
             }

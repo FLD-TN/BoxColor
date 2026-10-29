@@ -5,7 +5,7 @@ public enum Feature {
     CUSTOM_CHAT("custom-chat"),
     /** "Màu tùy chỉnh": tự đặt tên, tô màu từng chữ ({@code /nick}). */
     NICK("nick"),
-    /** Vào được GUI màu tên động. */
+    /** Không còn dùng từ 1.9.1 (ai cũng vào được trang hiệu ứng động); giữ để tiers.yml cũ không báo lỗi. */
     ANIMATED_NAME("animated-name");
 
     private final String key;

@@ -62,8 +62,8 @@ class TierRegistryTest {
         assertTrue(tiers.hasFeature(1, Feature.NICK));
         // Không rank nào được tự chỉnh màu chat
         assertFalse(tiers.hasFeature(9, Feature.CUSTOM_CHAT));
-        assertFalse(tiers.hasFeature(7, Feature.ANIMATED_NAME));
-        assertTrue(tiers.hasFeature(8, Feature.ANIMATED_NAME));
+        // Ai cũng vào được trang hiệu ứng động: không tier nào cần animated-name
+        assertNull(tiers.featureTier(Feature.ANIMATED_NAME));
         // custom-name (1.3) đọc thành nick
         assertEquals(Feature.NICK, Feature.parse("custom-name"));
     }

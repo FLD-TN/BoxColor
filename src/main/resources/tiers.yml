@@ -11,11 +11,11 @@
 #   chat-colors: mã màu trong colors.yml (mục chat)
 #   name-colors: mã màu trong colors.yml (mục name)
 #   features:    custom-chat (tự chỉnh mã màu chat), nick (Màu tùy chỉnh: tự đặt tên, tô màu từng chữ, /nick),
-#                animated-name (vào trang Màu tên động)
+#                (animated-name không còn dùng: ai cũng vào được trang hiệu ứng động)
 #
 # Màu không nằm trong tier nào: chỉ mở bằng permission lẻ boxcolor.color.<chat|name>.<mã>
 # (quay crate, mua, quà sự kiện). Không rank nào được tự chỉnh mã màu chat
-# Tính năng lẻ: boxcolor.feature.<custom-chat|nick|animated-name>
+# Tính năng lẻ: boxcolor.feature.<custom-chat|nick>
 # boxcolor.admin: mở mọi thứ
 # Sửa xong chạy /boxcolor reload
 
@@ -53,11 +53,10 @@ tiers:
   8:
     name: '&f%img_wellsetups_ranks_ultimate%'
     chat-colors: [hong_dam, cam_lua]
-    # 3 màu tĩnh + 1 hiệu ứng động (trang hiệu ứng động mở từ đây)
+    # 3 màu tĩnh + tặng 1 hiệu ứng động
     name-colors: [hong_ngoc, mong_mo, lam_ngoc, cau_vong_dong]
-    features: [animated-name]
   9:
     name: '&f%img_wellsetups_ranks_overlord%'
     chat-colors: [hong_neon, ho_phach]
-    # 3 màu tĩnh + 1 hiệu ứng động
+    # 3 màu tĩnh + tặng 1 hiệu ứng động
     name-colors: [de_vuong, huyet_long, tinh_tu, ba_chu]

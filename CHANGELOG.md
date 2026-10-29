@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.9.1 (2026-10-29)
+
+- Ai cũng vào được trang Hiệu ứng tên động và dùng hiệu ứng mình sở hữu (phiếu crate). Bỏ yêu cầu `animated-name`
+  (tiers.yml cũ còn dòng này vẫn đọc được, chỉ không còn tác dụng). Ultimate tặng Cầu Vồng Động, Overlord tặng Bá Chủ;
+  lore trang chọn loại liệt kê hiệu ứng rank tặng kèm ảnh rank.
+
 ## 1.9.0 (2026-10-29)
 
 - Màu chat theo rank chỉ còn màu đơn (18 màu, mỗi rank 2); màu trộn từ 2 màu trở lên chỉ có ở crate. 10 màu

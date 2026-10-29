@@ -170,7 +170,6 @@ menu:
         - '&7• Màu tùy chỉnh: {nick}'
         - '&7• Hiệu ứng động: {decor}'
         - '&7  &8(TAB, scoreboard, trên đầu)'
-        - '&7• Mở hiệu ứng động: {animated}'
         - ''
         - '&8[&#7CFC9AChuột trái để mở&8]'
     # {name} tên đã tô màu, {realname} {nick} {tier}
@@ -234,15 +233,18 @@ menu:
         - '&7• Chỉ đổi màu, không đổi tên:'
         - '&7  luôn hiện tên thật, kể cả khi có nick'
         - '&7• Không ảnh hưởng tên trong chat'
-        - '&7• Yêu cầu: {tier} &7trở lên'
-        - '&7• Đã mở khóa: &f{unlocked}&7/&f{total} &7màu'
+        - ''
+        - '&#FFD166Cách nhận:'
+        - '&7• Quay crate để nhận phiếu hiệu ứng'
+        - '&7• Rank tặng sẵn:'
+        - '{gift}'
+        - '&7• Đã sở hữu: &f{unlocked}&7/&f{total} &7hiệu ứng'
         - ''
         - '{state}'
       state-unlocked:
-        - '&#7CFC9A✔ Đã mở khóa'
         - '&8[&#7CFC9AChuột trái để mở&8]'
-      state-locked:
-        - '&#FF6B6B✘ Chưa mở khóa &8(&7cần {tier} &7trở lên&8)'
+    # Một dòng cho mỗi hiệu ứng rank tặng sẵn. {tier} ảnh rank, {style} tên hiệu ứng
+    gift-line: '&7  {tier} &8- {style}'
 
   color:
     # {page} {pages}
