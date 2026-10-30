@@ -152,7 +152,8 @@ public final class ColorService {
     }
 
     private boolean canUse(Player player, int level, Channel channel, ColorStyle style) {
-        if (style.isCustom()) return hasFeature(player, level, customFeature(channel));
+        // Màu chat tự chỉnh không còn (dữ liệu cũ tự ẩn); màu tên tự chỉnh là /nick
+        if (style.isCustom()) return channel == Channel.NAME && hasFeature(player, level, Feature.NICK);
         return plugin.tiers().allows(level, channel, style.id())
                 || player.hasPermission(COLOR_PERMISSION + channel.key() + "." + style.id());
     }
@@ -190,11 +191,6 @@ public final class ColorService {
         public boolean hasFeature(Feature feature) {
             return ColorService.this.hasFeature(player, level, feature);
         }
-    }
-
-    /** Màu chat tự chỉnh: {@code custom-chat}. Màu tên tự chỉnh là "Màu tùy chỉnh": {@code nick}. */
-    public static Feature customFeature(Channel channel) {
-        return channel == Channel.CHAT ? Feature.CUSTOM_CHAT : Feature.NICK;
     }
 
     /** Màu tên đang hiện; chưa chọn thì màu rank; không có màu rank thì {@code default-name-color}. */

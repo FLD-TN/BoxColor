@@ -18,7 +18,6 @@ Màu chat, màu tên và nick cho BoxPvP (Paper 1.21.1). Mở khóa theo tier: m
 | `/chatcolor` (`/mauchat`) | Mở thẳng trang màu chat |
 | `/namecolor` (`/mauten`) | Mở thẳng trang chọn màu tên tĩnh / hiệu ứng động |
 | `/chatcolor reset`, `/namecolor reset` | Bỏ màu |
-| `/chatcolor custom #FFB3C6 #A0E7E5` | Tự chỉnh mã màu chat: không rank nào có, chỉ khi được cấp lẻ `boxcolor.feature.custom-chat` |
 | `/nick <tên>`, `/nick reset` | Màu tùy chỉnh: đặt / bỏ tên hiển thị (cần tính năng `nick`) |
 | `/nick &x&6&7&D&A&F&8D&x&6&A&D&9&F&5e...` | Tên kèm màu từng chữ: mỗi mã (`&x&R&R&G&G&B&B`, `&#RRGGBB`, `#RRGGBB`, `&0`-`&f`, `&r`) tô các chữ phía sau nó. Không gõ mã: chỉ đổi chữ, giữ màu đang dùng (kể cả màu động). Gõ lại đúng tên cũ kèm mã: chỉ đổi màu |
 | `/realname <nick>` (`/tenthat`) | Xem nick là của ai |
@@ -49,7 +48,7 @@ lp group overlord permission set boxcolor.tier.9 true
 | `boxcolor.realname` | mọi người | `/realname` |
 | `boxcolor.tier.<n>` | không | Tier của rank |
 | `boxcolor.color.<chat\|name>.<mã>` | không | Tặng lẻ một màu (quà sự kiện), không cần lên rank |
-| `boxcolor.feature.<custom-chat\|nick\|animated-name>` | không | Tặng lẻ một tính năng |
+| `boxcolor.feature.<nick\|motion>` | không | Tặng lẻ một tính năng |
 | `boxcolor.nick.bypass-cooldown` | op | Đổi nick không cần chờ |
 | `boxcolor.admin` | op | Mọi màu, mọi tính năng, lệnh admin |
 

@@ -57,7 +57,7 @@ public final class TierRegistry {
                     Feature feature = Feature.parse(f);
                     if (feature == null) {
                         warn.accept("tiers." + key + ".features: không có tính năng '" + f
-                                + "' (custom-chat, nick, motion)");
+                                + "' (nick, motion)");
                     } else {
                         features.add(feature);
                     }

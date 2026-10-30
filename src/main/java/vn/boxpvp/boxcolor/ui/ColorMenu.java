@@ -196,12 +196,8 @@ public final class ColorMenu extends MenuView {
         inventory.setItem(SLOT_PAGE, Icons.item(Material.PAPER,
                 m.line("menu.color.page-info.name", "page", String.valueOf(page + 1), "pages", String.valueOf(pages)),
                 m.lines("menu.color.page-info.lore", "total", String.valueOf(styles.size())), false));
-        // Tự chỉnh màu chat không mở theo rank; chỉ hiện với người có quyền lẻ (boxcolor.feature.custom-chat)
         if (section == Section.NAME_STATIC) inventory.setItem(SLOT_CUSTOM, nameCustomItem());
         else if (section == Section.NAME_ANIMATED) inventory.setItem(SLOT_CUSTOM, motionItem());
-        else if (access(plugin, viewer).hasFeature(ColorService.customFeature(Channel.CHAT))) {
-            inventory.setItem(SLOT_CUSTOM, chatCustomItem());
-        }
         inventory.setItem(SLOT_FILTER, filterItem());
     }
 
@@ -319,24 +315,6 @@ public final class ColorMenu extends MenuView {
         return icons.button(Material.CLOCK, "menu.color.motion", "motion", motion);
     }
 
-    /** Tự chỉnh màu chat bằng danh sách mã hex. */
-    private ItemStack chatCustomItem() {
-        Messages m = plugin.messages();
-        Feature feature = ColorService.customFeature(Channel.CHAT);
-        boolean unlocked = access(plugin, viewer).hasFeature(feature);
-        PlayerData data = plugin.cache().get(viewer.getUniqueId());
-        ColorStyle shown = data == null ? null : data.shown(Channel.CHAT);
-        String state = !unlocked ? "locked" : shown != null && shown.isCustom() ? "active" : "unlocked";
-        String[] ph = {
-                "max", String.valueOf(plugin.settings().customMaxColors()),
-                "tier", icons.featureUnlock(feature),
-                "current", shown != null && shown.isCustom() ? icons.styleName(shown, false) : ""
-        };
-        Map<String, List<String>> lists = Map.of("state", m.rawList("menu.color.custom.state-" + state, ph));
-        return Icons.item(Material.BRUSH, m.line("menu.color.custom.name", ph),
-                m.lines("menu.color.custom.lore", lists, ph), false);
-    }
-
     /**
      * Tên tĩnh: "Màu tùy chỉnh" (đặt tên kèm mã màu từng chữ). Tên động: chỉ đổi chữ, màu động giữ nguyên.
      * Cả hai đều là tính năng {@code nick}.
@@ -386,9 +364,6 @@ public final class ColorMenu extends MenuView {
             case SLOT_CUSTOM -> {
                 if (section == Section.NAME_STATIC) clickNameCustom(player, click);
                 else if (section == Section.NAME_ANIMATED) plugin.menus().open(player, new MotionMenu(plugin, player));
-                else if (plugin.colors().hasFeature(player, ColorService.customFeature(Channel.CHAT))) {
-                    clickChatCustom(player);
-                }
             }
             case SLOT_FILTER -> {
                 Filter next = filter.next();
@@ -412,17 +387,6 @@ public final class ColorMenu extends MenuView {
         if (section == Section.NAME_ANIMATED) plugin.colors().selectDecor(player, again ? null : style);
         else plugin.colors().select(player, channel, again ? null : style);
         render();
-    }
-
-    private void clickChatCustom(Player player) {
-        Feature feature = ColorService.customFeature(Channel.CHAT);
-        if (!plugin.colors().hasFeature(player, feature)) {
-            plugin.messages().send(player, "color.custom-locked",
-                    "channel", icons.channelName(Channel.CHAT), "tier", icons.featureUnlock(feature));
-            return;
-        }
-        plugin.menus().close(player, this);
-        plugin.prompts().start(player, Kind.CHAT_COLOR);
     }
 
     private void clickNameCustom(Player player, ClickType click) {

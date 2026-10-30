@@ -61,8 +61,6 @@ class TierRegistryTest {
     void featuresUnlockAtTheirTier() {
         assertFalse(tiers.hasFeature(0, Feature.NICK));
         assertTrue(tiers.hasFeature(1, Feature.NICK));
-        // Không rank nào được tự chỉnh màu chat
-        assertFalse(tiers.hasFeature(9, Feature.CUSTOM_CHAT));
         // Ai cũng vào được trang hiệu ứng động: không tier nào cần animated-name
         assertNull(tiers.featureTier(Feature.ANIMATED_NAME));
         // Tự chọn kiểu chuyển động từ Zeus

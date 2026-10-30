@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.12.1 (2026-10-30)
+
+- Bỏ tự chỉnh mã màu chat (`/chatcolor custom`, nút trong GUI, `boxcolor.feature.custom-chat`). Màu chat chỉ chọn
+  trong danh sách: rank tặng hoặc phiếu crate. Tự tùy chỉnh chỉ còn ở tên (`/nick`). Ai đang dùng màu chat tự chỉnh
+  sẽ tự về không màu.
+- Bỏ `custom.max-colors` trong config.yml (dòng cũ còn trong file không ảnh hưởng gì).
+
 ## 1.12.0 (2026-10-30)
 
 - `/chatcolor` mở thẳng trang màu chat, `/namecolor` mở thẳng trang chọn màu tên tĩnh / hiệu ứng động.

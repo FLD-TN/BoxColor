@@ -2,6 +2,7 @@ package vn.boxpvp.boxcolor.tier;
 
 /** Tính năng mở theo tier, khoá trong {@code tiers.<n>.features}. */
 public enum Feature {
+    /** Không còn dùng từ 1.12.1 (bỏ tự chỉnh màu chat); giữ để tiers.yml cũ không báo lỗi. */
     CUSTOM_CHAT("custom-chat", 0),
     /** "Màu tùy chỉnh": tự đặt tên, tô màu từng chữ ({@code /nick}). */
     NICK("nick", 0),

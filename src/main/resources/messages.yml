@@ -17,9 +17,7 @@ command:
   not-loaded: '&#FF6B6B✘ Dữ liệu của bạn chưa tải xong, thử lại sau giây lát'
   player-not-found: '&#FF6B6B✘ Không tìm thấy người chơi &f{player}'
   # {label}: chatcolor hoặc namecolor
-  usage-color: '&#FFD166(!) &7Dùng: &f/{label} &7(mở menu), &f/{label} reset&7, &f/{label} custom <#mã> &8(tối đa {max} mã)'
-  # /namecolor custom: màu tên tự chỉnh đã chuyển sang Màu tùy chỉnh
-  name-custom-moved: '&#FFD166(!) &7Màu tên tùy chỉnh dùng &f/nick <tên kèm mã màu>&7, ví dụ &f/nick &#FFD166#FFD166Đức &#FF8FAB#FF8FABAnh'
+  usage-color: '&#FFD166(!) &7Dùng: &f/{label} &7(mở menu), &f/{label} reset &7(bỏ màu)'
   reloaded: '&#7CFC9A✔ Đã nạp lại BoxColor &8(&f{chat} &7màu chat, &f{name} &7màu tên, &f{tiers} &7tier, &f{warnings} &7cảnh báo&8)'
 
 color:
@@ -33,15 +31,11 @@ color:
   motion-selected: '&#7CFC9A✔ Đã chọn kiểu chuyển động {motion}'
   motion-locked: '&#FF6B6B✘ Bạn chưa mở khóa tự chọn kiểu chuyển động'
   locked: '&#FF6B6B✘ Bạn chưa sở hữu màu này'
-  custom-locked: '&#FF6B6B✘ Tự chỉnh {channel} chưa mở khóa'
-  custom-invalid: '&#FF6B6B✘ Mã màu không hợp lệ, ví dụ: &f#FFB3C6 #A0E7E5'
   # Bấm Màu động khi chưa đủ rank
   animated-locked: '&#FF6B6B✘ Màu tên động chưa mở khóa'
-  custom-too-many: '&#FF6B6B✘ Chỉ được tối đa &f{max} &#FF6B6Bmã màu'
 
 # Ô nhập trong chat sau khi bấm "Tự chỉnh mã màu" hoặc "Đổi nick". Dòng người chơi gõ không hiện cho ai khác
 prompt:
-  chat-color: '&#FFD166(!) &7Nhập mã màu vào chat, ví dụ &f#FFB3C6 #A0E7E5 &8(1 mã = màu đơn, 2-{max} mã = chuyển màu)'
   nick: '&#FFD166(!) &7Nhập tên vào chat, kèm mã màu nếu muốn, ví dụ &f&#FFD166#FFD166Đức &#FF8FAB#FF8FABAnh &8({min}-{maxlength} ký tự; không gõ mã màu thì giữ màu đang dùng)'
   rename: '&#FFD166(!) &7Nhập tên vào chat &8({min}-{maxlength} ký tự, màu động giữ nguyên)'
   cancel-hint: '&7Gõ &fhuy &7để hủy, tự hủy sau &f{seconds} giây'
@@ -145,7 +139,7 @@ menu:
     nick-none: '&7Chưa đặt'
     nick-hidden: '&7{nick} &8(đang ẩn)'
     tier-none: '&7Chưa có'
-    # {current} {unlocked} {total} {custom}
+    # {current} {unlocked} {total}
     chat:
       name: '&#7FDBFFMàu chat'
       lore:
@@ -154,7 +148,6 @@ menu:
         - '&#FFD166Thông tin:'
         - '&7• Đang dùng: {current}'
         - '&7• Đã mở khóa: &f{unlocked}&7/&f{total} &7màu'
-        - '&7• Tự chỉnh mã màu: {custom}'
         - ''
         - '&8[&#7CFC9AChuột trái để mở&8]'
     # {current} {unlocked} {total} {nick} {animated}
@@ -323,26 +316,7 @@ menu:
       name: '&fTrang {page}&7/&f{pages}'
       lore:
         - '&7• Tổng cộng: &f{total} &7màu'
-    # Tự chỉnh mã màu. {max} {current}
-    custom:
-      name: '&#FFD166Tự chỉnh mã màu'
-      lore:
-        - '&#BFC7D5Tự nhập mã hex của riêng bạn'
-        - ''
-        - '&#FFD166Cách dùng:'
-        - '&7• 1 mã: màu đơn'
-        - '&7• 2-{max} mã: chuyển màu'
-        - '&7• Ví dụ: &f#FFB3C6 #A0E7E5'
-        - ''
-        - '{state}'
-      state-active:
-        - '&#7CFC9A✔ Đang dùng: {current}'
-        - '&8[&#7CFC9AChuột trái để nhập mã mới&8]'
-      state-unlocked:
-        - '&#7CFC9A✔ Đã mở khóa'
-        - '&8[&#7CFC9AChuột trái để nhập mã màu&8]'
-      state-locked:
-        - '&#FF6B6B✘ Chưa mở khóa'
+
     # Màu tùy chỉnh, ở trang màu tên tĩnh. {nick} tên hiện tại, {min} {max}
     nick:
       name: '&#E0A3FFMàu tùy chỉnh &8(/nick)'

@@ -92,9 +92,7 @@ nick:
   blocked-words: []
 
 custom:
-  # Số mã màu tối đa khi tự chỉnh (1 mã = màu đơn, từ 2 mã = chuyển màu)
-  max-colors: 5
-  # Thời gian chờ người chơi nhập mã màu/nick vào chat sau khi bấm trong GUI (giây)
+  # Thời gian chờ người chơi nhập nick vào chat sau khi bấm trong GUI (giây)
   input-timeout-seconds: 45
 
 # Phiếu màu: /boxcolor give <người chơi> <chat|name> <mã màu> [số lượng], bỏ phiếu vào crate

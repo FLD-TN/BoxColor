@@ -42,7 +42,6 @@ public final class Settings {
     private final NickRules nickRules;
     private final long nickCooldownMillis;
     private final boolean checkRealNames;
-    private final int customMaxColors;
     private final int inputTimeoutSeconds;
     private final String chatPreview;
     private final Material border;
@@ -95,7 +94,6 @@ public final class Settings {
         nickCooldownMillis = Math.max(0L, c.getLong("nick.cooldown-seconds", 0L)) * 1000L;
         checkRealNames = c.getBoolean("nick.check-real-names", true);
 
-        customMaxColors = Math.max(1, Math.min(10, c.getInt("custom.max-colors", 5)));
         inputTimeoutSeconds = Math.max(10, c.getInt("custom.input-timeout-seconds", 45));
 
         border = material(c.getString("gui.border", "GRAY_STAINED_GLASS_PANE"), Material.GRAY_STAINED_GLASS_PANE, warn);
@@ -253,10 +251,6 @@ public final class Settings {
 
     public boolean checkRealNames() {
         return checkRealNames;
-    }
-
-    public int customMaxColors() {
-        return customMaxColors;
     }
 
     public int inputTimeoutSeconds() {

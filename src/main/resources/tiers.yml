@@ -10,14 +10,14 @@
 #                (ảnh rank của ItemsAdder: '&f%img_wellsetups_ranks_elite%', &f để ảnh giữ đúng màu)
 #   chat-colors: mã màu trong colors.yml (mục chat)
 #   name-colors: mã màu trong colors.yml (mục name)
-#   features:    custom-chat (tự chỉnh mã màu chat), nick (Màu tùy chỉnh: tự đặt tên, tô màu từng chữ, /nick),
+#   features:    nick (Màu tùy chỉnh: tự đặt tên, tô màu từng chữ, /nick),
 #                motion (tự chọn kiểu chuyển động cho hiệu ứng tên động, chưa mở thì luôn chạy kiểu Mặc định;
 #                không tier nào ghi motion thì mặc định mở từ tier 7),
 #                (animated-name không còn dùng: ai cũng vào được trang hiệu ứng động)
 #
 # Màu không nằm trong tier nào: chỉ mở bằng permission lẻ boxcolor.color.<chat|name>.<mã>
 # (quay crate, mua, quà sự kiện). Không rank nào được tự chỉnh mã màu chat
-# Tính năng lẻ: boxcolor.feature.<custom-chat|nick|motion>
+# Tính năng lẻ: boxcolor.feature.<nick|motion>
 # boxcolor.admin: mở mọi thứ
 # Sửa xong chạy /boxcolor reload
 

@@ -68,7 +68,6 @@ public final class MainMenu extends MenuView {
                 "current", current,
                 "unlocked", String.valueOf(unlocked),
                 "total", String.valueOf(plugin.styles().count(channel)),
-                "custom", icons.yesNo(access.hasFeature(ColorService.customFeature(channel))),
                 "nick", icons.yesNo(access.hasFeature(Feature.NICK)),
                 "decor", data.shownDecor() != null ? icons.styleName(data.shownDecor(), true)
                         : m.raw("menu.main.decor-none")
