@@ -31,6 +31,7 @@ color:
   decor-reset: '&#7CFC9A✔ Đã bỏ hiệu ứng tên động'
   # {motion}: tên kiểu chuyển động (menu.motion.<kiểu>.name)
   motion-selected: '&#7CFC9A✔ Đã chọn kiểu chuyển động {motion}'
+  motion-locked: '&#FF6B6B✘ Bạn chưa mở khóa tự chọn kiểu chuyển động'
   locked: '&#FF6B6B✘ Bạn chưa sở hữu màu này'
   custom-locked: '&#FF6B6B✘ Tự chỉnh {channel} chưa mở khóa'
   custom-invalid: '&#FF6B6B✘ Mã màu không hợp lệ, ví dụ: &f#FFB3C6 #A0E7E5'
@@ -416,6 +417,13 @@ menu:
         - '&7• Kiểu: {motion}'
         - '&7• Hiệu ứng: {style}'
         - '&7• Áp cho mọi hiệu ứng tên động'
+    # Chưa mở tính năng motion: hiệu ứng luôn chạy kiểu Mặc định
+    info-locked:
+      name: '&fĐang dùng'
+      lore:
+        - '&7• Kiểu: {motion}'
+        - '&7• Hiệu ứng: {style}'
+        - '&#FF6B6B✘ Chưa mở khóa tự chọn kiểu'
     info-no-decor:
       name: '&fĐang dùng'
       lore:
@@ -435,6 +443,8 @@ menu:
       - '&#7CFC9A✔ Đang sử dụng'
     state-unselected:
       - '&8[&#7CFC9AChuột trái để chọn&8]'
+    state-locked:
+      - '&#FF6B6B✘ Chưa mở khóa'
     back:
       name: '&fQuay lại'
       lore:

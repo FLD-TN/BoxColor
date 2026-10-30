@@ -34,6 +34,8 @@ public final class PlayerData {
     private volatile ColorStyle shownName;
     private volatile String shownNick;
     private volatile ColorStyle shownDecor;
+    /** Được tự chọn kiểu chuyển động (tính năng motion); không thì luôn chạy kiểu Mặc định. */
+    private volatile boolean motionUnlocked;
     private volatile int tierLevel;
     /** Màu tên theo rank (config.yml rank-name-colors), dùng khi chưa chọn màu tên; {@code null} nếu không có. */
     private volatile ColorStyle rankName;
@@ -86,6 +88,14 @@ public final class PlayerData {
 
     public void motion(String key) {
         this.motion = key;
+    }
+
+    public boolean motionUnlocked() {
+        return motionUnlocked;
+    }
+
+    public void motionUnlocked(boolean unlocked) {
+        this.motionUnlocked = unlocked;
     }
 
     /** Hiệu ứng động đang hiện ở TAB và nametag (đã kiểm tra quyền), {@code null} nếu không có. */

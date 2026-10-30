@@ -65,6 +65,9 @@ class TierRegistryTest {
         assertFalse(tiers.hasFeature(9, Feature.CUSTOM_CHAT));
         // Ai cũng vào được trang hiệu ứng động: không tier nào cần animated-name
         assertNull(tiers.featureTier(Feature.ANIMATED_NAME));
+        // Tự chọn kiểu chuyển động từ Zeus
+        assertFalse(tiers.hasFeature(6, Feature.MOTION));
+        assertTrue(tiers.hasFeature(7, Feature.MOTION));
         // custom-name (1.3) đọc thành nick
         assertEquals(Feature.NICK, Feature.parse("custom-name"));
     }
@@ -159,6 +162,8 @@ class TierRegistryTest {
         TierRegistry r = TierRegistry.load(t, s, w::add);
         assertEquals(5, w.size());
         assertTrue(r.allows(1, Channel.CHAT, "ok"));
+        // tiers.yml cũ không ghi motion: mặc định tier 7, không có tier 7 thì không ai có
+        assertNull(r.featureTier(Feature.MOTION));
         assertTrue(r.hasFeature(1, Feature.NICK));
     }
 }

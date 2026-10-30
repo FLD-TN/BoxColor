@@ -71,6 +71,7 @@ public final class ColorService {
         }
         ColorStyle decor = plugin.styles().get(Channel.NAME, data.decor());
         data.shownDecor(decor != null && decor.animated() && canUse(player, level, Channel.NAME, decor) ? decor : null);
+        data.motionUnlocked(hasFeature(player, level, Feature.MOTION));
         String nick = data.nick();
         data.shownNick(nick != null && hasFeature(player, level, Feature.NICK) ? nick : null);
         data.rankName(rankNameStyle(player));
@@ -125,8 +126,12 @@ public final class ColorService {
                 "motion", plugin.messages().raw("menu.motion." + motion.key() + ".name"));
     }
 
-    /** Kiểu chuyển động người chơi đã chọn, chưa chọn thì {@code animation.default-motion}. */
+    /**
+     * Kiểu chuyển động đang chạy: người đã mở tính năng {@code motion} dùng kiểu đã chọn (chưa chọn thì
+     * {@code animation.default-motion}); chưa mở thì luôn là Mặc định.
+     */
     public Motion motionOf(PlayerData data) {
+        if (!data.motionUnlocked()) return Motion.CLASSIC;
         Motion motion = Motion.parse(data.motion());
         return motion != null ? motion : plugin.settings().defaultMotion();
     }

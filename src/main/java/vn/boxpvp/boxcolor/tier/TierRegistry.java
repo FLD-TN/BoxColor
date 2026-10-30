@@ -57,7 +57,7 @@ public final class TierRegistry {
                     Feature feature = Feature.parse(f);
                     if (feature == null) {
                         warn.accept("tiers." + key + ".features: không có tính năng '" + f
-                                + "' (custom-chat, nick, animated-name)");
+                                + "' (custom-chat, nick, motion)");
                     } else {
                         features.add(feature);
                     }
@@ -106,7 +106,7 @@ public final class TierRegistry {
         for (Tier tier : tiers.values()) {
             if (tier.features().contains(feature)) return tier;
         }
-        return null;
+        return feature.defaultTier() > 0 ? tiers.get(feature.defaultTier()) : null;
     }
 
     public boolean allows(int level, Channel channel, String styleId) {

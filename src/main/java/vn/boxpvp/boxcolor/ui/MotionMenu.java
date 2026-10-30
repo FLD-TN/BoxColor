@@ -14,6 +14,7 @@ import vn.boxpvp.boxcolor.service.ColorService;
 import vn.boxpvp.boxcolor.style.Channel;
 import vn.boxpvp.boxcolor.style.ColorStyle;
 import vn.boxpvp.boxcolor.style.Motion;
+import vn.boxpvp.boxcolor.tier.Feature;
 import vn.boxpvp.boxcolor.ui.ColorMenu.Section;
 
 /**
@@ -74,8 +75,11 @@ public final class MotionMenu extends MenuView {
         if (data == null) return;
         ColorStyle sample = sample(data);
         Motion current = plugin.colors().motionOf(data);
+        boolean unlocked = data.motionUnlocked();
         for (Map.Entry<Integer, Motion> e : slotMotions.entrySet()) {
-            inventory.setItem(e.getKey(), motionItem(e.getValue(), e.getValue() == current, sample, data));
+            Motion motion = e.getValue();
+            String state = motion == current ? "selected" : unlocked ? "unselected" : "locked";
+            inventory.setItem(e.getKey(), motionItem(motion, state, sample, data));
         }
         inventory.setItem(SLOT_INFO, infoItem(data, sample, current));
     }
@@ -91,7 +95,7 @@ public final class MotionMenu extends MenuView {
         return styles.isEmpty() ? null : styles.get(0);
     }
 
-    private ItemStack motionItem(Motion motion, boolean selected, ColorStyle sample, PlayerData data) {
+    private ItemStack motionItem(Motion motion, String state, ColorStyle sample, PlayerData data) {
         Messages m = plugin.messages();
         String path = "menu.motion." + motion.key();
         String preview = sample == null ? m.raw("menu.motion.no-sample")
@@ -99,9 +103,9 @@ public final class MotionMenu extends MenuView {
         String[] ph = {"preview", preview};
         Map<String, List<String>> lists = Map.of(
                 "description", m.rawList(path + ".description"),
-                "state", m.rawList("menu.motion.state-" + (selected ? "selected" : "unselected")));
+                "state", m.rawList("menu.motion.state-" + state));
         return Icons.item(ICONS.getOrDefault(motion, Material.PAPER), m.line(path + ".name", ph),
-                m.lines("menu.motion.item.lore", lists, ph), selected);
+                m.lines("menu.motion.item.lore", lists, ph), state.equals("selected"));
     }
 
     private ItemStack infoItem(PlayerData data, ColorStyle sample, Motion current) {
@@ -111,7 +115,8 @@ public final class MotionMenu extends MenuView {
                 "style", sample == null ? m.raw("menu.motion.no-sample")
                         : icons.decor(sample.display(), sample, current.apply(sample.effect()))
         };
-        String path = data.shownDecor() != null ? "menu.motion.info" : "menu.motion.info-no-decor";
+        String path = !data.motionUnlocked() ? "menu.motion.info-locked"
+                : data.shownDecor() != null ? "menu.motion.info" : "menu.motion.info-no-decor";
         return Icons.item(Material.CLOCK, m.line(path + ".name", ph), m.lines(path + ".lore", ph), false);
     }
 
@@ -125,6 +130,11 @@ public final class MotionMenu extends MenuView {
         if (motion == null) return;
         PlayerData data = plugin.cache().get(player.getUniqueId());
         if (data == null || plugin.colors().motionOf(data) == motion) return;
+        // Kiểm tra quyền thật lúc bấm (có thể vừa mất rank)
+        if (!plugin.colors().hasFeature(player, Feature.MOTION)) {
+            plugin.messages().send(player, "color.motion-locked");
+            return;
+        }
         plugin.colors().selectMotion(player, motion);
         drawItems();
     }
