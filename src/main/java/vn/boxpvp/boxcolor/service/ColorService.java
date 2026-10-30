@@ -1,5 +1,7 @@
 package vn.boxpvp.boxcolor.service;
 
+import java.util.HashMap;
+import java.util.Map;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitTask;
@@ -127,6 +129,33 @@ public final class ColorService {
 
     private boolean hasFeature(Player player, int level, Feature feature) {
         return plugin.tiers().hasFeature(level, feature) || player.hasPermission(FEATURE_PERMISSION + feature.key());
+    }
+
+    /** Ảnh chụp quyền của người chơi lúc này, cho GUI vẽ lại liên tục. */
+    public Access access(Player player) {
+        return new Access(player, plugin.tiers().levelOf(player));
+    }
+
+    /** Tier tính một lần, kết quả từng màu nhớ lại: vẽ lại GUI không kiểm tra quyền lặp lại. */
+    public final class Access {
+
+        private final Player player;
+        private final int level;
+        private final Map<String, Boolean> colors = new HashMap<>();
+
+        private Access(Player player, int level) {
+            this.player = player;
+            this.level = level;
+        }
+
+        public boolean canUse(Channel channel, ColorStyle style) {
+            return colors.computeIfAbsent(channel.key() + ":" + style.id(),
+                    k -> ColorService.this.canUse(player, level, channel, style));
+        }
+
+        public boolean hasFeature(Feature feature) {
+            return ColorService.this.hasFeature(player, level, feature);
+        }
     }
 
     /** Màu chat tự chỉnh: {@code custom-chat}. Màu tên tự chỉnh là "Màu tùy chỉnh": {@code nick}. */

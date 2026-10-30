@@ -7,6 +7,8 @@ import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.jetbrains.annotations.NotNull;
+import vn.boxpvp.boxcolor.BoxColorPlugin;
+import vn.boxpvp.boxcolor.service.ColorService;
 
 /**
  * Lớp nền của mọi màn hình. Kho được tạo một lần; mọi cập nhật dùng {@code inventory.setItem()},
@@ -14,10 +16,28 @@ import org.jetbrains.annotations.NotNull;
  */
 public abstract class MenuView implements InventoryHolder {
 
+    /** GUI vẽ lại mỗi 4 tick; quyền của người xem chỉ tính lại sau khoảng này. */
+    private static final long ACCESS_MILLIS = 2000L;
+
     protected final Inventory inventory;
+    private ColorService.Access access;
+    private long accessAt;
 
     protected MenuView(int size, Component title) {
         this.inventory = Bukkit.createInventory(this, size, title);
+    }
+
+    /** Quyền của người xem, dùng lại tối đa {@link #ACCESS_MILLIS}. */
+    protected ColorService.Access access(BoxColorPlugin plugin, Player viewer) {
+        long now = System.currentTimeMillis();
+        if (access == null || now - accessAt >= ACCESS_MILLIS) useAccess(plugin.colors().access(viewer));
+        return access;
+    }
+
+    /** Dùng ảnh chụp quyền đã tính sẵn (lúc dựng màn hình). */
+    protected void useAccess(ColorService.Access access) {
+        this.access = access;
+        this.accessAt = System.currentTimeMillis();
     }
 
     @Override

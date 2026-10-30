@@ -123,16 +123,16 @@ public final class ColorMenu extends MenuView {
     }
 
     public ColorMenu(BoxColorPlugin plugin, Player viewer, Section section, int page, Filter filter) {
-        this(plugin, viewer, section, page, filter, section.styles(plugin));
+        this(plugin, viewer, section, page, filter, section.styles(plugin), plugin.colors().access(viewer));
     }
 
     private ColorMenu(BoxColorPlugin plugin, Player viewer, Section section, int page, Filter filter,
-            List<ColorStyle> all) {
-        this(plugin, viewer, section, page, filter, all, filtered(plugin, viewer, section, all, filter));
+            List<ColorStyle> all, ColorService.Access access) {
+        this(plugin, viewer, section, page, filter, all, access, filtered(access, section, all, filter));
     }
 
     private ColorMenu(BoxColorPlugin plugin, Player viewer, Section section, int page, Filter filter,
-            List<ColorStyle> all, List<ColorStyle> styles) {
+            List<ColorStyle> all, ColorService.Access access, List<ColorStyle> styles) {
         super(54, plugin.messages().text("menu.color.title-" + section.key(),
                 "page", String.valueOf(clampPage(page, styles.size()) + 1),
                 "pages", String.valueOf(pageCount(styles.size()))));
@@ -146,15 +146,16 @@ public final class ColorMenu extends MenuView {
         this.pages = pageCount(styles.size());
         this.page = clampPage(page, styles.size());
         this.totalCount = all.size();
-        this.ownedCount = filtered(plugin, viewer, section, all, Filter.OWNED).size();
+        this.ownedCount = filtered(access, section, all, Filter.OWNED).size();
+        useAccess(access);
     }
 
-    private static List<ColorStyle> filtered(BoxColorPlugin plugin, Player viewer, Section section,
+    private static List<ColorStyle> filtered(ColorService.Access access, Section section,
             List<ColorStyle> all, Filter filter) {
         if (filter == Filter.ALL) return all;
         List<ColorStyle> out = new ArrayList<>();
         for (ColorStyle style : all) {
-            boolean owned = plugin.colors().canUse(viewer, section.channel(), style);
+            boolean owned = access.canUse(section.channel(), style);
             if (owned == (filter == Filter.OWNED)) out.add(style);
         }
         return out;
@@ -196,7 +197,7 @@ public final class ColorMenu extends MenuView {
                 m.lines("menu.color.page-info.lore", "total", String.valueOf(styles.size())), false));
         // Tự chỉnh màu chat không mở theo rank; chỉ hiện với người có quyền lẻ (boxcolor.feature.custom-chat)
         if (section == Section.NAME_STATIC) inventory.setItem(SLOT_CUSTOM, nameCustomItem());
-        else if (plugin.colors().hasFeature(viewer, ColorService.customFeature(Channel.CHAT))) {
+        else if (access(plugin, viewer).hasFeature(ColorService.customFeature(Channel.CHAT))) {
             inventory.setItem(SLOT_CUSTOM, chatCustomItem());
         }
         inventory.setItem(SLOT_FILTER, filterItem());
@@ -222,7 +223,7 @@ public final class ColorMenu extends MenuView {
 
     private ItemStack styleItem(ColorStyle style, PlayerData data, boolean selected) {
         Messages m = plugin.messages();
-        boolean unlocked = plugin.colors().canUse(viewer, channel, style);
+        boolean unlocked = access(plugin, viewer).canUse(channel, style);
         String state = selected && unlocked ? "selected" : unlocked ? "unlocked" : "locked";
         Map<String, List<String>> lists = new LinkedHashMap<>();
         lists.put("note", style.animated() && channel == Channel.CHAT
@@ -300,7 +301,7 @@ public final class ColorMenu extends MenuView {
     private ItemStack chatCustomItem() {
         Messages m = plugin.messages();
         Feature feature = ColorService.customFeature(Channel.CHAT);
-        boolean unlocked = plugin.colors().hasFeature(viewer, feature);
+        boolean unlocked = access(plugin, viewer).hasFeature(feature);
         PlayerData data = plugin.cache().get(viewer.getUniqueId());
         ColorStyle shown = data == null ? null : data.shown(Channel.CHAT);
         String state = !unlocked ? "locked" : shown != null && shown.isCustom() ? "active" : "unlocked";
@@ -320,7 +321,7 @@ public final class ColorMenu extends MenuView {
      */
     private ItemStack nameCustomItem() {
         Messages m = plugin.messages();
-        boolean unlocked = plugin.colors().hasFeature(viewer, Feature.NICK);
+        boolean unlocked = access(plugin, viewer).hasFeature(Feature.NICK);
         PlayerData data = plugin.cache().get(viewer.getUniqueId());
         boolean hasNick = data != null && data.nick() != null;
         String nick = hasNick ? Icons.styled(data.nick(), plugin.colors().nameStyle(data), false)

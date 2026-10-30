@@ -8,6 +8,7 @@ import org.bukkit.inventory.ItemStack;
 import vn.boxpvp.boxcolor.BoxColorPlugin;
 import vn.boxpvp.boxcolor.config.Messages;
 import vn.boxpvp.boxcolor.data.PlayerData;
+import vn.boxpvp.boxcolor.service.ColorService;
 import vn.boxpvp.boxcolor.style.Channel;
 import vn.boxpvp.boxcolor.style.ColorStyle;
 import vn.boxpvp.boxcolor.ui.ColorMenu.Section;
@@ -64,9 +65,10 @@ public final class NameTypeMenu extends MenuView {
         // Hiệu ứng động chỉ tô lên tên thật (TAB, nametag); màu tĩnh hiện nick (chat, scoreboard)
         String text = section == Section.NAME_ANIMATED ? data.realName() : data.displayText();
         String example = sample == null ? m.raw("menu.name-type.no-sample") : Icons.styled(text, sample, true);
+        ColorService.Access access = access(plugin, viewer);
         int unlocked = 0;
         for (ColorStyle style : styles) {
-            if (plugin.colors().canUse(viewer, Channel.NAME, style)) unlocked++;
+            if (access.canUse(Channel.NAME, style)) unlocked++;
         }
         String path = "menu.name-type." + section.key();
         String[] ph = {
@@ -81,8 +83,9 @@ public final class NameTypeMenu extends MenuView {
 
     /** Màu đầu tiên người chơi dùng được, không có thì màu đầu tiên của loại đó. */
     private ColorStyle sample(List<ColorStyle> styles) {
+        ColorService.Access access = access(plugin, viewer);
         for (ColorStyle style : styles) {
-            if (plugin.colors().canUse(viewer, Channel.NAME, style)) return style;
+            if (access.canUse(Channel.NAME, style)) return style;
         }
         return styles.isEmpty() ? null : styles.get(0);
     }

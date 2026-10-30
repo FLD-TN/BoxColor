@@ -63,9 +63,10 @@ public final class MainMenu extends MenuView {
 
     private ItemStack channelItem(Material material, Channel channel, PlayerData data) {
         Messages m = plugin.messages();
+        ColorService.Access access = access(plugin, viewer);
         int unlocked = 0;
         for (ColorStyle style : plugin.styles().list(channel)) {
-            if (plugin.colors().canUse(viewer, channel, style)) unlocked++;
+            if (access.canUse(channel, style)) unlocked++;
         }
         ColorStyle shown = data.shown(channel);
         String current = shown != null ? icons.styleName(shown, true) : m.raw("menu.main.current-none");
@@ -74,8 +75,8 @@ public final class MainMenu extends MenuView {
                 "current", current,
                 "unlocked", String.valueOf(unlocked),
                 "total", String.valueOf(plugin.styles().count(channel)),
-                "custom", icons.yesNo(plugin.colors().hasFeature(viewer, ColorService.customFeature(channel))),
-                "nick", icons.yesNo(plugin.colors().hasFeature(viewer, Feature.NICK)),
+                "custom", icons.yesNo(access.hasFeature(ColorService.customFeature(channel))),
+                "nick", icons.yesNo(access.hasFeature(Feature.NICK)),
                 "decor", data.shownDecor() != null ? icons.styleName(data.shownDecor(), true)
                         : m.raw("menu.main.decor-none")
         };

@@ -1,6 +1,7 @@
 package vn.boxpvp.boxcolor.voucher;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,8 +25,13 @@ import vn.boxpvp.boxcolor.ui.Icons;
  */
 public final class VoucherService {
 
+    /** LuckPerms lưu quyền bất đồng bộ: trong khoảng này phiếu cùng màu coi như đã sở hữu, không trừ thêm. */
+    private static final long PENDING_MILLIS = 5000L;
+
     private final BoxColorPlugin plugin;
     private final NamespacedKey key;
+    /** "uuid:permission" → hạn chờ, chỉ dùng trên main thread. */
+    private final Map<String, Long> pending = new HashMap<>();
 
     public VoucherService(BoxColorPlugin plugin) {
         this.plugin = plugin;
@@ -85,11 +91,14 @@ public final class VoucherService {
             return;
         }
         String name = icons.styleName(style, false);
-        if (plugin.colors().canUse(player, channel, style)) {
+        String permission = ColorService.COLOR_PERMISSION + channel.key() + "." + style.id();
+        String pendingKey = player.getUniqueId() + ":" + permission;
+        if (isPending(pendingKey) || plugin.colors().canUse(player, channel, style)) {
             plugin.messages().send(player, "voucher.already", "style", name, "channel", icons.channelName(channel));
             return;
         }
-        String permission = ColorService.COLOR_PERMISSION + channel.key() + "." + style.id();
+        long until = System.currentTimeMillis() + PENDING_MILLIS;
+        pending.put(pendingKey, until);
         String command = plugin.settings().voucherGrantCommand()
                 .replace("{player}", player.getName())
                 .replace("{uuid}", player.getUniqueId().toString())
@@ -102,5 +111,11 @@ public final class VoucherService {
         Bukkit.getScheduler().runTaskLater(plugin, () -> {
             if (player.isOnline()) plugin.colors().refresh(player);
         }, 20L);
+        Bukkit.getScheduler().runTaskLater(plugin, () -> pending.remove(pendingKey, until), PENDING_MILLIS / 50);
+    }
+
+    private boolean isPending(String pendingKey) {
+        Long until = pending.get(pendingKey);
+        return until != null && until > System.currentTimeMillis();
     }
 }

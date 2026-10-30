@@ -45,8 +45,8 @@ access-check-seconds: 30
 animation:
   # false = mọi màu chuyển động đứng yên (vẫn giữ màu), dùng khi server nặng. Đổi xong /boxcolor reload
   enabled: true
-  # Một khung hình dài bao nhiêu mili giây. Nên bằng số làm mới của '%boxcolor_name%' trong TAB
-  # (placeholder-refresh-intervals) và UNT (placeholderUpdateRates, tính bằng tick: 2 tick = 100ms)
+  # Một khung hình dài bao nhiêu mili giây. Nên bằng số làm mới của '%boxcolor_tab%' trong TAB
+  # (placeholder-refresh-intervals) và '%boxcolor_nametag%' trong UNT (placeholderUpdateRates, tính bằng tick: 2 tick = 100ms)
   # Tăng lên 200 hoặc 250 để giảm một nửa số gói tin, màu chạy giật hơn một chút
   frame-ms: 100
 
