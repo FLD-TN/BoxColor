@@ -73,16 +73,17 @@ class TierRegistryTest {
     }
 
     @Test
-    void animatedNameColorsOnlyFromUltimate() {
+    void animatedNameColorsOnlyFromZeus() {
         for (var style : styles.list(Channel.NAME)) {
             if (!style.animated()) continue;
-            // Màu động theo rank chỉ từ Ultimate; màu động crate không thuộc tier nào (vẫn cần animated-name)
+            // Hiệu ứng động theo rank chỉ từ Zeus; hiệu ứng crate không thuộc tier nào
             var tier = tiers.unlockTier(Channel.NAME, style.id());
-            assertTrue(tier == null || tier.level() >= 8, style.id());
+            assertTrue(tier == null || tier.level() >= 7, style.id());
         }
         assertNull(tiers.unlockTier(Channel.NAME, "neon_dong"));
         assertFalse(tiers.allows(9, Channel.NAME, "neon_dong"));
-        // Quà Ultimate: Cực Quang; Cầu Vồng Động chỉ có ở crate
+        // Quà Zeus: Thần Sấm; Ultimate: Cực Quang; Cầu Vồng Động chỉ có ở crate
+        assertEquals(7, tiers.unlockTier(Channel.NAME, "than_sam").level());
         assertEquals(8, tiers.unlockTier(Channel.NAME, "cuc_quang").level());
         assertNull(tiers.unlockTier(Channel.NAME, "cau_vong_dong"));
         assertEquals(9, tiers.unlockTier(Channel.NAME, "ba_chu").level());
@@ -110,16 +111,19 @@ class TierRegistryTest {
 
     @Test
     void oneAnimatedEffectPerTopRank() {
+        int zeus = 0;
         int ultimate = 0;
         int overlord = 0;
         for (var style : styles.list(Channel.NAME)) {
             if (!style.animated()) continue;
             var tier = tiers.unlockTier(Channel.NAME, style.id());
             if (tier == null) continue;
-            if (tier.level() == 8) ultimate++;
+            if (tier.level() == 7) zeus++;
+            else if (tier.level() == 8) ultimate++;
             else if (tier.level() == 9) overlord++;
             else throw new AssertionError("hiệu ứng động ở rank thấp: " + style.id());
         }
+        assertEquals(1, zeus);
         assertEquals(1, ultimate);
         assertEquals(1, overlord);
     }

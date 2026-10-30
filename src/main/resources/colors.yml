@@ -345,7 +345,18 @@ name:
     colors: ['#FFE600', '#7CC242']
 
   # ---------- Hiệu ứng tên động (TAB, scoreboard, nametag) ----------
-  # Rank tặng (tiers.yml): Ultimate Cực Quang, Overlord Bá Chủ
+  # Rank tặng (tiers.yml): Zeus Thần Sấm, Ultimate Cực Quang, Overlord Bá Chủ
+  # Zeus
+  than_sam:
+    display: 'Thần Sấm'
+    type: gradient
+    animated: true
+    speed: 1500
+    motion: static
+    effects: [spark]
+    highlight: '#FFF56B'
+    spark-density: 0.16
+    colors: ['#2E5BFF', '#3DB8FF']
   # Ultimate
   cuc_quang:
     display: 'Cực Quang'
@@ -397,16 +408,6 @@ name:
     effects: [shine]
     highlight: '#FFFFFF'
     colors: ['#0066FF', '#00C8FF', '#5CFFE4']
-  than_sam:
-    display: 'Thần Sấm'
-    type: gradient
-    animated: true
-    speed: 1500
-    motion: static
-    effects: [spark]
-    highlight: '#FFF56B'
-    spark-density: 0.16
-    colors: ['#2E5BFF', '#3DB8FF']
   tinh_van_dong:
     display: 'Tinh Vân Động'
     type: gradient

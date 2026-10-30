@@ -51,7 +51,8 @@ tiers:
   7:
     name: '&f%img_wellsetups_ranks_zeus%'
     chat-colors: [xanh_lam]
-    name-colors: [vang_rong, sam_chop, bach_kim]
+    # 3 màu tĩnh + tặng 1 hiệu ứng động
+    name-colors: [vang_rong, sam_chop, bach_kim, than_sam]
     # Tự chọn kiểu chuyển động của hiệu ứng tên động
     features: [motion]
   8:

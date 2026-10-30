@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.11.2 (2026-10-30)
+
+- Zeus được tặng hiệu ứng tên động **Thần Sấm** (trước chỉ có ở crate). tiers.yml trên server: thêm `than_sam`
+  vào `name-colors` của tier 7.
+
 ## 1.11.1 (2026-10-30)
 
 - Quà hiệu ứng động của Ultimate đổi từ Cầu Vồng Động sang **Cực Quang**. Cầu Vồng Động chuyển sang crate
