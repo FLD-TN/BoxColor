@@ -14,7 +14,9 @@ Màu chat, màu tên và nick cho BoxPvP (Paper 1.21.1). Mở khóa theo tier: m
 
 | Lệnh | Việc |
 |---|---|
-| `/chatcolor`, `/namecolor` (`/mauchat`, `/mauten`) | Mở trang chính (cả hai lệnh cùng một trang) |
+| `/dasac` | Mở trang chính (màu chat và màu tên) |
+| `/chatcolor` (`/mauchat`) | Mở thẳng trang màu chat |
+| `/namecolor` (`/mauten`) | Mở thẳng trang chọn màu tên tĩnh / hiệu ứng động |
 | `/chatcolor reset`, `/namecolor reset` | Bỏ màu |
 | `/chatcolor custom #FFB3C6 #A0E7E5` | Tự chỉnh mã màu chat: không rank nào có, chỉ khi được cấp lẻ `boxcolor.feature.custom-chat` |
 | `/nick <tên>`, `/nick reset` | Màu tùy chỉnh: đặt / bỏ tên hiển thị (cần tính năng `nick`) |

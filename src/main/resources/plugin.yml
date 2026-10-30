@@ -5,12 +5,14 @@ main: vn.boxpvp.boxcolor.BoxColorPlugin
 api-version: '1.21'
 softdepend: [PlaceholderAPI, LuckPerms]
 commands:
+  dasac:
+    description: Mở menu màu chat và màu tên
   chatcolor:
     aliases: [mauchat]
-    description: Mở menu màu chat và màu tên
+    description: Mở menu màu chat
   namecolor:
     aliases: [mauten]
-    description: Mở menu màu chat và màu tên
+    description: Mở menu màu tên (tĩnh và động)
   nick:
     description: Đặt tên hiển thị riêng
   realname:

@@ -89,6 +89,7 @@ public final class BoxColorPlugin extends JavaPlugin {
 
         command("chatcolor", new ColorCommand(this, Channel.CHAT));
         command("namecolor", new ColorCommand(this, Channel.NAME));
+        command("dasac", new ColorCommand(this, null));
         command("nick", nickCommand);
         command("realname", new RealNameCommand(this));
         command("boxcolor", new AdminCommand(this));

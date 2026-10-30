@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.12.0 (2026-10-30)
+
+- `/chatcolor` mở thẳng trang màu chat, `/namecolor` mở thẳng trang chọn màu tên tĩnh / hiệu ứng động.
+- Lệnh mới `/dasac` mở trang chính (màu chat và màu tên). Trang chính bỏ ô đầu người chơi, 2 ô dời vào giữa.
+
 ## 1.11.2 (2026-10-30)
 
 - Zeus được tặng hiệu ứng tên động **Thần Sấm** (trước chỉ có ở crate). tiers.yml trên server: thêm `than_sam`

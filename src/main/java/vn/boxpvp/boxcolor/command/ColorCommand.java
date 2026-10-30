@@ -13,17 +13,20 @@ import vn.boxpvp.boxcolor.service.ColorService;
 import vn.boxpvp.boxcolor.style.Channel;
 import vn.boxpvp.boxcolor.style.ColorStyle;
 import vn.boxpvp.boxcolor.tier.Feature;
+import vn.boxpvp.boxcolor.ui.ColorMenu;
 import vn.boxpvp.boxcolor.ui.CustomConfirmMenu;
 import vn.boxpvp.boxcolor.ui.Icons;
 import vn.boxpvp.boxcolor.ui.MainMenu;
+import vn.boxpvp.boxcolor.ui.NameTypeMenu;
 
 /**
- * {@code /chatcolor} và {@code /namecolor}: không tham số thì mở trang chính (cả hai lệnh cùng một trang).
- * {@code reset} bỏ màu, {@code custom <#mã...>} tự chỉnh.
+ * {@code /chatcolor} mở trang màu chat, {@code /namecolor} mở trang chọn màu tên (tĩnh/động), {@code /dasac} mở trang
+ * chính ({@code channel = null}). {@code reset} bỏ màu, {@code custom <#mã...>} tự chỉnh.
  */
 public final class ColorCommand implements TabExecutor {
 
     private final BoxColorPlugin plugin;
+    /** {@code null}: lệnh {@code /dasac}, chỉ mở trang chính. */
     private final Channel channel;
 
     public ColorCommand(BoxColorPlugin plugin, Channel channel) {
@@ -46,8 +49,13 @@ public final class ColorCommand implements TabExecutor {
             plugin.messages().send(player, "command.not-loaded");
             return true;
         }
-        if (args.length == 0) {
+        if (channel == null) {
             plugin.menus().open(player, new MainMenu(plugin, player));
+            return true;
+        }
+        if (args.length == 0) {
+            plugin.menus().open(player, channel == Channel.CHAT
+                    ? new ColorMenu(plugin, player, ColorMenu.Section.CHAT, 0) : new NameTypeMenu(plugin, player));
             return true;
         }
         switch (args[0].toLowerCase(Locale.ROOT)) {
@@ -84,6 +92,7 @@ public final class ColorCommand implements TabExecutor {
     @Override
     public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias,
             @NotNull String[] args) {
+        if (channel == null) return List.of();
         if (args.length == 1) {
             String start = args[0].toLowerCase(Locale.ROOT);
             return List.of("reset", "custom").stream().filter(s -> s.startsWith(start)).toList();

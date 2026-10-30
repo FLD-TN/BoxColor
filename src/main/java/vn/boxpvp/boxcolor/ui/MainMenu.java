@@ -4,36 +4,30 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 import vn.boxpvp.boxcolor.BoxColorPlugin;
 import vn.boxpvp.boxcolor.config.Messages;
 import vn.boxpvp.boxcolor.data.PlayerData;
-import vn.boxpvp.boxcolor.hook.PapiText;
 import vn.boxpvp.boxcolor.service.ColorService;
 import vn.boxpvp.boxcolor.style.Channel;
 import vn.boxpvp.boxcolor.style.ColorStyle;
 import vn.boxpvp.boxcolor.tier.Feature;
-import vn.boxpvp.boxcolor.tier.Tier;
 
 /**
- * Trang chính, mở bằng cả {@code /chatcolor} và {@code /namecolor}.
+ * Trang chính, mở bằng {@code /dasac}.
  * <pre>
  *  B  B  B  B  B  B  B  B  B
- *  B  F [C] F [H] F [N] F  B      C = màu chat (11), H = đầu người chơi (13), N = màu tên (15)
+ *  B  F  F [C] F [N] F  F  B      C = màu chat (12), N = màu tên (14)
  *  B  B  B  B  B  B  B  B  B
  * </pre>
  */
 public final class MainMenu extends MenuView {
 
-    private static final int SLOT_CHAT = 11;
-    private static final int SLOT_HEAD = 13;
-    private static final int SLOT_NAME = 15;
+    private static final int SLOT_CHAT = 12;
+    private static final int SLOT_NAME = 14;
 
     private final BoxColorPlugin plugin;
     private final Player viewer;
     private final Icons icons;
-    /** Dựng một lần (đầu người chơi tải skin), sau đó chỉ đổi tên và lore. */
-    private ItemStack headItem;
 
     public MainMenu(BoxColorPlugin plugin, Player viewer) {
         super(27, plugin.messages().text("menu.main.title"));
@@ -58,7 +52,6 @@ public final class MainMenu extends MenuView {
         if (data == null) return;
         inventory.setItem(SLOT_CHAT, channelItem(Material.WRITABLE_BOOK, Channel.CHAT, data));
         inventory.setItem(SLOT_NAME, channelItem(Material.NAME_TAG, Channel.NAME, data));
-        inventory.setItem(SLOT_HEAD, head(data));
     }
 
     private ItemStack channelItem(Material material, Channel channel, PlayerData data) {
@@ -81,31 +74,6 @@ public final class MainMenu extends MenuView {
                         : m.raw("menu.main.decor-none")
         };
         return Icons.item(material, m.line(path + ".name", ph), m.lines(path + ".lore", ph), false);
-    }
-
-    private ItemStack head(PlayerData data) {
-        Messages m = plugin.messages();
-        String nick;
-        if (data.nick() == null) nick = m.raw("menu.main.nick-none");
-        else if (data.shownNick() == null) nick = m.raw("menu.main.nick-hidden", "nick", data.nick());
-        else nick = "&f" + data.nick();
-        Tier tier = plugin.tiers().current(data.tierLevel());
-        String tierName = tier != null ? PapiText.apply(tier.name()) : m.raw("menu.main.tier-none");
-        String[] ph = {
-                "name", Icons.styled(data.displayText(), plugin.colors().nameStyle(data), true),
-                "realname", data.realName(),
-                "nick", nick,
-                "tier", tierName
-        };
-        if (headItem == null) {
-            headItem = Icons.head(viewer, m.line("menu.main.head.name", ph), m.lines("menu.main.head.lore", ph));
-            return headItem;
-        }
-        ItemMeta meta = headItem.getItemMeta();
-        meta.displayName(m.line("menu.main.head.name", ph));
-        meta.lore(m.lines("menu.main.head.lore", ph));
-        headItem.setItemMeta(meta);
-        return headItem;
     }
 
     @Override

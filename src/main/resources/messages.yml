@@ -173,18 +173,6 @@ menu:
         - ''
         - '&8[&#7CFC9AChuột trái để mở&8]'
     # {name} tên đã tô màu, {realname} {nick} {tier}
-    head:
-      name: '{name}'
-      lore:
-        - '&#FFD166Thông tin:'
-        - '&7• Tên thật: &f{realname}'
-        - '&7• Nick: {nick}'
-        - '&7• Cấp màu: {tier}'
-        - ''
-        - '&#FFD166Lưu ý:'
-        - '&7• Lên rank để mở thêm màu'
-        - '&7• Màu động chỉ chạy ở TAB'
-        - '&7  và trên đầu nhân vật'
 
   # Chọn loại màu tên. {example} tên của bạn tô màu mẫu, {sample} tên màu mẫu,
   # {unlocked} {total} số màu. {state}: các dòng state-* bên dưới
