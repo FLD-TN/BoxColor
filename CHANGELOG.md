@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.12.4 (2026-10-30)
+
+- messages.yml mặc định trong jar lấy theo bản đang dùng trên server (chữ trang chọn màu tên, lore trang chính, nút
+  Mở) kèm phiếu màu 3 loại. Bỏ khối `menu.confirm` không còn dùng.
+
 ## 1.12.3 (2026-10-30)
 
 - Phiếu màu chia 3 loại, mỗi loại một nhãn màu riêng: Màu chat, Màu tên tĩnh, Tên động (`voucher.type.*`).

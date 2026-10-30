@@ -34,7 +34,7 @@ color:
   # Bấm Màu động khi chưa đủ rank
   animated-locked: '&#FF6B6B✘ Màu tên động chưa mở khóa'
 
-# Ô nhập trong chat sau khi bấm "Tự chỉnh mã màu" hoặc "Đổi nick". Dòng người chơi gõ không hiện cho ai khác
+# Ô nhập trong chat sau khi bấm "Màu tùy chỉnh" hoặc "Đổi chữ của tên". Dòng người chơi gõ không hiện cho ai khác
 prompt:
   nick: '&#FFD166(!) &7Nhập tên vào chat, kèm mã màu nếu muốn, ví dụ &f&#FFD166#FFD166Đức &#FF8FAB#FF8FABAnh &8({min}-{maxlength} ký tự; không gõ mã màu thì giữ màu đang dùng)'
   rename: '&#FFD166(!) &7Nhập tên vào chat &8({min}-{maxlength} ký tự, màu động giữ nguyên)'
@@ -97,7 +97,8 @@ voucher:
     chat:
       - '&7• Đổi màu chữ khi bạn chat'
     name:
-      - '&7• Tên của bạn trong khung chat'
+      - '&7• Hiện trong khung chat của'
+      - '&7• bạn khi trò chuyện.'
     decor:
       - '&7• Danh sách người chơi &8(&7bấm phím &fTab&8)'
       - '&7• Scoreboard bên phải màn hình'
@@ -143,7 +144,7 @@ menu:
   # Màu không nằm trong tier nào (chỉ có qua permission lẻ)
   kind:
     solid: 'Màu đơn'
-    gradient: 'Chuyển màu'
+    gradient: 'Gradient'
     rainbow: 'Cầu vồng'
     per_char: 'Tô từng chữ'
     animated-suffix: ' &8(&#7FDBFFchuyển động&8)'
@@ -166,7 +167,7 @@ menu:
         - '&7• Đã mở khóa: &f{unlocked}&7/&f{total} &7màu'
         - ''
         - '&8[&#7CFC9AChuột trái để mở&8]'
-    # {current} {unlocked} {total} {nick} {animated}
+    # {current} {unlocked} {total} {nick} {decor}
     name:
       name: '&#E0A3FFMàu tên'
       lore:
@@ -181,7 +182,6 @@ menu:
         - '&7  &8(TAB, scoreboard, trên đầu)'
         - ''
         - '&8[&#7CFC9AChuột trái để mở&8]'
-    # {name} tên đã tô màu, {realname} {nick} {tier}
 
   # Chọn loại màu tên. {example} tên của bạn tô màu mẫu, {sample} tên màu mẫu,
   # {unlocked} {total} số màu. {state}: các dòng state-* bên dưới
@@ -189,23 +189,20 @@ menu:
     title: '&8Màu tên'
     no-sample: '&7Chưa có màu'
     name-static:
-      name: '&#7FDBFFMàu tên &8(chat)'
+      name: '&#7FDBFFMàu tên'
       lore:
-        - '&#BFC7D5Màu tên và nick của bạn'
-        - '&#BFC7D5trong chat'
+        - '&#BFC7D5Màu tên game của '
+        - '&#BFC7D5bạn trong chat'
         - ''
         - '&#FFD166Ví dụ:'
         - '&7• {example}'
         - ''
-        - '&#FFD166Thông tin:'
-        - '&7• Đã mở khóa: &f{unlocked}&7/&f{total} &7màu'
-        - '&7• Có bộ lọc đã/chưa sở hữu'
-        - '&7• TAB, scoreboard và tên trên đầu'
-        - '&7  luôn là tên thật, không đổi theo nick'
+        - '&#FFD166Hiện ở đâu:'
+        - '&7• Hiện trong khung chat của'
+        - '&7• bạn khi trò chuyện.'
         - ''
-        - '&#FFD166Màu tùy chỉnh &8(/nick)&#FFD166:'
-        - '&7• Tự đặt tên, tô màu từng chữ'
-        - '&7• Nút nằm trong trang này'
+        - '&#FFD166Thông tin:'
+        - '&7• Đã mở khóa: &e{unlocked}&7/&a{total} &7màu'
         - ''
         - '{state}'
       state-unlocked:
@@ -213,10 +210,10 @@ menu:
       state-locked:
         - '&8[&#7CFC9AChuột trái để mở&8]'
     name-animated:
-      name: '&#E0A3FFHiệu ứng tên động &8(TAB, scoreboard, nametag)'
+      name: '&#E0A3FFHiệu ứng tên động'
       lore:
-        - '&#BFC7D5Trang trí tên thật của bạn'
-        - '&#BFC7D5bằng màu chạy liên tục'
+        - '&#BFC7D5Trang trí tên của bạn'
+        - '&#BFC7D5bằng các màu động.'
         - ''
         - '&#FFD166Ví dụ:'
         - '&7• {example}'
@@ -226,11 +223,8 @@ menu:
         - '&7• Scoreboard bên phải màn hình'
         - '&7• Tên trên đầu nhân vật'
         - ''
-        - '&#FFD166Lưu ý:'
-        - '&7• Chỉ đổi màu, không đổi tên:'
-        - '&7  luôn hiện tên thật, kể cả khi có nick'
-        - '&7• Không ảnh hưởng tên trong chat'
-        - '&7• Đã sở hữu: &f{unlocked}&7/&f{total} &7hiệu ứng'
+        - '&#FFD166Thông tin:'
+        - '&7• Đã sở hữu: &e{unlocked}&7/&a{total} &7hiệu ứng'
         - ''
         - '{state}'
       state-unlocked:
@@ -274,9 +268,11 @@ menu:
     note-animated-chat: '&7• Trong chat hiện màu đứng yên'
     state-selected:
       - '&#7CFC9A✔ Đã sở hữu &8- &#7CFC9Ađang sử dụng'
+      - ''
       - '&8[&#FF8A8AChuột trái để bỏ chọn&8]'
     state-unlocked:
       - '&#7CFC9A✔ Đã sở hữu'
+      - ''
       - '&8[&#7CFC9AChuột trái để chọn&8]'
     state-locked:
       - '&#FF6B6B✘ Chưa sở hữu'
@@ -383,7 +379,6 @@ menu:
       state-locked:
         - '&#FF6B6B✘ Chưa mở khóa'
 
-  # Xem trước màu tự chỉnh. {preview} {channel} {kind} {codes}
   # Menu kiểu chuyển động của hiệu ứng tên động
   motion:
     title: '&8Kiểu chuyển động'
@@ -468,24 +463,6 @@ menu:
       name: '&#FFD0E8Ánh kim + lấp lánh'
       description:
         - '&#BFC7D5Vệt sáng kèm chữ chớp sáng'
-
-  confirm:
-    title: '&8Xác nhận màu tự chỉnh'
-    preview:
-      name: '{preview}'
-      lore:
-        - '&#FFD166Thông tin:'
-        - '&7• Loại: &f{channel}'
-        - '&7• Kiểu: &f{kind}'
-        - '&7• Mã màu: {codes}'
-    accept:
-      name: '&#7CFC9AÁp dụng'
-      lore:
-        - '&8[&#7CFC9AChuột trái để áp dụng&8]'
-    cancel:
-      name: '&#FF8A8AHủy'
-      lore:
-        - '&8[&#FF8A8AChuột trái để quay lại&8]'
 
 # Log console
 log:
