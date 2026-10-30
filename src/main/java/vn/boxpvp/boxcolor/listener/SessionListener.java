@@ -23,6 +23,8 @@ public final class SessionListener implements Listener {
             plugin.report("join", e);
         }
         plugin.cache().load(event.getPlayer(), data -> plugin.colors().refresh(event.getPlayer()));
+        // Màu rank lấy từ quyền, không cần chờ database: TAB/scoreboard có màu đúng ngay khi vào
+        plugin.colors().refresh(event.getPlayer());
     }
 
     @EventHandler(priority = EventPriority.MONITOR)

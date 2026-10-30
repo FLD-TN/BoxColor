@@ -17,6 +17,8 @@ public final class PlayerData {
 
     private final UUID uuid;
     private volatile String realName;
+    /** Đã đọc xong database. Trước đó chỉ có màu rank (tính ngay khi vào), không được lưu hay chọn màu. */
+    private volatile boolean loaded;
 
     /** Mã màu có sẵn, hoặc {@code #RRGGBB,#RRGGBB} khi tự chỉnh; {@code null} là chưa chọn. */
     private volatile String chatSelection;
@@ -43,6 +45,14 @@ public final class PlayerData {
 
     public UUID uuid() {
         return uuid;
+    }
+
+    public boolean loaded() {
+        return loaded;
+    }
+
+    public void loaded(boolean loaded) {
+        this.loaded = loaded;
     }
 
     public String realName() {

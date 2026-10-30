@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.10.1 (2026-10-30)
+
+- Vào server (nhất là ngay sau restart) không còn hiện tên màu trắng ở TAB/scoreboard trong lúc chờ database: màu rank
+  tính ngay khi vào, hiệu ứng động hiện khi đọc xong. Trong lúc chờ không ghi gì vào database (không mất màu đã lưu).
+
 ## 1.10.0 (2026-10-30)
 
 - Hiệu ứng tên động có **kiểu chuyển động**, nổi bật hơn trên chữ nhỏ ở TAB:

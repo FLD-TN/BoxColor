@@ -103,6 +103,7 @@ public final class BoxColorPlugin extends JavaPlugin {
         for (Player player : Bukkit.getOnlinePlayers()) {
             nicks.onJoin(player);
             cache.load(player, data -> colors.refresh(player));
+            colors.refresh(player);
         }
         colors.start();
     }

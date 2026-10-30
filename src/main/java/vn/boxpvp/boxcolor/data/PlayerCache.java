@@ -36,7 +36,17 @@ public final class PlayerCache {
         this.storage = storage;
     }
 
+    /** Dữ liệu đã đọc xong database; {@code null} nếu chưa xong (chọn màu, lệnh, GUI phải chờ). */
     public PlayerData get(UUID uuid) {
+        PlayerData data = display(uuid);
+        return data != null && data.loaded() ? data : null;
+    }
+
+    /**
+     * Dữ liệu để hiển thị, kể cả lúc chưa đọc xong database (khi đó chỉ có màu rank): TAB, scoreboard, nametag
+     * không phải hiện màu dự phòng trong lúc chờ.
+     */
+    public PlayerData display(UUID uuid) {
         return uuid == null ? null : online.get(uuid);
     }
 
@@ -44,10 +54,14 @@ public final class PlayerCache {
         return online.values();
     }
 
-    /** Nạp dữ liệu ở luồng IO rồi gọi {@code done} trên main thread (bỏ qua nếu người chơi đã thoát). */
+    /**
+     * Tạo ngay dữ liệu tạm (chưa {@link PlayerData#loaded()}) để hiện màu rank, nạp database ở luồng IO rồi điền vào
+     * và gọi {@code done} trên main thread (bỏ qua nếu người chơi đã thoát).
+     */
     public void load(Player player, Consumer<PlayerData> done) {
         UUID uuid = player.getUniqueId();
         String name = player.getName();
+        online.putIfAbsent(uuid, new PlayerData(uuid, name));
         io.execute(() -> {
             Storage.Row row;
             try {
@@ -58,8 +72,8 @@ public final class PlayerCache {
             }
             Bukkit.getScheduler().runTask(plugin, () -> {
                 Player p = Bukkit.getPlayer(uuid);
-                if (p == null) return;
-                PlayerData data = new PlayerData(uuid, p.getName());
+                PlayerData data = online.get(uuid);
+                if (p == null || data == null || data.loaded()) return;
                 if (row != null) {
                     data.selection(Channel.CHAT, row.chat());
                     data.selection(Channel.NAME, row.name());
@@ -68,7 +82,7 @@ public final class PlayerCache {
                     data.nick(row.nick());
                     data.nickChangedAt(row.nickChangedAt());
                 }
-                online.put(uuid, data);
+                data.loaded(true);
                 done.accept(data);
             });
         });
@@ -80,6 +94,8 @@ public final class PlayerCache {
 
     /** Chụp dữ liệu trên main thread rồi ghi ở luồng IO. */
     public void save(PlayerData data) {
+        // Chưa đọc xong database: ghi lúc này sẽ đè mất màu đã lưu
+        if (!data.loaded()) return;
         String nick = data.nick();
         Storage.Row row = new Storage.Row(data.uuid(), data.selection(Channel.CHAT), data.selection(Channel.NAME),
                 data.decor(), data.motion(),

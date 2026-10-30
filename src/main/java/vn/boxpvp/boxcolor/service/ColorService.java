@@ -53,7 +53,7 @@ public final class ColorService {
 
     /** Tính lại tier, màu và nick đang hiện của một người; cập nhật display name. */
     public void refresh(Player player) {
-        PlayerData data = plugin.cache().get(player.getUniqueId());
+        PlayerData data = plugin.cache().display(player.getUniqueId());
         if (data == null) return;
         data.realName(player.getName());
         int level = plugin.tiers().levelOf(player);

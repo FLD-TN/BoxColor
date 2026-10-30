@@ -63,7 +63,7 @@ public final class BoxColorExpansion extends PlaceholderExpansion {
             format = HexFormat.MINIMESSAGE;
             key = key.substring(0, key.length() - 3);
         }
-        PlayerData data = plugin.cache().get(player.getUniqueId());
+        PlayerData data = plugin.cache().display(player.getUniqueId());
         String realName = player.getName() != null ? player.getName() : "";
 
         switch (key) {
