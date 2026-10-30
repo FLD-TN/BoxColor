@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.12.3 (2026-10-30)
+
+- Phiếu màu chia 3 loại, mỗi loại một nhãn màu riêng: Màu chat, Màu tên tĩnh, Tên động (`voucher.type.*`).
+- Lore phiếu bỏ dòng mã màu, thêm mục "Hiện ở đâu" theo loại (`voucher.where.*`, placeholder `{where}`).
+
 ## 1.12.2 (2026-10-30)
 
 - Icon GUI và phiếu màu (áo da nhuộm) không còn hiện dòng "When on Body: +3 Armor". Từ 1.20.5 HIDE_ATTRIBUTES không

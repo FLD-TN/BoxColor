@@ -51,14 +51,19 @@ public final class VoucherService {
             }
         }
         String sample = channel == Channel.NAME ? m.raw("voucher.item.sample-name") : plugin.settings().chatPreview();
+        // Loại phiếu: chat, name (màu tên tĩnh), decor (hiệu ứng tên động)
+        String type = channel == Channel.CHAT ? "chat" : style.animated() ? "decor" : "name";
         String[] ph = {
+                "type", m.raw("voucher.type." + type),
                 "style", icons.styleName(style, false),
                 "channel", icons.channelName(channel),
                 "kind", icons.kind(style),
                 "preview", Icons.styled(sample, style, false)
         };
         Map<String, List<String>> lists = new LinkedHashMap<>();
+        // {code} giữ cho messages.yml cũ còn dòng này; lore mặc định không còn hiện mã màu
         lists.put("code", codes);
+        lists.put("where", m.rawList("voucher.where." + type));
         ItemStack item = Icons.dyed(plugin.settings().voucherMaterial(), style.firstColor(),
                 m.line("voucher.item.name", ph), m.lines("voucher.item.lore", lists, ph), true);
         ItemMeta meta = item.getItemMeta();

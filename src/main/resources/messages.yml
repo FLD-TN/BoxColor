@@ -84,20 +84,36 @@ admin:
   give-done: '&#7CFC9A✔ Đã đưa &fx{amount} &#7CFC9Aphiếu {style} &#7CFC9Acho &f{player}'
 
 # Phiếu màu (/boxcolor give). Tên và lore chỉ để hiển thị, plugin không đọc lại
-# {style} tên màu đã tô, {channel} màu chat/màu tên, {kind} kiểu màu, {preview} câu mẫu tô màu,
-# {code} mỗi mã màu một dòng (cầu vồng thì là dòng rainbow)
+# {type} loại phiếu (type.*), {style} tên màu đã tô, {channel} màu chat/màu tên, {kind} kiểu màu,
+# {preview} câu mẫu tô màu, {where} các dòng where.<loại> bên dưới
 voucher:
+  # Loại phiếu: chat = màu chat, name = màu tên tĩnh, decor = hiệu ứng tên động
+  type:
+    chat: '&#7FDBFFMàu chat'
+    name: '&#8AF0C0Màu tên tĩnh'
+    decor: '&#E0A3FFTên động'
+  # Mục "Hiện ở đâu" của từng loại phiếu
+  where:
+    chat:
+      - '&7• Đổi màu chữ khi bạn chat'
+    name:
+      - '&7• Tên của bạn trong khung chat'
+    decor:
+      - '&7• Danh sách người chơi &8(&7bấm phím &fTab&8)'
+      - '&7• Scoreboard bên phải màn hình'
+      - '&7• Tên trên đầu nhân vật'
   item:
-    name: '{style} &8[&7Phiếu màu&8]'
+    name: '{style} &8[{type}&8]'
     lore:
       - '&#BFC7D5Mở khóa vĩnh viễn {channel} này'
       - '&#BFC7D5Xem trước: {preview}'
       - ''
       - '&#FFD166Thông tin:'
-      - '&7• Loại: &f{channel}'
+      - '&7• Loại: {type}'
       - '&7• Kiểu: &f{kind}'
-      - '&7• Mã màu:'
-      - '&7  {code}'
+      - ''
+      - '&#FFD166Hiện ở đâu:'
+      - '{where}'
       - ''
       - '&#FFD166Lưu ý:'
       - '&7• Dùng một lần'
