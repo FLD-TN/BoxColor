@@ -58,7 +58,7 @@ tiers:
     name: '&f%img_wellsetups_ranks_ultimate%'
     chat-colors: [cam_lua]
     # 3 màu tĩnh + tặng 1 hiệu ứng động
-    name-colors: [hong_ngoc, mong_mo, lam_ngoc, cau_vong_dong]
+    name-colors: [hong_ngoc, mong_mo, lam_ngoc, cuc_quang]
   9:
     name: '&f%img_wellsetups_ranks_overlord%'
     chat-colors: [hong_neon]

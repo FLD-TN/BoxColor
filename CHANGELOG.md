@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.11.1 (2026-10-30)
+
+- Quà hiệu ứng động của Ultimate đổi từ Cầu Vồng Động sang **Cực Quang**. Cầu Vồng Động chuyển sang crate
+  (chỉ mở bằng phiếu). tiers.yml trên server: sửa tay `name-colors` của tier 8.
+
 ## 1.11.0 (2026-10-30)
 
 - Tự chọn kiểu chuyển động thành tính năng `motion` (tiers.yml), mở từ **Zeus** (tier 7). tiers.yml cũ không ghi

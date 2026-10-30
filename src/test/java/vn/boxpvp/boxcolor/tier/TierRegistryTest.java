@@ -82,8 +82,9 @@ class TierRegistryTest {
         }
         assertNull(tiers.unlockTier(Channel.NAME, "neon_dong"));
         assertFalse(tiers.allows(9, Channel.NAME, "neon_dong"));
-        assertEquals(8, tiers.unlockTier(Channel.NAME, "cau_vong_dong").level());
-        assertNull(tiers.unlockTier(Channel.NAME, "cuc_quang"));
+        // Quà Ultimate: Cực Quang; Cầu Vồng Động chỉ có ở crate
+        assertEquals(8, tiers.unlockTier(Channel.NAME, "cuc_quang").level());
+        assertNull(tiers.unlockTier(Channel.NAME, "cau_vong_dong"));
         assertEquals(9, tiers.unlockTier(Channel.NAME, "ba_chu").level());
     }
 

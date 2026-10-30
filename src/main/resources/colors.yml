@@ -345,19 +345,16 @@ name:
     colors: ['#FFE600', '#7CC242']
 
   # ---------- Hiệu ứng tên động (TAB, scoreboard, nametag) ----------
-  # Rank tặng (tiers.yml): Ultimate Cầu Vồng Động, Overlord Bá Chủ
+  # Rank tặng (tiers.yml): Ultimate Cực Quang, Overlord Bá Chủ
   # Ultimate
-  cau_vong_dong:
-    display: 'Cầu Vồng Động'
-    type: rainbow
+  cuc_quang:
+    display: 'Cực Quang'
+    type: gradient
     animated: true
-    speed: 2500
+    speed: 3200
     motion: wave
     wave: 7
-    effects: [shine]
-    highlight: '#FFFFFF'
-    saturation: 0.8
-    brightness: 1.0
+    colors: ['#2EFF9E', '#2EA8FF', '#B062FF']
   # Overlord
   ba_chu:
     display: 'Bá Chủ'
@@ -369,6 +366,17 @@ name:
     highlight: '#FFF4C2'
     colors: ['#6A1BFF', '#B847FF', '#FFB300']
   # Hiệu ứng động crate
+  cau_vong_dong:
+    display: 'Cầu Vồng Động'
+    type: rainbow
+    animated: true
+    speed: 2500
+    motion: wave
+    wave: 7
+    effects: [shine]
+    highlight: '#FFFFFF'
+    saturation: 0.8
+    brightness: 1.0
   lua_dong:
     display: 'Lửa Động'
     type: gradient
@@ -399,14 +407,6 @@ name:
     highlight: '#FFF56B'
     spark-density: 0.16
     colors: ['#2E5BFF', '#3DB8FF']
-  cuc_quang:
-    display: 'Cực Quang'
-    type: gradient
-    animated: true
-    speed: 3200
-    motion: wave
-    wave: 7
-    colors: ['#2EFF9E', '#2EA8FF', '#B062FF']
   tinh_van_dong:
     display: 'Tinh Vân Động'
     type: gradient
