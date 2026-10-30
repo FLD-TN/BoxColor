@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.11.0 (2026-10-30)
+
+- Tự chọn kiểu chuyển động thành tính năng `motion` (tiers.yml), mở từ **Zeus** (tier 7). tiers.yml cũ không ghi
+  `motion` ở tier nào thì vẫn mặc định tier 7. Quyền lẻ: `boxcolor.feature.motion`.
+- Dưới Zeus vẫn mở được menu Kiểu chuyển động để xem trước, nhưng không chọn được; hiệu ứng (kể cả từ phiếu crate)
+  luôn chạy kiểu **Mặc định**. Mất rank thì quay về Mặc định, lựa chọn cũ vẫn giữ, lên lại rank là dùng lại.
+
 ## 1.10.1 (2026-10-30)
 
 - Vào server (nhất là ngay sau restart) không còn hiện tên màu trắng ở TAB/scoreboard trong lúc chờ database: màu rank

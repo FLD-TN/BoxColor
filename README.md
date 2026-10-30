@@ -93,7 +93,8 @@ chọn màu động làm màu tên được tự chuyển sang hiệu ứng khi 
 Mỗi hiệu ứng có kiểu chuyển động **Đặc trưng** (colors.yml: `motion` classic/wave/static/pulse, `wave`, `effects`
 shine/spark, `highlight`, `spark-density`). Người chơi đổi kiểu ở nút "Kiểu chuyển động" trong trang hiệu ứng động:
 Đặc trưng, Mặc định (dải màu trượt chậm như bản cũ), Sóng dày, Ánh kim quét, Nhịp thở, Lấp lánh và 3 kiểu kết hợp.
-Người chưa chọn dùng `animation.default-motion` (config.yml).
+Người chưa chọn dùng `animation.default-motion` (config.yml). Tự chọn kiểu là tính năng `motion` (mặc định từ Zeus);
+chưa mở thì hiệu ứng luôn chạy kiểu Mặc định.
 
 ## Placeholder
 
