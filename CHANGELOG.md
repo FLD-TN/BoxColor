@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.12.2 (2026-10-30)
+
+- Icon GUI và phiếu màu (áo da nhuộm) không còn hiện dòng "When on Body: +3 Armor". Từ 1.20.5 HIDE_ATTRIBUTES không
+  ẩn chỉ số mặc định, nên item được ghi một chỉ số giáp +0 thay chỗ rồi ẩn đi. Phiếu mặc lên người cũng không cho giáp.
+
 ## 1.12.1 (2026-10-30)
 
 - Bỏ tự chỉnh mã màu chat (`/chatcolor custom`, nút trong GUI, `boxcolor.feature.custom-chat`). Màu chat chỉ chọn

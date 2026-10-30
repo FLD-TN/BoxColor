@@ -5,7 +5,11 @@ import java.util.Locale;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Color;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.attribute.Attribute;
+import org.bukkit.attribute.AttributeModifier;
+import org.bukkit.inventory.EquipmentSlotGroup;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -25,6 +29,8 @@ import vn.boxpvp.boxcolor.tier.Tier;
 /** Dựng item và các đoạn chữ dùng chung cho mọi màn hình. */
 public final class Icons {
 
+    private static final NamespacedKey HIDDEN_ATTRIBUTE = new NamespacedKey("boxcolor", "hide_attributes");
+
     private final BoxColorPlugin plugin;
     private final Messages messages;
 
@@ -39,9 +45,19 @@ public final class Icons {
         meta.displayName(name);
         meta.lore(lore);
         if (glint) meta.setEnchantmentGlintOverride(true);
+        hideDefaultAttributes(meta);
         meta.addItemFlags(ItemFlag.values());
         item.setItemMeta(meta);
         return item;
+    }
+
+    /**
+     * Từ 1.20.5, HIDE_ATTRIBUTES chỉ ẩn chỉ số ghi riêng trên item, không ẩn chỉ số mặc định (áo da: "When on Body:
+     * +3 Armor"). Ghi một chỉ số +0 để thay chỗ chỉ số mặc định, rồi HIDE_ATTRIBUTES ẩn nó.
+     */
+    private static void hideDefaultAttributes(ItemMeta meta) {
+        meta.addAttributeModifier(Attribute.GENERIC_ARMOR, new AttributeModifier(HIDDEN_ATTRIBUTE, 0,
+                AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.ANY));
     }
 
     /** Như {@link #item}, giáp da thì nhuộm theo {@code rgb}. */
