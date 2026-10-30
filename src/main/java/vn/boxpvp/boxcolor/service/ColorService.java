@@ -12,6 +12,8 @@ import vn.boxpvp.boxcolor.style.Channel;
 import vn.boxpvp.boxcolor.style.ColorRenderer;
 import vn.boxpvp.boxcolor.style.ColorRenderer.HexFormat;
 import vn.boxpvp.boxcolor.style.ColorStyle;
+import vn.boxpvp.boxcolor.style.Effect;
+import vn.boxpvp.boxcolor.style.Motion;
 import vn.boxpvp.boxcolor.tier.Feature;
 
 /**
@@ -113,6 +115,33 @@ public final class ColorService {
                 "style", ColorRenderer.legacy(style.display(), style, 0, HexFormat.AMPERSAND));
     }
 
+    /** Lưu kiểu chuyển động của hiệu ứng tên động. Không cần quyền: áp lên hiệu ứng người chơi đã sở hữu. */
+    public void selectMotion(Player player, Motion motion) {
+        PlayerData data = plugin.cache().get(player.getUniqueId());
+        if (data == null) return;
+        data.motion(motion.key());
+        plugin.cache().save(data);
+        plugin.messages().send(player, "color.motion-selected",
+                "motion", plugin.messages().raw("menu.motion." + motion.key() + ".name"));
+    }
+
+    /** Kiểu chuyển động người chơi đã chọn, chưa chọn thì {@code animation.default-motion}. */
+    public Motion motionOf(PlayerData data) {
+        Motion motion = Motion.parse(data.motion());
+        return motion != null ? motion : plugin.settings().defaultMotion();
+    }
+
+    /** Cách chạy thực tế của hiệu ứng {@code style} với kiểu chuyển động của người chơi. */
+    public Effect effectOf(PlayerData data, ColorStyle style) {
+        return motionOf(data).apply(style.effect());
+    }
+
+    /** Thời điểm hiện tại làm tròn theo khung hình: trong một khung chuỗi trả về không đổi, TAB/UNT không gửi lại. */
+    public long frameNow() {
+        long now = System.currentTimeMillis();
+        return now - now % plugin.settings().animationFrameMillis();
+    }
+
     public boolean canUse(Player player, Channel channel, ColorStyle style) {
         return canUse(player, plugin.tiers().levelOf(player), channel, style);
     }
@@ -197,7 +226,7 @@ public final class ColorService {
      */
     public String tabName(PlayerData data, HexFormat format) {
         ColorStyle decor = data.shownDecor();
-        if (decor != null) return animated(data.realName(), decor, format);
+        if (decor != null) return animated(data, decor, format);
         return ColorRenderer.legacy(data.realName(), rankOrDefault(data), 0, format);
     }
 
@@ -207,18 +236,14 @@ public final class ColorService {
      */
     public String nametagName(PlayerData data, HexFormat format) {
         ColorStyle decor = data.shownDecor();
-        if (decor != null) return animated(data.realName(), decor, format);
+        if (decor != null) return animated(data, decor, format);
         return ColorRenderer.legacy(data.realName(), plugin.settings().nametagDefault(), 0, format);
     }
 
-    private String animated(String text, ColorStyle style, HexFormat format) {
-        double phase = 0;
-        if (plugin.settings().animationEnabled()) {
-            // Làm tròn theo khung hình: trong một khung chuỗi trả về không đổi, TAB/UNT không gửi lại gói tin
-            long now = System.currentTimeMillis();
-            phase = ColorRenderer.phase(style, now - now % plugin.settings().animationFrameMillis());
-        }
-        return ColorRenderer.legacy(text, style, phase, format);
+    /** Tên thật chạy hiệu ứng theo kiểu chuyển động của người chơi; tắt animation thì đứng yên. */
+    private String animated(PlayerData data, ColorStyle style, HexFormat format) {
+        if (!plugin.settings().animationEnabled()) return ColorRenderer.legacy(data.realName(), style, 0, format);
+        return ColorRenderer.legacy(data.realName(), style, effectOf(data, style), frameNow(), format);
     }
 
     /** Tên thật tô màu mặc định, cho người chưa nạp dữ liệu hoặc đang offline. */

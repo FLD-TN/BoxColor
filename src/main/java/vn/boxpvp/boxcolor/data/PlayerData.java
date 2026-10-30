@@ -24,6 +24,8 @@ public final class PlayerData {
     private volatile String nick;
     /** Hiệu ứng tên động (mã màu động trong colors.yml, mục name) cho TAB và nametag. */
     private volatile String decor;
+    /** Kiểu chuyển động của hiệu ứng ({@code Motion.key()}), {@code null} = theo config. */
+    private volatile String motion;
     private volatile long nickChangedAt;
 
     private volatile ColorStyle shownChat;
@@ -66,6 +68,14 @@ public final class PlayerData {
 
     public void decor(String id) {
         this.decor = id;
+    }
+
+    public String motion() {
+        return motion;
+    }
+
+    public void motion(String key) {
+        this.motion = key;
     }
 
     /** Hiệu ứng động đang hiện ở TAB và nametag (đã kiểm tra quyền), {@code null} nếu không có. */

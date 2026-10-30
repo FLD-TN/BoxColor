@@ -64,6 +64,7 @@ public final class PlayerCache {
                     data.selection(Channel.CHAT, row.chat());
                     data.selection(Channel.NAME, row.name());
                     data.decor(row.decor());
+                    data.motion(row.motion());
                     data.nick(row.nick());
                     data.nickChangedAt(row.nickChangedAt());
                 }
@@ -81,7 +82,7 @@ public final class PlayerCache {
     public void save(PlayerData data) {
         String nick = data.nick();
         Storage.Row row = new Storage.Row(data.uuid(), data.selection(Channel.CHAT), data.selection(Channel.NAME),
-                data.decor(),
+                data.decor(), data.motion(),
                 nick, nick == null ? null : NickRules.key(nick), data.nickChangedAt());
         io.execute(() -> {
             try {

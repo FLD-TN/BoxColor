@@ -17,9 +17,12 @@ import java.util.UUID;
  */
 public final class Storage {
 
-    /** Một dòng dữ liệu, chụp lại trên main thread trước khi ghi ở luồng khác. */
-    /** {@code decor}: hiệu ứng tên động cho TAB và nametag (mã màu động), {@code null} nếu không dùng. */
-    public record Row(UUID uuid, String chat, String name, String decor, String nick, String nickKey,
+    /**
+     * Một dòng dữ liệu, chụp lại trên main thread trước khi ghi ở luồng khác. {@code decor}: hiệu ứng tên động cho
+     * TAB và nametag (mã màu động), {@code null} nếu không dùng. {@code motion}: kiểu chuyển động của hiệu ứng,
+     * {@code null} = theo config.
+     */
+    public record Row(UUID uuid, String chat, String name, String decor, String motion, String nick, String nickKey,
             long nickChangedAt) {
     }
 
@@ -39,14 +42,18 @@ public final class Storage {
                     + "nick_key TEXT, "
                     + "nick_changed INTEGER NOT NULL DEFAULT 0)");
             st.execute("CREATE INDEX IF NOT EXISTS players_nick_key ON players(nick_key)");
-            // data.db của bản cũ chưa có cột decor
+            // data.db của bản cũ chưa có cột decor (1.8), motion (1.10)
             boolean hasDecor = false;
+            boolean hasMotion = false;
             try (ResultSet rs = st.executeQuery("PRAGMA table_info(players)")) {
                 while (rs.next()) {
-                    if ("decor".equalsIgnoreCase(rs.getString("name"))) hasDecor = true;
+                    String column = rs.getString("name");
+                    if ("decor".equalsIgnoreCase(column)) hasDecor = true;
+                    if ("motion".equalsIgnoreCase(column)) hasMotion = true;
                 }
             }
             if (!hasDecor) st.execute("ALTER TABLE players ADD COLUMN decor TEXT");
+            if (!hasMotion) st.execute("ALTER TABLE players ADD COLUMN motion TEXT");
         }
     }
 
@@ -63,29 +70,31 @@ public final class Storage {
     /** @return {@code null} nếu người này chưa có dữ liệu */
     public synchronized Row load(UUID uuid) throws SQLException {
         try (PreparedStatement ps = connection.prepareStatement(
-                "SELECT chat, name, decor, nick, nick_key, nick_changed FROM players WHERE uuid = ?")) {
+                "SELECT chat, name, decor, motion, nick, nick_key, nick_changed FROM players WHERE uuid = ?")) {
             ps.setString(1, uuid.toString());
             try (ResultSet rs = ps.executeQuery()) {
                 if (!rs.next()) return null;
                 return new Row(uuid, rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4),
-                        rs.getString(5), rs.getLong(6));
+                        rs.getString(5), rs.getString(6), rs.getLong(7));
             }
         }
     }
 
     public synchronized void save(Row row) throws SQLException {
         try (PreparedStatement ps = connection.prepareStatement(
-                "INSERT INTO players (uuid, chat, name, decor, nick, nick_key, nick_changed) VALUES (?, ?, ?, ?, ?, ?, ?) "
+                "INSERT INTO players (uuid, chat, name, decor, motion, nick, nick_key, nick_changed) "
+                        + "VALUES (?, ?, ?, ?, ?, ?, ?, ?) "
                         + "ON CONFLICT(uuid) DO UPDATE SET chat = excluded.chat, name = excluded.name, "
-                        + "decor = excluded.decor, nick = excluded.nick, nick_key = excluded.nick_key, "
-                        + "nick_changed = excluded.nick_changed")) {
+                        + "decor = excluded.decor, motion = excluded.motion, nick = excluded.nick, "
+                        + "nick_key = excluded.nick_key, nick_changed = excluded.nick_changed")) {
             ps.setString(1, row.uuid().toString());
             ps.setString(2, row.chat());
             ps.setString(3, row.name());
             ps.setString(4, row.decor());
-            ps.setString(5, row.nick());
-            ps.setString(6, row.nickKey());
-            ps.setLong(7, row.nickChangedAt());
+            ps.setString(5, row.motion());
+            ps.setString(6, row.nick());
+            ps.setString(7, row.nickKey());
+            ps.setLong(8, row.nickChangedAt());
             ps.executeUpdate();
         }
     }

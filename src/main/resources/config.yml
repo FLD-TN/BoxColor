@@ -49,6 +49,10 @@ animation:
   # (placeholder-refresh-intervals) và '%boxcolor_nametag%' trong UNT (placeholderUpdateRates, tính bằng tick: 2 tick = 100ms)
   # Tăng lên 200 hoặc 250 để giảm một nửa số gói tin, màu chạy giật hơn một chút
   frame-ms: 100
+  # Kiểu chuyển động của hiệu ứng tên động cho người chưa tự chọn trong GUI:
+  # signature (đặc trưng của từng hiệu ứng, colors.yml) | classic (mặc định: dải màu trượt chậm) | wave | shine
+  # | pulse | spark | wave-shine | wave-spark | shine-spark
+  default-motion: signature
 
 chat:
   # Tô màu nội dung chat theo màu chat đã chọn

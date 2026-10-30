@@ -8,6 +8,13 @@
 #   animated: true = màu chạy liên tục (chỉ chạy ở TAB, nametag và GUI; trong chat hiện đứng yên)
 #   speed:    thời gian chạy hết một vòng màu, tính bằng mili giây (mặc định 3000)
 #   saturation, brightness: độ đậm và độ sáng của cầu vồng, từ 0 đến 1 (mặc định 0.6 và 1)
+#   Hiệu ứng tên động (animated: true) có thêm kiểu chuyển động đặc trưng (người chơi đổi được trong GUI):
+#     motion:  classic (dải màu trượt chậm trên cả tên, mặc định) | wave (màu lặp mỗi 'wave' chữ)
+#              | static (gradient đứng yên, làm nền cho effects) | pulse (cả tên đổi màu cùng lúc)
+#     wave:    số chữ của một vòng màu khi motion: wave (mặc định 6)
+#     effects: lớp phủ, có thể bỏ trống hoặc ghi cả hai: shine (vệt sáng quét qua), spark (chữ chớp sáng)
+#     highlight: màu của vệt sáng và tia lấp lánh (mặc định '#FFFFFF')
+#     spark-density: độ dày tia lấp lánh, 0 đến 0.5 (mặc định 0.09)
 #   icon:     item trong GUI (không bắt buộc, mặc định gui.default-color-icon trong config.yml)
 #
 # Đổi mã (tên khoá như hong_pastel) của màu đang có người dùng thì họ sẽ mất màu đó
@@ -344,152 +351,222 @@ name:
     display: 'Cầu Vồng Động'
     type: rainbow
     animated: true
-    speed: 3000
-    saturation: 0.6
+    speed: 2500
+    motion: wave
+    wave: 7
+    effects: [shine]
+    highlight: '#FFFFFF'
+    saturation: 0.8
     brightness: 1.0
   # Overlord
   ba_chu:
     display: 'Bá Chủ'
     type: gradient
     animated: true
-    speed: 3000
-    colors: ['#FFD700', '#9B5CFF']
+    speed: 2200
+    motion: static
+    effects: [shine, spark]
+    highlight: '#FFF4C2'
+    colors: ['#6A1BFF', '#B847FF', '#FFB300']
   # Hiệu ứng động crate
   lua_dong:
     display: 'Lửa Động'
     type: gradient
     animated: true
-    speed: 2500
-    colors: ['#FFB800', '#FF3D00']
+    speed: 1800
+    motion: wave
+    wave: 5
+    effects: [spark]
+    highlight: '#FFF3B0'
+    colors: ['#FF2A00', '#FF7A00', '#FFC400']
   song_bien:
     display: 'Sóng Biển'
     type: gradient
     animated: true
-    speed: 3500
-    colors: ['#00B4FF', '#3DFFD2', '#FFFFFF']
+    speed: 3000
+    motion: wave
+    wave: 6
+    effects: [shine]
+    highlight: '#FFFFFF'
+    colors: ['#0066FF', '#00C8FF', '#5CFFE4']
   than_sam:
     display: 'Thần Sấm'
     type: gradient
     animated: true
-    speed: 1800
-    colors: ['#FFF24D', '#3DCFFF']
+    speed: 1500
+    motion: static
+    effects: [spark]
+    highlight: '#FFF56B'
+    spark-density: 0.16
+    colors: ['#2E5BFF', '#3DB8FF']
   cuc_quang:
     display: 'Cực Quang'
     type: gradient
     animated: true
-    speed: 4500
-    colors: ['#3DFFB0', '#3DB8FF', '#B07CFF']
+    speed: 3200
+    motion: wave
+    wave: 7
+    colors: ['#2EFF9E', '#2EA8FF', '#B062FF']
   tinh_van_dong:
     display: 'Tinh Vân Động'
     type: gradient
     animated: true
-    speed: 3500
-    colors: ['#FF4FA8', '#8B5CFF', '#3DA5FF']
+    speed: 3000
+    motion: wave
+    wave: 6
+    effects: [spark]
+    highlight: '#FFFFFF'
+    colors: ['#FF3D9E', '#8B4DFF', '#2E95FF']
   phuong_hoang_lua:
     display: 'Phượng Hoàng Băng'
     type: gradient
     animated: true
-    speed: 2500
-    colors: ['#E0FBFF', '#3DC8FF', '#7A5CFF']
+    speed: 2000
+    motion: static
+    effects: [shine]
+    highlight: '#E8FCFF'
+    colors: ['#2EB8FF', '#6A4DFF']
   cau_vong_ruc:
     display: 'Hoàng Hôn Động'
     type: gradient
     animated: true
     speed: 3000
-    colors: ['#FFA94D', '#FF4F8B', '#6C63FF']
+    motion: pulse
+    colors: ['#FF9A2E', '#FF3D7F', '#6A4DFF']
   neon_dong:
     display: 'Neon Động'
     type: gradient
     animated: true
-    speed: 2500
+    speed: 2400
+    motion: pulse
     colors: ['#00F5D4', '#F15BB5', '#FEE440']
   anh_dao_dong:
     display: 'Hoa Anh Đào Động'
     type: gradient
     animated: true
-    speed: 3000
-    colors: ['#FF6FB5', '#FF2E63']
+    speed: 2500
+    motion: static
+    effects: [spark]
+    highlight: '#FFFFFF'
+    colors: ['#FF8AC4', '#FF2E63']
   rung_xanh_dong:
     display: 'Rừng Xanh Động'
     type: gradient
     animated: true
-    speed: 3500
-    colors: ['#7CFF4D', '#1FA77A', '#D8F54D']
+    speed: 2800
+    motion: wave
+    wave: 6
+    colors: ['#14A86A', '#6BFF3D', '#D8F54D']
   dien_tim_dong:
     display: 'Điện Tím'
     type: gradient
     animated: true
-    speed: 2000
-    colors: ['#B24DFF', '#00F0FF']
+    speed: 1500
+    motion: static
+    effects: [shine]
+    highlight: '#FFFFFF'
+    colors: ['#9B2BFF', '#00E0FF']
   binh_minh_dong:
     display: 'Bình Minh Động'
     type: gradient
     animated: true
-    speed: 3500
-    colors: ['#FFD23F', '#FF5EA8']
+    speed: 2800
+    motion: wave
+    wave: 6
+    colors: ['#FFD23F', '#FF4F9E']
   luc_bao_vang_dong:
     display: 'Lục Bảo Vàng'
     type: gradient
     animated: true
-    speed: 3000
-    colors: ['#2EE67A', '#FFD000']
+    speed: 2200
+    motion: static
+    effects: [shine]
+    highlight: '#FFE14D'
+    colors: ['#0FB860', '#2EE67A']
   san_ho_dong:
     display: 'San Hô Động'
     type: gradient
     animated: true
-    speed: 3500
-    colors: ['#FF7A6B', '#3DDCC8']
+    speed: 2800
+    motion: wave
+    wave: 5
+    colors: ['#FF6B5C', '#2ED8C3']
   lua_bang_dong:
     display: 'Lửa Băng Động'
     type: gradient
     animated: true
-    speed: 2500
-    colors: ['#FF5A1F', '#3DC8FF']
+    speed: 2400
+    motion: pulse
+    colors: ['#FF4A12', '#2EB8FF']
   giang_sinh_dong:
     display: 'Giáng Sinh'
     type: gradient
     animated: true
-    speed: 2500
-    colors: ['#FF3D3D', '#2EE67A']
+    speed: 2400
+    motion: wave
+    wave: 4
+    effects: [spark]
+    highlight: '#FFF6B0'
+    colors: ['#FF2E2E', '#2EE67A']
   dao_tien_dong:
     display: 'Đào Tiên Động'
     type: gradient
     animated: true
-    speed: 3500
-    colors: ['#FF8A5C', '#FFE14D', '#7CFF8A']
+    speed: 3000
+    motion: wave
+    wave: 7
+    colors: ['#FF7A4D', '#FFE14D', '#5CFF7A']
   ma_tran_dong:
     display: 'Ma Trận'
     type: gradient
     animated: true
-    speed: 1500
-    colors: ['#39FF14', '#00E5A0']
+    speed: 1200
+    motion: static
+    effects: [spark]
+    highlight: '#C8FFB8'
+    spark-density: 0.2
+    colors: ['#0E8A2C', '#1ECC4A']
   tu_dang_dong:
     display: 'Tử Đằng Động'
     type: gradient
     animated: true
-    speed: 4000
-    colors: ['#C46BFF', '#6FB7FF']
+    speed: 3200
+    motion: wave
+    wave: 6
+    effects: [shine]
+    highlight: '#F2E6FF'
+    colors: ['#B45CFF', '#5CA8FF']
   song_neon_dong:
     display: 'Sóng Neon'
     type: gradient
     animated: true
-    speed: 2500
-    colors: ['#FF3DD4', '#3DFFB0']
+    speed: 2000
+    motion: wave
+    wave: 4
+    colors: ['#FF2ED0', '#2EFFAA']
   thien_ha_dong:
     display: 'Thiên Hà Động'
     type: gradient
     animated: true
-    speed: 4000
-    colors: ['#6B7BFF', '#C26BFF', '#FF9F6B']
+    speed: 3000
+    motion: static
+    effects: [spark]
+    highlight: '#FFFFFF'
+    colors: ['#3B47E0', '#8A4DFF', '#FF7FB0']
   mua_xuan_dong:
     display: 'Mùa Xuân Động'
     type: gradient
     animated: true
-    speed: 3000
-    colors: ['#FF5FA2', '#5CE65C']
+    speed: 2600
+    motion: pulse
+    colors: ['#FF4F9A', '#4FE65C']
   cuc_tim_dong:
     display: 'Cực Tím'
     type: gradient
     animated: true
-    speed: 3000
-    colors: ['#7B5CFF', '#FF2E9A', '#FFD23F']
+    speed: 2600
+    motion: wave
+    wave: 6
+    effects: [shine]
+    highlight: '#FFFFFF'
+    colors: ['#6A4DFF', '#FF2E9A', '#FFD23F']

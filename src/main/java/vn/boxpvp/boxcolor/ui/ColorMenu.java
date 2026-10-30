@@ -14,6 +14,7 @@ import vn.boxpvp.boxcolor.data.PlayerData;
 import vn.boxpvp.boxcolor.service.ColorService;
 import vn.boxpvp.boxcolor.style.Channel;
 import vn.boxpvp.boxcolor.style.ColorStyle;
+import vn.boxpvp.boxcolor.style.Effect;
 import vn.boxpvp.boxcolor.tier.Feature;
 import vn.boxpvp.boxcolor.ui.InputPrompts.Kind;
 
@@ -197,6 +198,7 @@ public final class ColorMenu extends MenuView {
                 m.lines("menu.color.page-info.lore", "total", String.valueOf(styles.size())), false));
         // Tự chỉnh màu chat không mở theo rank; chỉ hiện với người có quyền lẻ (boxcolor.feature.custom-chat)
         if (section == Section.NAME_STATIC) inventory.setItem(SLOT_CUSTOM, nameCustomItem());
+        else if (section == Section.NAME_ANIMATED) inventory.setItem(SLOT_CUSTOM, motionItem());
         else if (access(plugin, viewer).hasFeature(ColorService.customFeature(Channel.CHAT))) {
             inventory.setItem(SLOT_CUSTOM, chatCustomItem());
         }
@@ -229,9 +231,12 @@ public final class ColorMenu extends MenuView {
         lists.put("note", style.animated() && channel == Channel.CHAT
                 ? List.of(m.raw("menu.color.note-animated-chat")) : List.of());
         lists.put("state", m.rawList("menu.color.state-" + state));
+        boolean decor = section == Section.NAME_ANIMATED;
+        Effect effect = decor ? plugin.colors().effectOf(data, style) : null;
         String[] ph = {
-                "style", icons.styleName(style, true),
-                "preview", Icons.styled(previewText(data), style, true),
+                "style", decor ? icons.decor(style.display(), style, effect) : icons.styleName(style, true),
+                "preview", decor ? icons.decor(previewText(data), style, effect)
+                        : Icons.styled(previewText(data), style, true),
                 "kind", icons.kind(style),
                 "unlock", icons.unlock(channel, style)
         };
@@ -273,9 +278,18 @@ public final class ColorMenu extends MenuView {
     private void drawDecorInfo(PlayerData data) {
         Messages m = plugin.messages();
         ColorStyle decor = data.shownDecor();
-        String current = decor != null ? icons.styleName(decor, true) : m.raw("menu.main.decor-none");
-        String preview = Icons.styled(data.realName(), decor != null ? decor : plugin.colors().rankOrDefault(data), true);
-        String[] ph = {"current", current, "preview", preview};
+        String current;
+        String preview;
+        if (decor != null) {
+            Effect effect = plugin.colors().effectOf(data, decor);
+            current = icons.decor(decor.display(), decor, effect);
+            preview = icons.decor(data.realName(), decor, effect);
+        } else {
+            current = m.raw("menu.main.decor-none");
+            preview = Icons.styled(data.realName(), plugin.colors().rankOrDefault(data), false);
+        }
+        String motion = m.raw("menu.motion." + plugin.colors().motionOf(data).key() + ".name");
+        String[] ph = {"current", current, "preview", preview, "motion", motion};
         inventory.setItem(SLOT_INFO, Icons.item(Material.NETHER_STAR,
                 m.line("menu.color.decor-info.name", ph), m.lines("menu.color.decor-info.lore", ph), false));
     }
@@ -295,6 +309,14 @@ public final class ColorMenu extends MenuView {
         }
         return Icons.item(Material.HOPPER, m.line("menu.color.filter.name", ph),
                 m.lines("menu.color.filter.lore", "options", options, ph), false);
+    }
+
+    /** Nút mở menu kiểu chuyển động (trang hiệu ứng động). */
+    private ItemStack motionItem() {
+        Messages m = plugin.messages();
+        PlayerData data = plugin.cache().get(viewer.getUniqueId());
+        String motion = data == null ? "" : m.raw("menu.motion." + plugin.colors().motionOf(data).key() + ".name");
+        return icons.button(Material.CLOCK, "menu.color.motion", "motion", motion);
     }
 
     /** Tự chỉnh màu chat bằng danh sách mã hex. */
@@ -362,7 +384,8 @@ public final class ColorMenu extends MenuView {
                 }
             }
             case SLOT_CUSTOM -> {
-                if (section != Section.CHAT) clickNameCustom(player, click);
+                if (section == Section.NAME_STATIC) clickNameCustom(player, click);
+                else if (section == Section.NAME_ANIMATED) plugin.menus().open(player, new MotionMenu(plugin, player));
                 else if (plugin.colors().hasFeature(player, ColorService.customFeature(Channel.CHAT))) {
                     clickChatCustom(player);
                 }

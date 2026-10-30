@@ -29,6 +29,8 @@ color:
   # Hiệu ứng tên động (TAB và nametag). {style}: tên hiệu ứng đã tô màu
   decor-selected: '&#7CFC9A✔ Đã chọn hiệu ứng {style} &#7CFC9Acho tên ở TAB, scoreboard và trên đầu'
   decor-reset: '&#7CFC9A✔ Đã bỏ hiệu ứng tên động'
+  # {motion}: tên kiểu chuyển động (menu.motion.<kiểu>.name)
+  motion-selected: '&#7CFC9A✔ Đã chọn kiểu chuyển động {motion}'
   locked: '&#FF6B6B✘ Bạn chưa sở hữu màu này'
   custom-locked: '&#FF6B6B✘ Tự chỉnh {channel} chưa mở khóa'
   custom-invalid: '&#FF6B6B✘ Mã màu không hợp lệ, ví dụ: &f#FFB3C6 #A0E7E5'
@@ -246,8 +248,19 @@ menu:
       name: '&fĐang dùng'
       lore:
         - '&7• Hiệu ứng: {current}'
+        - '&7• Kiểu chuyển động: {motion}'
         - '&7• Xem trước: {preview}'
         - '&7• Hiện ở TAB, scoreboard, trên đầu'
+    # Nút mở menu kiểu chuyển động (trang hiệu ứng động). {motion}: kiểu đang dùng
+    motion:
+      name: '&#FFC48AKiểu chuyển động'
+      lore:
+        - '&#BFC7D5Chọn cách hiệu ứng chạy'
+        - '&#BFC7D5trên tên của bạn'
+        - ''
+        - '&7• Đang dùng: {motion}'
+        - ''
+        - '&8[&#FFC48AChuột trái để chọn kiểu&8]'
     # Mỗi màu. {style} tên màu đã tô, {preview} câu mẫu, {kind} kiểu màu
     # {note}: dòng ghi chú (bỏ nếu không có), {state}: các dòng state-* bên dưới
     item:
@@ -392,6 +405,82 @@ menu:
         - '&#FF6B6B✘ Chưa mở khóa'
 
   # Xem trước màu tự chỉnh. {preview} {channel} {kind} {codes}
+  # Menu kiểu chuyển động của hiệu ứng tên động
+  motion:
+    title: '&8Kiểu chuyển động'
+    no-sample: '&7Chưa có hiệu ứng'
+    # Ô trên cùng. {motion} kiểu đang dùng, {style} hiệu ứng chạy theo kiểu đó
+    info:
+      name: '&fĐang dùng'
+      lore:
+        - '&7• Kiểu: {motion}'
+        - '&7• Hiệu ứng: {style}'
+        - '&7• Áp cho mọi hiệu ứng tên động'
+    info-no-decor:
+      name: '&fĐang dùng'
+      lore:
+        - '&7• Kiểu: {motion}'
+        - '&7• Bạn chưa chọn hiệu ứng nào,'
+        - '&7  xem trước bằng {style}'
+    # Mỗi kiểu. {description}: các dòng description của kiểu, {preview}: tên thật chạy thử, {state}: state-*
+    item:
+      lore:
+        - '{description}'
+        - ''
+        - '&#FFD166Xem trước:'
+        - '&7• {preview}'
+        - ''
+        - '{state}'
+    state-selected:
+      - '&#7CFC9A✔ Đang sử dụng'
+    state-unselected:
+      - '&8[&#7CFC9AChuột trái để chọn&8]'
+    back:
+      name: '&fQuay lại'
+      lore:
+        - '&8[&#7FDBFFChuột trái để về hiệu ứng động&8]'
+    signature:
+      name: '&#FFD98AĐặc trưng'
+      description:
+        - '&#BFC7D5Kiểu riêng được thiết kế'
+        - '&#BFC7D5cho từng hiệu ứng'
+    classic:
+      name: '&#C9D1DCMặc định'
+      description:
+        - '&#BFC7D5Dải màu trượt chậm'
+        - '&#BFC7D5trên cả tên'
+    wave:
+      name: '&#7FE7FFSóng dày'
+      description:
+        - '&#BFC7D5Màu lặp lại nhiều vòng,'
+        - '&#BFC7D5chữ cạnh nhau khác màu'
+    shine:
+      name: '&#FFF0A0Ánh kim quét'
+      description:
+        - '&#BFC7D5Vệt sáng quét qua tên'
+        - '&#BFC7D5rồi nghỉ, như đồ hiếm'
+    pulse:
+      name: '&#FF9EC4Nhịp thở'
+      description:
+        - '&#BFC7D5Cả tên đổi màu cùng lúc'
+    spark:
+      name: '&#FFB37ALấp lánh'
+      description:
+        - '&#BFC7D5Vài chữ chớp sáng'
+        - '&#BFC7D5rồi tắt dần'
+    wave-shine:
+      name: '&#B8A6FFSóng dày + ánh kim'
+      description:
+        - '&#BFC7D5Sóng màu kèm vệt sáng'
+    wave-spark:
+      name: '&#8AF0C0Sóng dày + lấp lánh'
+      description:
+        - '&#BFC7D5Sóng màu kèm chữ chớp sáng'
+    shine-spark:
+      name: '&#FFD0E8Ánh kim + lấp lánh'
+      description:
+        - '&#BFC7D5Vệt sáng kèm chữ chớp sáng'
+
   confirm:
     title: '&8Xác nhận màu tự chỉnh'
     preview:

@@ -121,6 +121,18 @@ class TierRegistryTest {
     }
 
     @Test
+    void everyAnimatedEffectHasSignatureMotion() {
+        for (var style : styles.list(Channel.NAME)) {
+            if (!style.animated()) continue;
+            assertTrue(style.effect().base() != vn.boxpvp.boxcolor.style.Effect.Base.CLASSIC, style.id());
+        }
+        var baChu = styles.get(Channel.NAME, "ba_chu").effect();
+        assertTrue(baChu.shine() && baChu.spark());
+        assertEquals(0xFFF4C2, baChu.highlight());
+        assertEquals(7, styles.get(Channel.NAME, "cau_vong_dong").effect().wave());
+    }
+
+    @Test
     void currentTierIsHighestNotAbove() {
         assertNull(tiers.current(0));
         assertEquals(2, tiers.current(2).level());

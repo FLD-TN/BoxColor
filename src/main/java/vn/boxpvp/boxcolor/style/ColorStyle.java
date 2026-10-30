@@ -14,9 +14,10 @@ import org.bukkit.Material;
  * @param saturation độ đậm của cầu vồng (0..1)
  * @param brightness độ sáng của cầu vồng (0..1)
  * @param icon icon trong GUI, {@code null} thì dùng icon mặc định của config.yml
+ * @param effect kiểu chuyển động riêng của hiệu ứng tên động (colors.yml: motion, wave, effects, highlight)
  */
 public record ColorStyle(String id, String display, StyleKind kind, List<Integer> colors, boolean animated,
-        long cycleMillis, float saturation, float brightness, Material icon) {
+        long cycleMillis, float saturation, float brightness, Material icon, Effect effect) {
 
     /** Mã của kiểu tự chỉnh trong dữ liệu người chơi. */
     public static final String CUSTOM_ID = "custom";
@@ -30,6 +31,12 @@ public record ColorStyle(String id, String display, StyleKind kind, List<Integer
         cycleMillis = Math.max(200L, cycleMillis);
         saturation = Math.max(0f, Math.min(1f, saturation));
         brightness = Math.max(0f, Math.min(1f, brightness));
+        if (effect == null) effect = Effect.CLASSIC;
+    }
+
+    public ColorStyle(String id, String display, StyleKind kind, List<Integer> colors, boolean animated,
+            long cycleMillis, float saturation, float brightness, Material icon) {
+        this(id, display, kind, colors, animated, cycleMillis, saturation, brightness, icon, Effect.CLASSIC);
     }
 
     /** Kiểu tự chỉnh: 1 mã là màu đơn, từ 2 mã trở lên là gradient tĩnh. */

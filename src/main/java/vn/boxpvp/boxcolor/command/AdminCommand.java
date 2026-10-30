@@ -79,6 +79,7 @@ public final class AdminCommand implements TabExecutor {
         if (what.equals("chat") || what.equals("all")) data.selection(Channel.CHAT, null);
         if (what.equals("name") || what.equals("all")) data.selection(Channel.NAME, null);
         if (what.equals("decor") || what.equals("all")) data.decor(null);
+        if (what.equals("all")) data.motion(null);
         if (what.equals("nick") || what.equals("all")) plugin.nicks().set(data, null);
         plugin.cache().save(data);
         plugin.colors().refresh(target);

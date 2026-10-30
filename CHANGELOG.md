@@ -1,5 +1,21 @@
 # Changelog
 
+## 1.10.0 (2026-10-30)
+
+- Hiệu ứng tên động có **kiểu chuyển động**, nổi bật hơn trên chữ nhỏ ở TAB:
+  - Sóng dày (`wave`): màu lặp mỗi vài chữ, chữ cạnh nhau khác màu hẳn.
+  - Ánh kim quét (`shine`): vệt sáng quét qua tên rồi nghỉ.
+  - Nhịp thở (`pulse`): cả tên đổi màu cùng lúc.
+  - Lấp lánh (`spark`): vài chữ chớp sáng rồi tắt dần.
+  - Kết hợp được: sóng dày + ánh kim, sóng dày + lấp lánh, ánh kim + lấp lánh.
+- 25 hiệu ứng có kiểu **Đặc trưng** riêng, màu tương phản hơn (colors.yml: `motion`, `wave`, `effects`,
+  `highlight`, `spark-density`). Hiệu ứng không ghi `motion` chạy như bản cũ.
+- Người chơi tự chọn kiểu ở trang Hiệu ứng tên động, nút **Kiểu chuyển động** (ô 51): Đặc trưng, Mặc định (cách
+  chạy cũ) và 7 kiểu trên. Áp cho mọi hiệu ứng, lưu trong cột `motion` (tự thêm vào data.db cũ).
+- `animation.default-motion` (config.yml): kiểu cho người chưa tự chọn, mặc định `signature`.
+- Ánh kim quét và lấp lánh trên nền đứng yên gửi ít gói tin hơn: lúc không có vệt sáng/tia chớp chuỗi không đổi.
+- `/boxcolor reset <người chơi> all` xoá cả kiểu chuyển động.
+
 ## 1.9.3 (2026-10-29)
 
 - Màu chat miễn phí chỉ từ Master trở lên, mỗi rank 1 màu đơn: Master Lá Non, Legend Đỏ Rực, Champion Tím Hoàng Gia,

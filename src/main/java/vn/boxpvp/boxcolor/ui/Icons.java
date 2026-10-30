@@ -18,6 +18,7 @@ import vn.boxpvp.boxcolor.style.Channel;
 import vn.boxpvp.boxcolor.style.ColorRenderer;
 import vn.boxpvp.boxcolor.style.ColorRenderer.HexFormat;
 import vn.boxpvp.boxcolor.style.ColorStyle;
+import vn.boxpvp.boxcolor.style.Effect;
 import vn.boxpvp.boxcolor.tier.Feature;
 import vn.boxpvp.boxcolor.tier.Tier;
 
@@ -93,6 +94,12 @@ public final class Icons {
     public static String styled(String text, ColorStyle style, boolean animated) {
         double phase = animated ? ColorRenderer.phase(style, System.currentTimeMillis()) : 0;
         return ColorRenderer.legacy(text, style, phase, HexFormat.AMPERSAND);
+    }
+
+    /** Chữ chạy hiệu ứng tên động theo kiểu chuyển động {@code effect}, như ở TAB và nametag. */
+    public String decor(String text, ColorStyle style, Effect effect) {
+        if (!plugin.settings().animationEnabled()) return styled(text, style, false);
+        return ColorRenderer.legacy(text, style, effect, plugin.colors().frameNow(), HexFormat.AMPERSAND);
     }
 
     /** Tên kiểu màu tô bằng chính nó; kiểu tự chỉnh dùng {@code menu.custom-display}. */

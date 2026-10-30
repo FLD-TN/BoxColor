@@ -95,7 +95,40 @@ public final class StyleRegistry {
                 s.getLong("speed", 3000L),
                 (float) s.getDouble("saturation", 0.6),
                 (float) s.getDouble("brightness", 1.0),
-                icon);
+                icon, animated ? effect(s, path, warn) : Effect.CLASSIC);
+    }
+
+    /** Kiểu chuyển động riêng: motion, wave, effects, highlight, spark-density. Không ghi motion thì như bản cũ. */
+    private static Effect effect(ConfigurationSection s, String path, Consumer<String> warn) {
+        Effect.Base base = Effect.Base.CLASSIC;
+        String motion = s.getString("motion");
+        if (motion != null) {
+            base = Effect.Base.parse(motion);
+            if (base == null) {
+                warn.accept(path + ": motion phải là classic, wave, static hoặc pulse");
+                base = Effect.Base.CLASSIC;
+            }
+        }
+        boolean shine = false;
+        boolean spark = false;
+        for (String fx : s.getStringList("effects")) {
+            switch (fx.trim().toLowerCase(Locale.ROOT)) {
+                case "shine" -> shine = true;
+                case "spark" -> spark = true;
+                default -> warn.accept(path + ": effects chỉ có shine, spark (bỏ qua '" + fx + "')");
+            }
+        }
+        int highlight = Effect.DEFAULT_HIGHLIGHT;
+        String hl = s.getString("highlight");
+        if (hl != null) {
+            highlight = Hex.parse(hl);
+            if (highlight < 0) {
+                warn.accept(path + ": mã màu highlight sai '" + hl + "'");
+                highlight = Effect.DEFAULT_HIGHLIGHT;
+            }
+        }
+        return new Effect(base, s.getInt("wave", Effect.DEFAULT_WAVE), shine, spark, highlight,
+                s.getDouble("spark-density", Effect.DEFAULT_SPARK_DENSITY));
     }
 
     /** {@code unlock-text} của màu, {@code null} nếu không đặt. */

@@ -70,6 +70,68 @@ class ColorRendererTest {
     }
 
     @Test
+    void classicMotionMatchesOldAnimation() {
+        ColorStyle g = gradient(true, 0xFF0000, 0x0000FF);
+        for (long now = 0; now < 1000; now += 100) {
+            assertEquals(ColorRenderer.legacy("Steve_VN", g, ColorRenderer.phase(g, now), HexFormat.AMPERSAND),
+                    ColorRenderer.legacy("Steve_VN", g, Effect.CLASSIC, now, HexFormat.AMPERSAND));
+        }
+    }
+
+    @Test
+    void waveRepeatsEveryWaveChars() {
+        ColorStyle g = gradient(true, 0xFF0000, 0x0000FF);
+        Effect wave = Motion.WAVE.apply(Effect.CLASSIC);
+        assertEquals(ColorRenderer.rgbAt(g, wave, 0, 16, 300), ColorRenderer.rgbAt(g, wave, 5, 16, 300));
+        assertNotEquals(ColorRenderer.rgbAt(g, wave, 0, 16, 300), ColorRenderer.rgbAt(g, wave, 2, 16, 300));
+    }
+
+    @Test
+    void pulseColorsWholeNameAlmostTheSame() {
+        ColorStyle g = gradient(true, 0xFF0000, 0x0000FF);
+        Effect pulse = Motion.PULSE.apply(Effect.CLASSIC);
+        String early = ColorRenderer.legacy("Steve", g, pulse, 0, HexFormat.AMPERSAND);
+        String later = ColorRenderer.legacy("Steve", g, pulse, 500, HexFormat.AMPERSAND);
+        assertNotEquals(early, later);
+        assertTrue(early.startsWith("&#FF0000"), early);
+    }
+
+    @Test
+    void shineSweepsThenRests() {
+        ColorStyle g = gradient(true, 0xFF0000, 0xAA0000);
+        Effect shine = Motion.SHINE.apply(Effect.CLASSIC);
+        String rest1 = ColorRenderer.legacy("Steve_VN", g, shine, 700, HexFormat.AMPERSAND);
+        String rest2 = ColorRenderer.legacy("Steve_VN", g, shine, 900, HexFormat.AMPERSAND);
+        // Lúc nghỉ chuỗi đứng yên = gradient tĩnh: TAB/UNT không phải gửi lại
+        assertEquals(rest1, rest2);
+        assertEquals(ColorRenderer.legacy("Steve_VN", gradient(false, 0xFF0000, 0xAA0000), 0, HexFormat.AMPERSAND),
+                rest1);
+        String sweeping = ColorRenderer.legacy("Steve_VN", g, shine, 300, HexFormat.AMPERSAND);
+        assertNotEquals(rest1, sweeping);
+    }
+
+    @Test
+    void sparkIsSameForEveryViewerAndOnlyBrightens() {
+        ColorStyle g = gradient(true, 0x112233, 0x112233);
+        Effect spark = new Effect(Effect.Base.STATIC, 6, false, true, 0xFFFFFF, 0.5);
+        boolean lit = false;
+        for (long now = 0; now < 3000; now += 100) {
+            assertEquals(ColorRenderer.rgbAt(g, spark, 3, 10, now), ColorRenderer.rgbAt(g, spark, 3, 10, now));
+            int rgb = ColorRenderer.rgbAt(g, spark, 3, 10, now);
+            assertTrue(((rgb >> 16) & 0xFF) >= 0x11, Integer.toHexString(rgb));
+            if (rgb != 0x112233) lit = true;
+        }
+        assertTrue(lit);
+    }
+
+    @Test
+    void motionKeysRoundTrip() {
+        for (Motion m : Motion.values()) assertEquals(m, Motion.parse(m.key()));
+        assertEquals(Motion.WAVE_SHINE, Motion.parse("WAVE_SHINE"));
+        assertEquals(null, Motion.parse("nope"));
+    }
+
+    @Test
     void componentKeepsPlainTokens() {
         ColorStyle g = gradient(false, 0xFF0000, 0x0000FF);
         Component c = ColorRenderer.component("xem [item] nè", g, 0, Pattern.compile(Pattern.quote("[item]")));

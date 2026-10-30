@@ -14,6 +14,7 @@ import vn.boxpvp.boxcolor.nick.NickRules;
 import vn.boxpvp.boxcolor.style.ColorRenderer.HexFormat;
 import vn.boxpvp.boxcolor.style.ColorStyle;
 import vn.boxpvp.boxcolor.style.Hex;
+import vn.boxpvp.boxcolor.style.Motion;
 
 /**
  * config.yml. Mọi giá trị đều có mặc định trong code: file cũ thiếu khoá vẫn chạy, cập nhật chỉ cần thay jar.
@@ -32,6 +33,7 @@ public final class Settings {
     private final int accessCheckSeconds;
     private final boolean animationEnabled;
     private final long animationFrameMillis;
+    private final Motion defaultMotion;
     private final boolean chatEnabled;
     private final boolean keepTypedColors;
     private final Pattern typedColors;
@@ -68,6 +70,8 @@ public final class Settings {
         accessCheckSeconds = Math.max(5, c.getInt("access-check-seconds", 30));
         animationEnabled = c.getBoolean("animation.enabled", true);
         animationFrameMillis = Math.max(50L, c.getLong("animation.frame-ms", 100L));
+        Motion motion = Motion.parse(c.getString("animation.default-motion", Motion.SIGNATURE.key()));
+        defaultMotion = motion != null ? motion : Motion.SIGNATURE;
 
         chatEnabled = c.getBoolean("chat.enabled", true);
         keepTypedColors = c.getBoolean("chat.keep-typed-colors", true);
@@ -204,6 +208,11 @@ public final class Settings {
     /** Độ dài một khung hình của màu chuyển động (mili giây). */
     public long animationFrameMillis() {
         return animationFrameMillis;
+    }
+
+    /** Kiểu chuyển động cho người chưa tự chọn. */
+    public Motion defaultMotion() {
+        return defaultMotion;
     }
 
     public boolean chatEnabled() {

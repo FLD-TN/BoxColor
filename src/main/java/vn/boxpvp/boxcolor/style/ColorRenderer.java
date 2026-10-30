@@ -65,8 +65,87 @@ public final class ColorRenderer {
         }
     }
 
+    /**
+     * Màu của chữ nhìn thấy thứ {@code index} theo kiểu chuyển động {@code effect}, tại thời điểm {@code nowMillis}
+     * (người gọi đã làm tròn theo khung hình). Cùng thời điểm luôn ra cùng màu: ai xem cũng thấy giống nhau.
+     */
+    public static int rgbAt(ColorStyle style, Effect effect, int index, int length, long nowMillis) {
+        double phase = phase(style, nowMillis);
+        int len = Math.max(1, length);
+        int rgb = switch (effect.base()) {
+            case CLASSIC -> rgbAt(style, index, len, phase);
+            case WAVE -> loopColor(style, frac(index / (double) effect.wave() - phase));
+            case PULSE -> loopColor(style, frac(phase - index * 0.025));
+            case STATIC -> staticColor(style, index, len);
+        };
+        if (effect.shine()) {
+            // Quét qua tên trong 60% vòng, nghỉ 40% (lúc nghỉ chuỗi không đổi, TAB/UNT không gửi lại)
+            double q = phase / 0.6;
+            if (q <= 1) {
+                double width = 2.5;
+                double pos = -width + q * (len + 2 * width);
+                double k = Math.max(0, 1 - Math.abs(index - pos) / width);
+                k = k * k * (3 - 2 * k);
+                if (k > 0) rgb = lerp(rgb, effect.highlight(), k * 0.92);
+            }
+        }
+        if (effect.spark()) {
+            // Mỗi nhịp 120ms vài chữ bắt đầu chớp, tắt dần trong 4 nhịp
+            long slot = Math.floorDiv(nowMillis, 120L);
+            double k = 0;
+            for (int age = 0; age < 4; age++) {
+                if (hash(index + 1, slot - age) < effect.sparkDensity()) k = Math.max(k, 1 - age / 4.0);
+            }
+            if (k > 0) rgb = lerp(rgb, effect.highlight(), k * 0.95);
+        }
+        return rgb;
+    }
+
+    /** Màu tại vị trí {@code t} trên vòng màu kín (cầu vồng hoặc c0 -> c1 -> ... -> c0). */
+    private static int loopColor(ColorStyle style, double t) {
+        if (style.kind() == StyleKind.RAINBOW) {
+            return Color.HSBtoRGB((float) t, style.saturation(), style.brightness()) & 0xFFFFFF;
+        }
+        List<Integer> stops = style.colors();
+        if (stops.isEmpty()) return 0xFFFFFF;
+        if (stops.size() == 1) return stops.get(0);
+        return interpolateLoop(stops, t);
+    }
+
+    /** Gradient đứng yên trải đều trên tên. */
+    private static int staticColor(ColorStyle style, int index, int len) {
+        double t = len <= 1 ? 0 : index / (double) (len - 1);
+        if (style.kind() == StyleKind.RAINBOW) {
+            return Color.HSBtoRGB((float) (t * 0.85), style.saturation(), style.brightness()) & 0xFFFFFF;
+        }
+        List<Integer> stops = style.colors();
+        if (stops.isEmpty()) return 0xFFFFFF;
+        if (stops.size() == 1) return stops.get(0);
+        return interpolate(stops, t);
+    }
+
+    private static double hash(long a, long b) {
+        int h = (int) (a * 374761393L + b * 668265263L);
+        h = (h ^ (h >>> 13)) * 1274126177;
+        h ^= h >>> 16;
+        return (h & 0xFFFFFFFFL) / 4294967296.0;
+    }
+
     /** Chuỗi có mã màu cho placeholder. Chuỗi rỗng trả về rỗng. */
     public static String legacy(String text, ColorStyle style, double phase, HexFormat format) {
+        return legacy(text, (index, length) -> rgbAt(style, index, length, phase), format);
+    }
+
+    /** Như {@link #legacy(String, ColorStyle, double, HexFormat)} nhưng chạy theo kiểu chuyển động. */
+    public static String legacy(String text, ColorStyle style, Effect effect, long nowMillis, HexFormat format) {
+        return legacy(text, (index, length) -> rgbAt(style, effect, index, length, nowMillis), format);
+    }
+
+    private interface CharColor {
+        int at(int index, int length);
+    }
+
+    private static String legacy(String text, CharColor color, HexFormat format) {
         int length = visibleLength(text);
         StringBuilder out = new StringBuilder(text.length() * (format == HexFormat.SECTION ? 15 : 9));
         int last = -1;
@@ -78,7 +157,7 @@ public final class ColorRenderer {
                 out.appendCodePoint(cp);
                 continue;
             }
-            int rgb = rgbAt(style, index++, length, phase);
+            int rgb = color.at(index++, length);
             if (rgb != last) {
                 appendCode(out, rgb, format);
                 last = rgb;
