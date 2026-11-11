@@ -1,176 +1,137 @@
 # BoxColor
 
-Màu chat, màu tên và nick cho BoxPvP (Paper 1.21.1). Mở khóa theo tier: mỗi rank chỉ cần một permission.
+Màu chat, màu tên, hiệu ứng tên động và nick cho server BoxPvP. Màu mở theo rank: mỗi rank chỉ cần một permission,
+rank cao tự có hết màu của rank thấp hơn. Màu ngoài rank thì mở bằng phiếu (bỏ vào crate) hoặc permission lẻ.
+
+Paper 1.21.1, Java 21. Cần PlaceholderAPI để TAB, chat và nametag đọc được màu. LuckPerms không bắt buộc (dùng cho
+lệnh cấp quyền của phiếu).
 
 ## Cài đặt
 
-1. Chép `build/libs/BoxColor-1.9.3.jar` vào `plugins/`. Cần **PlaceholderAPI** để các plugin khác đọc được màu.
-2. Khởi động server một lần để tạo `config.yml`, `colors.yml`, `tiers.yml`, `messages.yml`.
-3. Sửa `tiers.yml` cho đúng rank của server, rồi cấp quyền tier trong LuckPerms (xem phần dưới).
-4. Nối placeholder vào EzChat, TAB, UnlimitedNameTag (xem phần dưới).
-5. `/boxcolor reload`.
+1. Bỏ jar vào `plugins/`, khởi động một lần để tạo `config.yml`, `colors.yml`, `tiers.yml`, `messages.yml`.
+2. Sửa `tiers.yml` cho đúng rank, rồi cấp `boxcolor.tier.<n>` cho từng group:
+   ```
+   lp group elite permission set boxcolor.tier.1 true
+   lp group titan permission set boxcolor.tier.2 true
+   ...
+   lp group overlord permission set boxcolor.tier.9 true
+   ```
+3. Nối placeholder vào chat, TAB và nametag (xem dưới), rồi `/boxcolor reload`.
 
-## Lệnh
+## Người chơi thấy gì
 
-| Lệnh | Việc |
-|---|---|
-| `/dasac` | Mở trang chính (màu chat và màu tên) |
-| `/chatcolor` (`/mauchat`) | Mở thẳng trang màu chat |
-| `/namecolor` (`/mauten`) | Mở thẳng trang chọn màu tên tĩnh / hiệu ứng động |
-| `/chatcolor reset`, `/namecolor reset` | Bỏ màu |
-| `/nick <tên>`, `/nick reset` | Màu tùy chỉnh: đặt / bỏ tên hiển thị (cần tính năng `nick`) |
-| `/nick &x&6&7&D&A&F&8D&x&6&A&D&9&F&5e...` | Tên kèm màu từng chữ: mỗi mã (`&x&R&R&G&G&B&B`, `&#RRGGBB`, `#RRGGBB`, `&0`-`&f`, `&r`) tô các chữ phía sau nó. Không gõ mã: chỉ đổi chữ, giữ màu đang dùng (kể cả màu động). Gõ lại đúng tên cũ kèm mã: chỉ đổi màu |
-| `/realname <nick>` (`/tenthat`) | Xem nick là của ai |
-| `/boxcolor reload` | Nạp lại mọi file |
-| `/boxcolor give <người chơi> <chat\|name> <mã màu> [số lượng]` | Phiếu màu để bỏ vào crate (xem dưới) |
-| `/boxcolor reset <người chơi> <chat\|name\|nick\|all>` | Xóa màu/nick (offline: chỉ xóa được nick) |
-| `/boxcolor nick <người chơi> <tên\|reset>` | Admin đặt tên (nhận mã màu), bỏ qua độ dài, từ cấm và thời gian chờ |
+- `/dasac` mở trang chính, `/chatcolor` mở thẳng trang màu chat, `/namecolor` mở thẳng trang màu tên.
+- Màu tên tĩnh và hiệu ứng tên động là hai mục riêng. Hiệu ứng động chỉ tô màu lên tên thật, không đổi chữ.
+- Hiệu ứng động có nhiều kiểu chuyển động: Đặc trưng (riêng từng hiệu ứng trong `colors.yml`), Mặc định, Sóng dày,
+  Ánh kim quét, Nhịp thở, Lấp lánh và 3 kiểu kết hợp. Tự chọn kiểu cần tính năng `motion` (mặc định từ tier 7);
+  chưa có thì luôn chạy kiểu Mặc định.
+- Tính năng `nick` (Màu tùy chỉnh): tự đặt tên hiển thị và tô màu từng chữ. Mỗi mã màu (`&x&R&R&G&G&B&B`,
+  `&#RRGGBB`, `#RRGGBB`, `&0`-`&f`, `&r`) tô các chữ phía sau nó. Gõ tên không kèm mã thì chỉ đổi chữ, giữ màu cũ.
+- Màu chat chỉ chọn trong danh sách, không ai tự chỉnh mã màu chat được.
+- GUI chỉ ghi Đã sở hữu / Chưa sở hữu, có bộ lọc Tất cả / Đã sở hữu / Chưa sở hữu.
+- Mất rank thì màu và nick tạm ẩn (kiểm tra mỗi `access-check-seconds`), dữ liệu vẫn giữ; lên lại rank là hiện lại.
 
-## Phân quyền
+## Nick ở đâu, tên thật ở đâu
 
-Mỗi rank chỉ cần một dòng, tier cao tự có hết màu của tier thấp hơn:
-
-```
-lp group elite permission set boxcolor.tier.1 true
-lp group titan permission set boxcolor.tier.2 true
-lp group hero permission set boxcolor.tier.3 true
-lp group master permission set boxcolor.tier.4 true
-lp group legend permission set boxcolor.tier.5 true
-lp group champion permission set boxcolor.tier.6 true
-lp group zeus permission set boxcolor.tier.7 true
-lp group ultimate permission set boxcolor.tier.8 true
-lp group overlord permission set boxcolor.tier.9 true
-```
-
-| Permission | Mặc định | Việc |
-|---|---|---|
-| `boxcolor.use` | mọi người | Mở menu, chọn màu đã mở khóa |
-| `boxcolor.realname` | mọi người | `/realname` |
-| `boxcolor.tier.<n>` | không | Tier của rank |
-| `boxcolor.color.<chat\|name>.<mã>` | không | Tặng lẻ một màu (quà sự kiện), không cần lên rank |
-| `boxcolor.feature.<nick\|motion>` | không | Tặng lẻ một tính năng |
-| `boxcolor.nick.bypass-cooldown` | op | Đổi nick không cần chờ |
-| `boxcolor.admin` | op | Mọi màu, mọi tính năng, lệnh admin |
-
-Mất rank thì màu và nick **tạm ẩn** (kiểm tra lại mỗi `access-check-seconds`), dữ liệu vẫn giữ. Lên lại rank là hiện lại.
-Nick do admin đặt cũng chỉ hiện khi người đó có tính năng `nick`.
-
-## GUI màu tên
-
-`/namecolor` (hoặc ô Màu tên ở trang chính) mở menu chọn loại:
-- **Màu tĩnh:** màu có sẵn theo rank, và ô **Màu tùy chỉnh** (tính năng `nick`): bấm vào, gõ tên kèm mã màu vào chat.
-- **Màu động:** cần tính năng `animated-name` (mặc định Ultimate). Chỉ chọn màu có sẵn trong `colors.yml`
-  (màu có `animated: true`). Ô **Đổi chữ của tên** đặt tên hiển thị, màu động chạy theo đúng chữ đó.
-
-Chọn một màu trong GUI thì giữ chữ của tên, chỉ tô lại bằng màu mới.
-
-## Màu chat: rank và crate
-
-- Từ **Master** trở lên, mỗi rank mở **1 màu chat đơn** (`tiers.yml`). Không rank nào được tự chỉnh mã màu chat.
-- Các màu chat **không nằm trong tier nào** (màu đặc sắc) chỉ mở bằng permission `boxcolor.color.chat.<mã>`.
-- GUI chỉ ghi **Đã sở hữu / Chưa sở hữu** ở từng màu (không ghi cách nhận), và có **bộ lọc** (ô góc phải dưới):
-  Tất cả / Đã sở hữu / Chưa sở hữu. Bộ lọc nhớ theo người chơi cho tới khi thoát.
-
-### Phiếu màu cho crate
-1. `/boxcolor give <tên bạn> chat cuc_quang` để lấy phiếu (giáp da nhuộm màu, lore có mã màu và cách dùng).
-2. Bỏ phiếu vào crate như một vật phẩm thường (ExcellentCrates: thêm phần thưởng, đặt item là phiếu).
-   Nên điền `Ignored_For_Permissions: [boxcolor.color.chat.cuc_quang]` cho phần thưởng đó, để ai đã có màu thì
-   không quay trúng lại.
-3. Người chơi chuột phải vào phiếu: BoxColor chạy `voucher.grant-command` (mặc định
-   `lp user {player} permission set {permission} true`) và trừ 1 phiếu. Đã sở hữu màu đó thì không trừ phiếu.
-   Chuột phải không mặc giáp lên người. Phiếu nhận ra bằng dữ liệu ẩn, sửa chữ trong messages.yml không hỏng phiếu cũ.
-
-## Nick và hiệu ứng động (chống giả danh)
+Để không ai giả danh được người khác, nick chỉ hiện ở chat:
 
 | Nơi | Chữ | Màu |
 |---|---|---|
-| Chat | Nick nếu có | Màu tên tĩnh / Màu tùy chỉnh / màu rank |
-| TAB, scoreboard | **Luôn tên thật** | Hiệu ứng động nếu có, không thì màu rank |
-| Nametag | **Luôn tên thật** | Hiệu ứng động nếu có, không thì vàng &e |
+| Chat | Nick nếu có | Màu tên tĩnh / màu tự chỉnh / màu rank |
+| TAB, scoreboard | Luôn tên thật | Hiệu ứng động nếu có, không thì màu rank |
+| Nametag | Luôn tên thật | Hiệu ứng động nếu có, không thì `nametag-default-color` |
 
-Hiệu ứng động lưu riêng (trang "Hiệu ứng tên động"), chỉ tô màu lên tên thật, không đổi chữ. Người chơi bản cũ đang
-chọn màu động làm màu tên được tự chuyển sang hiệu ứng khi vào server.
+Nick được so theo dạng chuẩn hoá: bỏ dấu, không phân biệt hoa thường, bỏ dấu cách và `_`, coi `0=o`, `1=i=l`,
+`3=e`, `4=a`, `5=s`, `7=t`. Không được trùng nick người khác, cũng không được trùng tên thật của bất kỳ ai từng vào
+server. Ai đặt nick trùng tên một người chưa từng vào thì nick đó bị gỡ khi người kia vào lần đầu. Từ cấm
+(`nick.blocked-words`) và thời gian chờ đổi nick (`nick.cooldown-seconds`) mặc định tắt.
 
-Mỗi hiệu ứng có kiểu chuyển động **Đặc trưng** (colors.yml: `motion` classic/wave/static/pulse, `wave`, `effects`
-shine/spark, `highlight`, `spark-density`). Người chơi đổi kiểu ở nút "Kiểu chuyển động" trong trang hiệu ứng động:
-Đặc trưng, Mặc định (dải màu trượt chậm như bản cũ), Sóng dày, Ánh kim quét, Nhịp thở, Lấp lánh và 3 kiểu kết hợp.
-Người chưa chọn dùng `animation.default-motion` (config.yml). Tự chọn kiểu là tính năng `motion` (mặc định từ Zeus);
-chưa mở thì hiệu ứng luôn chạy kiểu Mặc định.
+## Phiếu màu (crate)
+
+1. `/boxcolor give <người chơi> <chat|name> <mã màu> [số lượng]` tạo phiếu (giáp da nhuộm màu). Có 3 loại phiếu tự
+   nhận theo mã: màu chat, màu tên tĩnh, tên động.
+2. Bỏ phiếu vào crate như vật phẩm thường. Nên đặt `Ignored_For_Permissions: [boxcolor.color.<chat|name>.<mã>]` để ai
+   đã có màu thì không quay trúng lại.
+3. Người chơi chuột phải vào phiếu: plugin chạy `voucher.grant-command` (mặc định
+   `lp user {player} permission set {permission} true`) và trừ 1 phiếu. Đã có màu đó thì không trừ.
+
+Phiếu được nhận ra bằng dữ liệu ẩn nên sửa chữ trong `messages.yml` không làm hỏng phiếu cũ.
+
+## Lệnh
+
+| Lệnh | Mô tả |
+|---|---|
+| `/dasac` | Trang chính |
+| `/chatcolor` (`/mauchat`), `/namecolor` (`/mauten`) | Trang màu chat / màu tên; thêm `reset` để bỏ màu |
+| `/nick <tên>`, `/nick reset` | Đặt / bỏ tên hiển thị (cần tính năng `nick`) |
+| `/realname <nick>` (`/tenthat`) | Xem nick là của ai |
+| `/boxcolor reload` | Đọc lại mọi file |
+| `/boxcolor give <người chơi> <chat\|name> <mã> [số lượng]` | Tạo phiếu màu |
+| `/boxcolor reset <người chơi> <chat\|name\|decor\|nick\|all>` | Xoá màu, hiệu ứng động hoặc nick (người offline chỉ xoá được nick) |
+| `/boxcolor nick <người chơi> <tên\|reset>` | Admin đặt nick, bỏ qua độ dài, từ cấm và thời gian chờ |
+
+## Permission
+
+| Permission | Mặc định | Mô tả |
+|---|---|---|
+| `boxcolor.use` | mọi người | Mở menu, chọn màu đã mở |
+| `boxcolor.realname` | mọi người | `/realname` |
+| `boxcolor.tier.<n>` | không | Tier của rank |
+| `boxcolor.color.<chat\|name>.<mã>` | không | Mở lẻ một màu |
+| `boxcolor.feature.<nick\|motion>` | không | Mở lẻ một tính năng |
+| `boxcolor.nick.bypass-cooldown` | op | Đổi nick không chờ |
+| `boxcolor.admin` | op | Mọi màu, mọi tính năng, lệnh admin |
 
 ## Placeholder
 
 | Placeholder | Dùng cho |
 |---|---|
-| `%boxcolor_name%` (= `%boxcolor_name_static%`) | Nick nếu có, màu tên tĩnh / màu tùy chỉnh / màu rank. **Cho chat** |
-| `%boxcolor_tab%` | **Luôn là tên thật.** Có hiệu ứng động thì chạy màu, không thì màu rank. **Cho TAB và scoreboard** |
-| `%boxcolor_nametag%` | **Luôn là tên thật.** Có hiệu ứng động thì chạy màu, không thì `nametag-default-color` (&e). **Cho nametag** |
-| `%boxcolor_name_plain%` | Tên/nick không màu |
-| `%boxcolor_realname%` | Tên thật |
+| `%boxcolor_name%` (= `%boxcolor_name_static%`) | Chat: nick nếu có, kèm màu tên |
+| `%boxcolor_tab%` | TAB, scoreboard: tên thật, có hiệu ứng động |
+| `%boxcolor_nametag%` | Nametag: tên thật, có hiệu ứng động |
+| `%boxcolor_name_plain%`, `%boxcolor_realname%` | Tên/nick không màu, tên thật |
 | `%boxcolor_has_nick%` | `true` / `false` |
 | `%boxcolor_chat%` | Mã màu đầu tiên của màu chat (chỉ cần khi tắt `chat.enabled`) |
 | `%boxcolor_chatcolor%`, `%boxcolor_namecolor%` | Tên màu đang dùng |
 | `%boxcolor_tier%`, `%boxcolor_tier_level%` | Tier đang hưởng |
 
-Thêm đuôi `_mm` (ví dụ `%boxcolor_name_mm%`) để lấy mã MiniMessage `<#RRGGBB>`. Mặc định là `&#RRGGBB`
-(`placeholder-format` trong `config.yml`).
+Thêm đuôi `_mm` (ví dụ `%boxcolor_tab_mm%`) để lấy mã MiniMessage `<#RRGGBB>` thay vì `&#RRGGBB`.
 
 ## Nối với plugin khác
 
-### EzChat
-Màu nội dung chat do BoxColor tự tô, không cần sửa gì. Chỉ cần thay tên người chơi trong format:
-```yaml
-format: '... &f%player_name%&7: &f{message}'
-# thành
-format: '... %boxcolor_name_static%&7: &f{message}'
-```
-Chat không chuyển động được (dòng chat đã gửi là đứng yên), nên luôn dùng `_static` ở chat.
+**Chat (EzChat).** Nội dung chat do BoxColor tự tô màu. Trong format chỉ cần thay tên người chơi bằng
+`%boxcolor_name_static%`. Nếu plugin chat dựng lại tin nhắn từ chữ thô làm mất màu, đặt `chat.enabled: false` và dùng
+`%boxcolor_chat%{message}` (chỉ ra màu đầu tiên, không có gradient).
 
-Nếu sau khi cài, nội dung chat **không** có màu (EzChat tự dựng lại tin nhắn từ chữ thô), đặt `chat.enabled: false`
-trong `config.yml` và dùng `%boxcolor_chat%{message}` trong format. Cách này chỉ ra màu đầu tiên, không có gradient.
-
-### TAB
-Màu tên theo rank nằm ở `rank-name-colors` trong `config.yml` của BoxColor, không để trong TAB nữa.
-Ở `plugins/TAB/groups.yml`, **xóa `customtabname` ở mọi group** (group nào còn giữ sẽ đè màu BoxColor),
-chỉ đặt một lần:
+**TAB.** Xoá `customtabname` ở mọi group trong `groups.yml`, chỉ để một dòng ở `_DEFAULT_`:
 ```yaml
 _DEFAULT_:
   customtabname: '%boxcolor_tab%'
 ```
-Màu chuyển động cần tốc độ làm mới nhanh, ở `plugins/TAB/config.yml`:
+Hiệu ứng động cần làm mới nhanh, trong `config.yml` của TAB:
 ```yaml
 placeholder-refresh-intervals:
   '%boxcolor_tab%': 100
 ```
-Nếu tablist nặng khi đông người, đổi thành 200.
+Màu tên theo rank đặt ở `rank-name-colors` trong `config.yml` của BoxColor.
 
-### UnlimitedNameTag (`settings.yml`)
-```yaml
-- text: '%boxcolor_nametag% &8[%boxclans_icon%&f%boxclans_name%&8]'
+**UnlimitedNameTag.** Dùng `%boxcolor_nametag%` trong dòng tên, `placeholderUpdateRates: '%boxcolor_nametag%': 2`.
+
+**InteractiveChat.** Không cần sửa gì. BoxColor không tô màu các từ khoá như `[item]`, `[inv]` (`chat.keep-plain`),
+tag `@tên` và tên người đang online. Tin nhắn người chơi tự gõ mã màu thì BoxColor để nguyên.
+
+**EssentialsX.** `/nick` của BoxColor được ưu tiên. Đặt `change-displayname: false` trong Essentials để nó không ghi đè
+display name.
+
+## Dữ liệu
+
+`plugins/BoxColor/data.db` (SQLite). Đổi mã một màu trong `colors.yml` thì ai đang dùng màu đó sẽ mất màu.
+
+## Build
+
 ```
-```yaml
-placeholderUpdateRates:
-  '%boxcolor_nametag%': 2
+./gradlew build
 ```
 
-### InteractiveChat
-Không cần sửa config của IC. BoxColor để nguyên (không tô gradient) các đoạn IC cần nhận ra: từ khoá `[item]`,
-`[inv]`, `[money]`... (`chat.keep-plain`), tag `@tên`, tên và nick người đang online (`chat.keep-player-names`).
-Người chơi tự gõ màu (`&a`, `#FF0000`, `[color=#...]`) thì BoxColor không tô màu chat cho tin nhắn đó.
-
-### EssentialsX
-- `/nick` của BoxColor được ưu tiên hơn `/nick` của Essentials (Essentials tự nhường lệnh trùng tên).
-- Đặt `change-displayname: false` trong config của Essentials, để Essentials không ghi đè display name
-  (tin nhắn chết, vào/thoát server) mà BoxColor đặt.
-
-## Chống giả mạo nick
-
-So nick theo dạng chuẩn hoá: bỏ dấu, không phân biệt hoa thường, coi `0=o`, `1=i=l`, `3=e`, `4=a`, `5=s`, `7=t`,
-bỏ dấu cách và `_`. Vì vậy "Ádm1n", "St3ve" bị coi là trùng "admin", "Steve".
-- Không được trùng nick của người khác (kể cả đang offline).
-- Không được trùng tên thật của bất kỳ ai từng vào server (`nick.check-real-names`).
-- Nếu ai đó đặt nick trùng tên một người chưa từng vào server, khi người đó vào lần đầu thì nick kia bị gỡ.
-- `nick.blocked-words` (mặc định trống) và `nick.cooldown-seconds` (mặc định 0): bật lại nếu cần.
-
-## File dữ liệu
-
-`plugins/BoxColor/data.db` (SQLite). Đổi mã một màu trong `colors.yml` thì người đang dùng màu đó sẽ mất màu.
+Ra file `build/libs/BoxColor-<version>.jar`. Repo chỉ chứa mã nguồn, không có jar nào ngoài
+`gradle/wrapper/gradle-wrapper.jar` của Gradle.
